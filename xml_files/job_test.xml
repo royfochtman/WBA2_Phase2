@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<job:job job:jobID="0" xmlns:job="http://www.example.org/photoBay" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.example.org/photoBay ../xml_schema_files/job_schema.xsd ">
+  <job:jobName>job:jobName</job:jobName>
+  <job:theme>job:theme</job:theme>
+  <job:urgency>job:urgency</job:urgency>
+  <job:dateOfCreation>2001-01-01</job:dateOfCreation>
+  <job:deadline>2001-01-01</job:deadline>
+  <job:description>job:description</job:description>
+  <job:payment>1</job:payment>
+</job:job>

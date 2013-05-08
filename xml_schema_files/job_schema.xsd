@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.example.org/photoBay"  xmlns:job="http://www.example.org/photoBay" elementFormDefault="qualified">
+
+<!-- definition of simple elements -->
+<!--  
+<xs:element name="jobName" type="xs:string"></xs:element>
+<xs:element name="theme" type="xs:string"></xs:element>
+<xs:element name="urgency" type="xs:string"></xs:element>
+<xs:element name="dateOfCreation" type="xs:date"></xs:element>
+<xs:element name="deadline" type="xs:date"></xs:element>
+<xs:element name="description" type="xs:string"></xs:element>
+<xs:element name="payment" type="xs:positiveInteger"></xs:element>
+-->
+
+<!-- definition of attributes -->
+<xs:attribute name="jobID" type="xs:int" />
+<!-- <xs:attribute name="pressID" type="xs:int"/> -->
+
+<!-- definition of complex elements -->
+<xs:element name="job">
+	
+	<xs:complexType>
+		
+		<xs:all maxOccurs="1" minOccurs="1">
+		<!--  
+			<xs:element ref="job:jobName"></xs:element>
+			<xs:element ref="job:theme"></xs:element>
+			<xs:element ref="job:urgency"></xs:element>
+			<xs:element ref="job:deadline"></xs:element>
+			<xs:element ref="job:description"></xs:element>
+			<xs:element ref="job:payment"></xs:element>	
+			<xs:element ref="job:dateOfCreation"></xs:element>	
+			-->
+			
+			<xs:element name="jobName" type="xs:string"></xs:element>
+			<xs:element name="theme" type="xs:string"></xs:element>
+			<xs:element name="urgency" type="xs:string"></xs:element>
+			<xs:element name="dateOfCreation" type="xs:date"></xs:element>
+			<xs:element name="deadline" type="xs:date"></xs:element>
+			<xs:element name="description" type="xs:string"></xs:element>
+			<xs:element name="payment" type="xs:positiveInteger"></xs:element>
+			
+		</xs:all> 
+		<xs:attribute ref="job:jobID" use="required"/>
+		<!-- Es muss noch entschieden werden, ob die pressID hier auch verfügbar sein soll. Wenn ja, dann muss es auf die ID der Presse referenzieren -->
+		<!-- <xs:attribute ref="job:pressID" use="required"/> -->
+	</xs:complexType>
+</xs:element>
+
+</xs:schema>
