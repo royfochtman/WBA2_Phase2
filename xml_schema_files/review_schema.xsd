@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.example.org/photoBay"  elementFormDefault="qualified" xmlns:rev="http://www.example.org/photoBay">
+<xs:element name="review">       
+        <xs:complexType>
+			<xs:all maxOccurs="1" minOccurs="1">
+				<xs:element name="commentar" type="xs:string"></xs:element>
+				<xs:element name="stars">
+					<xs:simpleType>
+						<xs:restriction base="xs:int">
+							<xs:enumeration value="1"></xs:enumeration>
+							<xs:enumeration value="2"></xs:enumeration>
+							<xs:enumeration value="3"></xs:enumeration>
+							<xs:enumeration value="4"></xs:enumeration>
+							<xs:enumeration value="5"></xs:enumeration>
+						</xs:restriction>
+					</xs:simpleType>	
+				</xs:element>
+			</xs:all> 
+			<xs:attribute name="photographerID" type="xs:int" use="required"></xs:attribute>
+			<xs:attribute name="pressID" type="xs:int" use="required"></xs:attribute>
+	</xs:complexType>
+    </xs:element>
+</xs:schema>
