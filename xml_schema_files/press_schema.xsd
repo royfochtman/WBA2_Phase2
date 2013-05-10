@@ -7,6 +7,8 @@
 				<xs:element name="name" type="xs:string"></xs:element>
 				<xs:element name="mainLocation" type="xs:string"></xs:element>
 				<xs:element name="dateOfCreation" type="xs:date"></xs:element>
+				<xs:element name="generalPersonalData" type="pho:generalPersonalDataType">
+				</xs:element>
 			</xs:all> 
 		<xs:attribute name="ID" type="xs:int" use="required"></xs:attribute>
 	</xs:complexType>
