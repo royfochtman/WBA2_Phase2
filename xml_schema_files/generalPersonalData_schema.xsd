@@ -21,7 +21,7 @@
 			<xs:element name="phone" type="xs:string"></xs:element>
 			<xs:element name="description" type="xs:string"></xs:element>
 			<xs:element name="website" type="xs:anyURI"></xs:element>
-			<xs:element name="rating" type="xs=int"></xs:element>
+			<xs:element name="rating" type="xs:int"></xs:element>
 		</xs:sequence>
 </xs:complexType>
 </xs:schema>

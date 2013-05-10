@@ -39,6 +39,15 @@
 			<xs:element name="deadline" type="xs:date"></xs:element>
 			<xs:element name="description" type="xs:string"></xs:element>
 			<xs:element name="payment" type="xs:positiveInteger"></xs:element>
+			<xs:element name="status">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="new"></xs:enumeration>
+						<xs:enumeration value="assigned"></xs:enumeration>
+						<xs:enumeration value="closed"></xs:enumeration>
+					</xs:restriction>
+				</xs:simpleType>	
+			</xs:element>
 			
 		</xs:all> 
 		<xs:attribute ref="job:jobID" use="required"/>
