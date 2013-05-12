@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.example.org/photoBay" xmlns:gpd="http://www.example.org/generalPersonalData_schema" elementFormDefault="qualified">
+<xs:element name="generalPersonalData" type="generalPersonalDataType"></xs:element>
+<xs:complexType name="generalPersonalDataType">
+	<!-- Pflichteingabefelder: address, email -->
+		<xs:sequence maxOccurs="1" minOccurs="0">
+			<xs:element name="address" minOccurs="1">
+				<xs:complexType>
+				<!-- Pflichfelder: postalCode, city, country -->
+					<xs:sequence maxOccurs="1" minOccurs="0">
+						<xs:element name="street" type="xs:string"></xs:element>
+						<xs:element name="houseNumber" type="xs:string"></xs:element>
+						<xs:element name="postalCode" type="xs:int" minOccurs="1"></xs:element>
+						<xs:element name="city" type="xs:string" minOccurs="1"></xs:element>
+						<xs:element name="country" type="xs:string" minOccurs="1"></xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<!-- Die Felder Profilbild und Themenbereiche wurden erstmal rausgelassen.
+			Es muss noch definiert werden aus welchen Daten diese Felder bestehen -->
+			<xs:element name="email" type="xs:string" minOccurs="1"></xs:element>
+			<xs:element name="phone" type="xs:string"></xs:element>
+			<xs:element name="description" type="xs:string"></xs:element>
+			<xs:element name="website" type="xs:anyURI"></xs:element>
+			<!--  <xs:element name="rating" type="xs:int"></xs:element> -->
+		</xs:sequence>
+</xs:complexType>
+</xs:schema>
