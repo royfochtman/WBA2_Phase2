@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.example.org/photoBay" xmlns:gpd="http://www.example.org/photoBay" elementFormDefault="qualified">
+<xs:include schemaLocation="topic.xsd"></xs:include>
 <xs:element name="generalPersonalData" type="gpd:generalPersonalDataType"></xs:element>
 <xs:complexType name="generalPersonalDataType">
 	<!-- Pflichteingabefelder: address, email -->
@@ -22,6 +23,7 @@
 			<xs:element name="phone" type="xs:string"></xs:element>
 			<xs:element name="description" type="xs:string"></xs:element>
 			<xs:element name="website" type="xs:anyURI"></xs:element>
+			<xs:element name="topics" type="gpd:topicType"></xs:element>
 			<!--  <xs:element name="rating" type="xs:int"></xs:element> -->
 		</xs:sequence>
 </xs:complexType>

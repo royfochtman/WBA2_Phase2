@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.example.org/photoBay" xmlns:top="http://www.example.org/photoBay" elementFormDefault="qualified">
+<xs:element name="topic" type="top:topicType"></xs:element>
+<xs:complexType name="topicType">
+	<xs:sequence maxOccurs="unbounded" minOccurs="1">
+		<xs:element name="topicName">
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="Sport"></xs:enumeration>
+					<xs:enumeration value="Politic"></xs:enumeration>
+					<xs:enumeration value="People"></xs:enumeration>
+					<xs:enumeration value="Nature"></xs:enumeration>
+					<xs:enumeration value="Special"></xs:enumeration>
+					<xs:enumeration value="Economy"></xs:enumeration>
+					<xs:enumeration value="War"></xs:enumeration>
+				</xs:restriction>
+			</xs:simpleType>	
+		</xs:element>
+	</xs:sequence>
+</xs:complexType>
+</xs:schema>
