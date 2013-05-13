@@ -3,7 +3,6 @@
 <xs:include schemaLocation="topic.xsd"></xs:include>
 <!-- definition of attributes -->
 <xs:attribute name="ID" type="xs:int" />
-<!-- <xs:attribute name="pressID" type="xs:int"/> -->
 
 <!-- definition of complex elements -->
 <xs:element name="job">
@@ -13,9 +12,7 @@
 		<xs:all maxOccurs="1" minOccurs="1">
 		
 			<xs:element name="jobName" type="xs:string"></xs:element>
-			<xs:element name="theme" type="xs:string"></xs:element>
 			<xs:element name="urgency" type="xs:string"></xs:element>
-			<xs:element name="dateOfCreation" type="xs:date"></xs:element>
 			<xs:element name="deadline" type="xs:date"></xs:element>
 			<xs:element name="description" type="xs:string"></xs:element>
 			<xs:element name="payment" type="xs:positiveInteger"></xs:element>
@@ -32,9 +29,8 @@
 			
 		</xs:all> 
 		<xs:attribute ref="job:ID" use="required"/>
-		<xs:attribute name="date" type="xs:date" use="required"></xs:attribute>
-		<!-- Es muss noch entschieden werden, ob die pressID hier auch verfügbar sein soll. Wenn ja, dann muss es auf die ID der Presse referenzieren -->
-		<!-- <xs:attribute ref="job:pressID" use="required"/> -->
+		<xs:attribute name="pressAgencyID" type="xs:int" />
+		<xs:attribute name="dateOfCreation" type="xs:date" use="required"></xs:attribute>
 	</xs:complexType>
 </xs:element>
 

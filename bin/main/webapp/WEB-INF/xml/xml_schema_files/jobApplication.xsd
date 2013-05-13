@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.example.org/photoBay"  elementFormDefault="qualified" xmlns:appjob="http://www.example.org/photoBay">
-<xs:element name="applicationForJob">       
+<xs:element name="jobApplication">       
         <xs:complexType>
-			<xs:all maxOccurs="1" minOccurs="1">
-				<xs:element name="description" type="xs:string"></xs:element>
+			<xs:all maxOccurs="1" minOccurs="0">
+				<xs:element name="description" type="xs:string" minOccurs="1"></xs:element>
 				<xs:element name="images">
 					<xs:complexType>
 						<xs:sequence>

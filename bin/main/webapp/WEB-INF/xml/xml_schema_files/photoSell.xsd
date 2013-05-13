@@ -5,6 +5,7 @@
 			<xs:all maxOccurs="1" minOccurs="1">
 				<xs:element name="price" type="xs:positiveInteger"></xs:element>
 				<xs:element name="description" type="xs:string"></xs:element>
+				<xs:element name="photo" type="xs:string"></xs:element>
 				<xs:element name="status">
 				<xs:simpleType>
 					<xs:restriction base="xs:string">
@@ -15,7 +16,7 @@
 			</xs:element>
 			</xs:all> 
 			
-			<xs:attribute name="photoID" type="xs:int" use="required"></xs:attribute>
+			<xs:attribute name="ID" type="xs:ID"></xs:attribute>
 			<xs:attribute name="photographerID" type="xs:int" use="required"></xs:attribute>
 	</xs:complexType>
     </xs:element>

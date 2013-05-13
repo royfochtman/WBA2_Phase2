@@ -3,7 +3,7 @@
 <xs:element name="review">       
         <xs:complexType>
 			<xs:all maxOccurs="1" minOccurs="1">
-				<xs:element name="commentar" type="xs:string"></xs:element>
+				<xs:element name="comment" type="xs:string"></xs:element>
 				<xs:element name="stars">
 					<xs:simpleType>
 						<xs:restriction base="xs:int">
