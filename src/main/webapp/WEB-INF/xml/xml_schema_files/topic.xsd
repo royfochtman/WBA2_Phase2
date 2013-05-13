@@ -5,7 +5,7 @@
 	<xs:sequence maxOccurs="7" minOccurs="1">
 		<xs:element name="topicName">
 			<xs:simpleType>
-				<xs:restriction base="xs:string">
+				<xs:restriction base="xs:string">	
 					<xs:enumeration value="Sport"></xs:enumeration>
 					<xs:enumeration value="Politic"></xs:enumeration>
 					<xs:enumeration value="People"></xs:enumeration>
