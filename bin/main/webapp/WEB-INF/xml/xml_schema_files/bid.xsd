@@ -5,8 +5,8 @@
 			<xs:all maxOccurs="1" minOccurs="1">
 				<xs:element name="bidValue" type="xs:positiveInteger"></xs:element>
 			</xs:all> 
-			<xs:attribute name="pressID" type="xs:int" use="required"></xs:attribute>
-			<xs:attribute name="photographerID" type="xs:int" use="required"></xs:attribute>
+			<xs:attribute name="pressID" type="xs:ID" use="required"></xs:attribute>
+			<xs:attribute name="photographerID" type="xs:ID" use="required"></xs:attribute>
 	</xs:complexType>
     </xs:element>
 </xs:schema>
