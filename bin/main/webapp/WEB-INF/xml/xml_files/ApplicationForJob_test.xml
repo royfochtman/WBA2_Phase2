@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<appjob:applicationForJob jobID="112" photographerID="5455" xmlns:appjob="http://www.example.org/photoBay" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.example.org/photoBay ApplicationForJob_Schema.xsd ">
-  <appjob:description>appjob:hier sind die bilder</appjob:description>
-  <appjob:images>
-    <appjob:image>appjob:image1</appjob:image>
-    <appjob:image>appjob:image2</appjob:image>
-    <appjob:image>appjob:image3</appjob:image>
-  </appjob:images>
-</appjob:applicationForJob>

@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<rev:review photographerID="701" pressID="144" xmlns:rev="http://www.example.org/photoBay" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.example.org/photoBay ../xml_schema_files/review_schema.xsd ">
-  <rev:commentar>rev:This guy is a good guy</rev:commentar>
-  <rev:stars>5</rev:stars>
-</rev:review>
