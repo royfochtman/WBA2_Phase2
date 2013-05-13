@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.example.org/photoBay"  elementFormDefault="qualified" xmlns:pre="http://www.example.org/photoBay">
-<xs:include schemaLocation="generalPersonalData_schema.xsd"></xs:include>
-<xs:element name="press">       
+<xs:include schemaLocation="generalPersonalData.xsd"></xs:include>
+<xs:element name="pressAgency">       
         <xs:complexType>
 			<xs:all maxOccurs="1" minOccurs="1">
 				<xs:element name="name" type="xs:string"></xs:element>
