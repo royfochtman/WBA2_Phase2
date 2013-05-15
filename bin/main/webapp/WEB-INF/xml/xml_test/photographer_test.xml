@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pho:photographer ID="idvalue0" registrationDate="2001-01-01" xmlns:pho="http://www.example.org/photoBay" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.example.org/photoBay ../../../../../../bin/main/webapp/WEB-INF/xml/xml_schema_files/photographer.xsd ">
+  <pho:firstname>pho:firstname</pho:firstname>
+  <pho:lastname>pho:lastname</pho:lastname>
+  <pho:birthdate>2001-01-01</pho:birthdate>
+  <pho:sex>m</pho:sex>
+  <pho:equipment>pho:equipment</pho:equipment>
+  <pho:generalPersonalData>
+    <pho:address>
+      <pho:street>pho:street</pho:street>
+      <pho:houseNumber>pho:houseNumber</pho:houseNumber>
+      <pho:postalCode>0</pho:postalCode>
+      <pho:city>pho:city</pho:city>
+      <pho:country>pho:country</pho:country>
+    </pho:address>
+    <pho:email>pho:email</pho:email>
+    <pho:phone>pho:phone</pho:phone>
+    <pho:description>pho:description</pho:description>
+    <pho:website>http://tempuri.org</pho:website>
+    <pho:topics>
+      <pho:topicName>Sport</pho:topicName>
+    </pho:topics>
+    <pho:password>pho:password</pho:password>
+  </pho:generalPersonalData>
+</pho:photographer>
