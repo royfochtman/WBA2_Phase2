@@ -7,14 +7,7 @@
 				<xs:element name="firstname" type="xs:string" minOccurs="1"></xs:element>
 				<xs:element name="lastname" type="xs:string" minOccurs="1"></xs:element>
 				<xs:element name="birthdate" type="xs:date" minOccurs="1"></xs:element>
-				<xs:element name="sex" minOccurs="1">
-					<xs:simpleType>
-						<xs:restriction base="xs:string">
-							<xs:enumeration value="m"></xs:enumeration>
-							<xs:enumeration value="w"></xs:enumeration>
-						</xs:restriction>
-					</xs:simpleType>	
-				</xs:element>
+				<xs:element name="sex" type="pho:sexEnum" minOccurs="1"></xs:element>
 				<xs:element name="equipment" type="xs:string"></xs:element>
 				<xs:element name="generalPersonalData" type="pho:generalPersonalDataType" minOccurs="1">
 				</xs:element>
@@ -23,4 +16,10 @@
 		<xs:attribute name="registrationDate" type="xs:date" use="required"></xs:attribute>
 	</xs:complexType>
     </xs:element>
+<xs:simpleType name="sexEnum">
+	<xs:restriction base="xs:string">
+		<xs:enumeration value="m"></xs:enumeration>
+		<xs:enumeration value="w"></xs:enumeration>
+	</xs:restriction>
+</xs:simpleType>	
 </xs:schema>

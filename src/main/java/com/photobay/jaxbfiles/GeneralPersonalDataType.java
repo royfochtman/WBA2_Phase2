@@ -2,7 +2,7 @@
 // Diese Datei wurde mit der JavaTM Architecture for XML Binding(JAXB) Reference Implementation, v2.2.6 generiert 
 // Siehe <a href="http://java.sun.com/xml/jaxb">http://java.sun.com/xml/jaxb</a> 
 // Änderungen an dieser Datei gehen bei einer Neukompilierung des Quellschemas verloren. 
-// Generiert: 2013.05.15 um 03:47:55 PM CEST 
+// Generiert: 2013.05.15 um 05:25:50 PM CEST 
 //
 
 
@@ -10,6 +10,7 @@ package main.java.com.photobay.jaxbfiles;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
 
@@ -28,7 +29,7 @@ import javax.xml.bind.annotation.XmlType;
  *           &lt;complexType>
  *             &lt;complexContent>
  *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *                 &lt;sequence minOccurs="0">
+ *                 &lt;sequence>
  *                   &lt;element name="street" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *                   &lt;element name="houseNumber" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *                   &lt;element name="postalCode" type="{http://www.w3.org/2001/XMLSchema}int"/>
@@ -43,7 +44,6 @@ import javax.xml.bind.annotation.XmlType;
  *         &lt;element name="phone" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="description" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="website" type="{http://www.w3.org/2001/XMLSchema}anyURI"/>
- *         &lt;element name="topics" type="{http://www.example.org/photoBay}topicType"/>
  *         &lt;element name="password" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
@@ -60,7 +60,6 @@ import javax.xml.bind.annotation.XmlType;
     "phone",
     "description",
     "website",
-    "topics",
     "password"
 })
 public class GeneralPersonalDataType {
@@ -71,7 +70,6 @@ public class GeneralPersonalDataType {
     protected String description;
     @XmlSchemaType(name = "anyURI")
     protected String website;
-    protected TopicType topics;
     protected String password;
 
     /**
@@ -195,30 +193,6 @@ public class GeneralPersonalDataType {
     }
 
     /**
-     * Ruft den Wert der topics-Eigenschaft ab.
-     * 
-     * @return
-     *     possible object is
-     *     {@link TopicType }
-     *     
-     */
-    public TopicType getTopics() {
-        return topics;
-    }
-
-    /**
-     * Legt den Wert der topics-Eigenschaft fest.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link TopicType }
-     *     
-     */
-    public void setTopics(TopicType value) {
-        this.topics = value;
-    }
-
-    /**
      * Ruft den Wert der password-Eigenschaft ab.
      * 
      * @return
@@ -252,7 +226,7 @@ public class GeneralPersonalDataType {
      * &lt;complexType>
      *   &lt;complexContent>
      *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
-     *       &lt;sequence minOccurs="0">
+     *       &lt;sequence>
      *         &lt;element name="street" type="{http://www.w3.org/2001/XMLSchema}string"/>
      *         &lt;element name="houseNumber" type="{http://www.w3.org/2001/XMLSchema}string"/>
      *         &lt;element name="postalCode" type="{http://www.w3.org/2001/XMLSchema}int"/>
@@ -276,10 +250,14 @@ public class GeneralPersonalDataType {
     })
     public static class Address {
 
+        @XmlElement(required = true)
         protected String street;
+        @XmlElement(required = true)
         protected String houseNumber;
-        protected Integer postalCode;
+        protected int postalCode;
+        @XmlElement(required = true)
         protected String city;
+        @XmlElement(required = true)
         protected String country;
 
         /**
@@ -333,24 +311,16 @@ public class GeneralPersonalDataType {
         /**
          * Ruft den Wert der postalCode-Eigenschaft ab.
          * 
-         * @return
-         *     possible object is
-         *     {@link Integer }
-         *     
          */
-        public Integer getPostalCode() {
+        public int getPostalCode() {
             return postalCode;
         }
 
         /**
          * Legt den Wert der postalCode-Eigenschaft fest.
          * 
-         * @param value
-         *     allowed object is
-         *     {@link Integer }
-         *     
          */
-        public void setPostalCode(Integer value) {
+        public void setPostalCode(int value) {
             this.postalCode = value;
         }
 

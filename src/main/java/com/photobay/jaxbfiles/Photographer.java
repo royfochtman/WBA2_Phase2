@@ -2,7 +2,7 @@
 // Diese Datei wurde mit der JavaTM Architecture for XML Binding(JAXB) Reference Implementation, v2.2.6 generiert 
 // Siehe <a href="http://java.sun.com/xml/jaxb">http://java.sun.com/xml/jaxb</a> 
 // Änderungen an dieser Datei gehen bei einer Neukompilierung des Quellschemas verloren. 
-// Generiert: 2013.05.15 um 03:47:44 PM CEST 
+// Generiert: 2013.05.15 um 05:24:49 PM CEST 
 //
 
 
@@ -33,14 +33,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
  *         &lt;element name="firstname" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="lastname" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="birthdate" type="{http://www.w3.org/2001/XMLSchema}date"/>
- *         &lt;element name="sex">
- *           &lt;simpleType>
- *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *               &lt;enumeration value="m"/>
- *               &lt;enumeration value="w"/>
- *             &lt;/restriction>
- *           &lt;/simpleType>
- *         &lt;/element>
+ *         &lt;element name="sex" type="{http://www.example.org/photoBay}sexEnum"/>
  *         &lt;element name="equipment" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="generalPersonalData" type="{http://www.example.org/photoBay}generalPersonalDataType"/>
  *       &lt;/all>
@@ -64,7 +57,7 @@ public class Photographer {
     protected String lastname;
     @XmlSchemaType(name = "date")
     protected XMLGregorianCalendar birthdate;
-    protected String sex;
+    protected SexEnum sex;
     protected String equipment;
     protected GeneralPersonalDataType generalPersonalData;
     @XmlAttribute(name = "ID", required = true)
@@ -153,10 +146,10 @@ public class Photographer {
      * 
      * @return
      *     possible object is
-     *     {@link String }
+     *     {@link SexEnum }
      *     
      */
-    public String getSex() {
+    public SexEnum getSex() {
         return sex;
     }
 
@@ -165,10 +158,10 @@ public class Photographer {
      * 
      * @param value
      *     allowed object is
-     *     {@link String }
+     *     {@link SexEnum }
      *     
      */
-    public void setSex(String value) {
+    public void setSex(SexEnum value) {
         this.sex = value;
     }
 
