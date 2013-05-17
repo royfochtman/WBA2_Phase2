@@ -2,7 +2,7 @@
 // Diese Datei wurde mit der JavaTM Architecture for XML Binding(JAXB) Reference Implementation, v2.2.6 generiert 
 // Siehe <a href="http://java.sun.com/xml/jaxb">http://java.sun.com/xml/jaxb</a> 
 // Änderungen an dieser Datei gehen bei einer Neukompilierung des Quellschemas verloren. 
-// Generiert: 2013.05.17 um 03:31:39 PM CEST 
+// Generiert: 2013.05.17 um 06:06:29 PM CEST 
 //
 
 
@@ -11,12 +11,9 @@ package main.java.com.photobay.jaxbfiles;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlID;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
-import javax.xml.bind.annotation.adapters.CollapsedStringAdapter;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import javax.xml.datatype.XMLGregorianCalendar;
 
 
@@ -37,7 +34,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
  *         &lt;element name="equipment" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="generalPersonalData" type="{http://www.example.org/photoBay}generalPersonalDataType"/>
  *       &lt;/all>
- *       &lt;attribute name="ID" use="required" type="{http://www.w3.org/2001/XMLSchema}ID" />
+ *       &lt;attribute name="ID" use="required" type="{http://www.w3.org/2001/XMLSchema}int" />
  *       &lt;attribute name="registrationDate" use="required" type="{http://www.w3.org/2001/XMLSchema}date" />
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -61,10 +58,7 @@ public class Photographer {
     protected String equipment;
     protected GeneralPersonalDataType generalPersonalData;
     @XmlAttribute(name = "ID", required = true)
-    @XmlJavaTypeAdapter(CollapsedStringAdapter.class)
-    @XmlID
-    @XmlSchemaType(name = "ID")
-    protected String id;
+    protected int id;
     @XmlAttribute(name = "registrationDate", required = true)
     @XmlSchemaType(name = "date")
     protected XMLGregorianCalendar registrationDate;
@@ -216,24 +210,16 @@ public class Photographer {
     /**
      * Ruft den Wert der id-Eigenschaft ab.
      * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
      */
-    public String getID() {
+    public int getID() {
         return id;
     }
 
     /**
      * Legt den Wert der id-Eigenschaft fest.
      * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
      */
-    public void setID(String value) {
+    public void setID(int value) {
         this.id = value;
     }
 

@@ -7,7 +7,7 @@
 			<xs:element name="description" type="xs:string"/>
 		</xs:all>
 		
-		<xs:attribute name="ID" type="xs:ID" use="required"></xs:attribute>	
+		<xs:attribute name="ID" type="xs:int" use="required"></xs:attribute>	
 		<xs:attribute name="uploadDate" type="xs:date" use="required"></xs:attribute>		
 	</xs:complexType>
 </xs:schema>

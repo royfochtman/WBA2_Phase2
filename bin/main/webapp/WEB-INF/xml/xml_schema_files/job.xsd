@@ -2,7 +2,7 @@
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.example.org/photoBay"  xmlns:job="http://www.example.org/photoBay" elementFormDefault="qualified">
 <xs:include schemaLocation="topic.xsd"></xs:include>
 <!-- definition of attributes -->
-<xs:attribute name="ID" type="xs:ID" />
+<xs:attribute name="ID" type="xs:int" />
 
 <!-- definition of complex elements -->
 <xs:element name="job">

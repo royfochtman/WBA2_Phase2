@@ -11,7 +11,7 @@
 				<xs:element name="equipment" type="xs:string"></xs:element>
 				<xs:element name="generalPersonalData" type="pho:generalPersonalDataType" minOccurs="1"/>
 			</xs:all> 
-		<xs:attribute name="ID" type="xs:ID" use="required"></xs:attribute>
+		<xs:attribute name="ID" type="xs:int" use="required"></xs:attribute>
 		<xs:attribute name="registrationDate" type="xs:date" use="required"></xs:attribute>
 	</xs:complexType>
     </xs:element>
