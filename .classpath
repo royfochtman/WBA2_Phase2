@@ -6,6 +6,14 @@
 	<classpathentry kind="lib" path="src/jars_lib/jaxb-ri-2.2.6/lib/jaxb-impl.jar"/>
 	<classpathentry kind="lib" path="src/jars_lib/jaxb-ri-2.2.6/lib/jaxb-xjc-javadoc.jar"/>
 	<classpathentry kind="lib" path="src/jars_lib/jaxb-ri-2.2.6/lib/jaxb-xjc.jar"/>
-	<classpathentry kind="lib" path="src/jars_lib/jersey/jersey-bundle-1.17.jar"/>
+	<classpathentry kind="lib" path="src/jars_lib/jersey/asm-3.1.jar"/>
+	<classpathentry kind="lib" path="src/jars_lib/jersey/jackson-core-asl-1.1.1.jar"/>
+	<classpathentry kind="lib" path="src/jars_lib/jersey/jersey-client-1.1.5.1.jar"/>
+	<classpathentry kind="lib" path="src/jars_lib/jersey/jersey-core-1.1.5.1.jar"/>
+	<classpathentry kind="lib" path="src/jars_lib/jersey/jersey-json-1.1.5.1.jar"/>
+	<classpathentry kind="lib" path="src/jars_lib/jersey/jersey-server-1.1.5.1.jar"/>
+	<classpathentry kind="lib" path="src/jars_lib/jersey/jettison-1.1.jar"/>
+	<classpathentry kind="lib" path="src/jars_lib/jersey/jsr311-api-1.1.1.jar"/>
+	<classpathentry kind="lib" path="src/jars_lib/grizzly-servlet-webserver-1.9.18.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
