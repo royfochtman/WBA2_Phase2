@@ -23,6 +23,12 @@ public class PhotoBayRessourceManager {
 		return generator.nextInt();
 	}
 	
+	/**
+	 * This Method returns the Photographer Object mit ID "id".
+	 * 
+	 * @param id
+	 * @return Photographer
+	 */
 	public static Photographer getPhotographer(int id)
 	{
 		try
@@ -38,6 +44,12 @@ public class PhotoBayRessourceManager {
 		}
 	}
 	
+	/**
+	 * Method for setting a new Photographer
+	 * 
+	 * @param photographer
+	 * @return
+	 */
 	public static Boolean putPhotographer(Photographer photographer)
 	{
 		try
@@ -50,6 +62,7 @@ public class PhotoBayRessourceManager {
 				JAXBContext context = JAXBContext.newInstance("main.java.com.photobay.webservice");
 			    Marshaller m = context.createMarshaller();
 			    m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+			    photographer.setID(id);
 			    m.marshal(photographer, file);
 			    return true;
 			}
@@ -60,4 +73,54 @@ public class PhotoBayRessourceManager {
 			return false;
 		}
 	}
+
+	/**
+	 * 
+	 * @param id
+	 * @return
+	 */
+	public static PressAgency getPressAgency(int id)
+	{
+		try
+		{
+			File file = new File("./host/pressAgencies/" + id + "/pressAgency.xml");
+			JAXBContext context = JAXBContext.newInstance("main.java.com.photobay.webservice");
+			Unmarshaller unmarshaller = context.createUnmarshaller();
+			return (PressAgency)unmarshaller.unmarshal(file);
+		}
+		catch(Exception ex)
+		{
+			return null;
+		}
+	}
+	
+	/**
+	 * 
+	 * @param pressAgency
+	 * @return
+	 */
+	public static Boolean putPressAgency(PressAgency pressAgency)
+	{
+		try
+		{
+			int id = generateID();
+			File dir = new File("./host/pressAgency/" + id);
+			File file = new File(dir + "/PressAgency.xml");
+			if(dir.mkdir() && file.createNewFile())
+			{
+				JAXBContext context = JAXBContext.newInstance("main.java.com.photobay.webservice");
+			    Marshaller m = context.createMarshaller();
+			    m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+			    pressAgency.setID(id);
+			    m.marshal(pressAgency, file);
+			    return true;
+			}
+			return false;
+		}
+		catch(Exception ex)
+		{
+			return false;
+		}
+	}
+
 }
