@@ -21,6 +21,32 @@ public class PhotoBayService {
 		}
 		return Response.ok(photographer).build();
 	}
+
+
+	@PUT
+	@Path("{photographer}")
+	@Consumes({"application/xml"})
+	public Response putPhotographer(Photographer photographer)
+	{
+		if(PhotoBayRessourceManager.putPhotographer(photographer))
+		{
+			return Response.ok().build();
+		}
+		else return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+	}
+	
+	@DELETE
+	@Path("{photographer}")
+	public Response deletePhotographer(@PathParam("photographer") int id)
+	{
+		if(PhotoBayRessourceManager.deletePhotographer(id))
+		{
+			return Response.ok().build();
+		}
+		else return Response.status(Response.Status.NOT_FOUND).build();
+		
+	}
+	
 	
 	@GET
 	@Path("{pressAgency}")
@@ -40,16 +66,24 @@ public class PhotoBayService {
 	@Consumes({"application/xml"})
 	public Response putPressAgency(PressAgency pressAgency)
 	{
-		PhotoBayRessourceManager.putPressAgency(pressAgency);
-		return Response.ok().build();
+		if(PhotoBayRessourceManager.putPressAgency(pressAgency))
+		{
+			return Response.ok().build();
+		}
+		else return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+		
 	}
 	
-	@PUT
-	@Path("{photographer}")
-	@Consumes({"application/xml"})
-	public Response putPhotographer(Photographer photographer)
+	@DELETE
+	@Path("{pressAgency}")
+	public Response deletePressAgency(@PathParam("pressAgency") int id)
 	{
-		PhotoBayRessourceManager.putPhotographer(photographer);
-		return Response.ok().build();
+		if(PhotoBayRessourceManager.deletePressAgency(id))
+		{
+			return Response.ok().build();
+		}
+		else return Response.status(Response.Status.NOT_FOUND).build();
+		
 	}
+	
 }

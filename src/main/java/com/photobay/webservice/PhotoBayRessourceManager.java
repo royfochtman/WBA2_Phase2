@@ -7,6 +7,8 @@ import java.util.Random;
 
 import javax.xml.bind.*;
 
+import com.sun.xml.bind.v2.TODO;
+
 
 /**
  * 
@@ -73,6 +75,21 @@ public class PhotoBayRessourceManager {
 			return false;
 		}
 	}
+	
+	/**
+	 * 
+	 * @param id
+	 * @return
+	 */
+	public static Boolean deletePhotographer(int id)
+	{
+		//oder muss auch Ordner gelöscht werden???
+		File file = new File("./host/photographers/" + id + "/photographer.xml");
+		if(file.delete()){
+			return true;
+		}
+		else return false;
+	}
 
 	/**
 	 * 
@@ -121,6 +138,20 @@ public class PhotoBayRessourceManager {
 		{
 			return false;
 		}
+	}
+	
+	/**
+	 * 
+	 * @param id
+	 * @return
+	 */
+	public static Boolean deletePressAgency(int id)
+	{
+		File file = new File("./host/pressAgency/" + id + "/pressAgency.xml");
+		if(file.delete()){
+			return true;
+		}
+		else return false;
 	}
 
 }
