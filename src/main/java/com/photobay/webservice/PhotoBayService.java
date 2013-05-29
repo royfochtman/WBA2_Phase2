@@ -10,7 +10,7 @@ import main.java.com.photobay.webservice.PhotoBayRessourceManager;
 public class PhotoBayService {
 	
 	@GET
-	@Path("/photographer/{id}")
+	@Path("/photographers/{id}")
 	@Produces({"application/xml"})
 	public Response getPhotographer(@PathParam("id") int id)
 	{
@@ -24,7 +24,7 @@ public class PhotoBayService {
 
 
 	@POST
-	@Path("/photographer")
+	@Path("/photographers")
 	@Consumes({"application/xml"})
 	public Response postPhotographer(Photographer photographer)
 	{
@@ -36,7 +36,7 @@ public class PhotoBayService {
 	}
 	
 	@DELETE
-	@Path("/photographer/{id}")
+	@Path("/photographers/{id}")
 	public Response deletePhotographer(@PathParam("id") int id)
 	{
 		if(PhotoBayRessourceManager.deletePhotographer(id))
@@ -49,7 +49,7 @@ public class PhotoBayService {
 	
 	
 	@GET
-	@Path("/pressAgency/{id}")
+	@Path("/pressAgencies/{id}")
 	@Produces({"application/xml"})
 	public Response getPressAgency(@PathParam("id") int id)
 	{
@@ -62,7 +62,7 @@ public class PhotoBayService {
 	}
 	
 	@POST
-	@Path("/pressAgency")
+	@Path("/pressAgencies")
 	@Consumes({"application/xml"})
 	public Response postPressAgency(PressAgency pressAgency)
 	{
@@ -75,7 +75,7 @@ public class PhotoBayService {
 	}
 	
 	@DELETE
-	@Path("/pressAgency/{id}")
+	@Path("/pressAgencies/{id}")
 	public Response deletePressAgency(@PathParam("id") int id)
 	{
 		if(PhotoBayRessourceManager.deletePressAgency(id))
