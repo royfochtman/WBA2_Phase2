@@ -2,7 +2,7 @@
 // Diese Datei wurde mit der JavaTM Architecture for XML Binding(JAXB) Reference Implementation, v2.2.6 generiert 
 // Siehe <a href="http://java.sun.com/xml/jaxb">http://java.sun.com/xml/jaxb</a> 
 // Änderungen an dieser Datei gehen bei einer Neukompilierung des Quellschemas verloren. 
-// Generiert: 2013.05.17 um 06:06:42 PM CEST 
+// Generiert: 2013.05.29 um 02:09:42 PM CEST 
 //
 
 
@@ -14,7 +14,7 @@ import javax.xml.bind.annotation.XmlRegistry;
 /**
  * This object contains factory methods for each 
  * Java content interface and Java element interface 
- * generated in the main.java.com.photobay.jaxbfiles package. 
+ * generated in the main.java.com.photobay.webservice package. 
  * <p>An ObjectFactory allows you to programatically 
  * construct new instances of the Java representation 
  * for XML content. The Java representation of XML 
@@ -30,34 +30,18 @@ public class ObjectFactory {
 
 
     /**
-     * Create a new ObjectFactory that can be used to create new instances of schema derived classes for package: main.java.com.photobay.jaxbfiles
+     * Create a new ObjectFactory that can be used to create new instances of schema derived classes for package: main.java.com.photobay.webservice
      * 
      */
     public ObjectFactory() {
     }
 
     /**
-     * Create an instance of {@link GeneralPersonalDataType }
+     * Create an instance of {@link TopicType }
      * 
      */
-    public GeneralPersonalDataType createGeneralPersonalDataType() {
-        return new GeneralPersonalDataType();
-    }
-
-    /**
-     * Create an instance of {@link PressAgency }
-     * 
-     */
-    public PressAgency createPressAgency() {
-        return new PressAgency();
-    }
-
-    /**
-     * Create an instance of {@link GeneralPersonalDataType.Address }
-     * 
-     */
-    public GeneralPersonalDataType.Address createGeneralPersonalDataTypeAddress() {
-        return new GeneralPersonalDataType.Address();
+    public TopicType createTopicType() {
+        return new TopicType();
     }
 
 }
