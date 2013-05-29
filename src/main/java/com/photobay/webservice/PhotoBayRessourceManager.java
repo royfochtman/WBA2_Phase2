@@ -1,12 +1,8 @@
 package main.java.com.photobay.webservice;
-
 import main.java.com.photobay.jaxbfiles.*;
-
 import java.io.File;
 import java.util.Random;
-
 import javax.xml.bind.*;
-
 import com.sun.xml.bind.v2.TODO;
 
 
@@ -22,7 +18,10 @@ public class PhotoBayRessourceManager {
 	
 	private static int generateID()
 	{
-		return generator.nextInt();
+		int id = generator.nextInt();
+		if(id<0)
+			id *= -1;
+		return id;
 	}
 	
 	/**
@@ -36,7 +35,7 @@ public class PhotoBayRessourceManager {
 		try
 		{
 			File file = new File("./host/photographers/" + id + "/photographer.xml");
-			JAXBContext context = JAXBContext.newInstance("main.java.com.photobay.webservice");
+			JAXBContext context = JAXBContext.newInstance(Photographer.class);
 			Unmarshaller unmarshaller = context.createUnmarshaller();
 			return (Photographer)unmarshaller.unmarshal(file);
 		}
@@ -52,7 +51,7 @@ public class PhotoBayRessourceManager {
 	 * @param photographer
 	 * @return
 	 */
-	public static Boolean putPhotographer(Photographer photographer)
+	public static Boolean postPhotographer(Photographer photographer)
 	{
 		try
 		{
@@ -61,7 +60,7 @@ public class PhotoBayRessourceManager {
 			File file = new File(dir + "/photographer.xml");
 			if(dir.mkdir() && file.createNewFile())
 			{
-				JAXBContext context = JAXBContext.newInstance("main.java.com.photobay.webservice");
+				JAXBContext context = JAXBContext.newInstance(Photographer.class);
 			    Marshaller m = context.createMarshaller();
 			    m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 			    photographer.setID(id);
@@ -84,9 +83,13 @@ public class PhotoBayRessourceManager {
 	public static Boolean deletePhotographer(int id)
 	{
 		//oder muss auch Ordner gelöscht werden???
+		File dir = new File("./host/photographers/" + id);
 		File file = new File("./host/photographers/" + id + "/photographer.xml");
 		if(file.delete()){
-			return true;
+			if(dir.delete())
+				return true;
+			else
+				return false;
 		}
 		else return false;
 	}
@@ -116,7 +119,7 @@ public class PhotoBayRessourceManager {
 	 * @param pressAgency
 	 * @return
 	 */
-	public static Boolean putPressAgency(PressAgency pressAgency)
+	public static Boolean postPressAgency(PressAgency pressAgency)
 	{
 		try
 		{
@@ -147,9 +150,13 @@ public class PhotoBayRessourceManager {
 	 */
 	public static Boolean deletePressAgency(int id)
 	{
+		File dir = new File("./host/pressAgency/" + id);
 		File file = new File("./host/pressAgency/" + id + "/pressAgency.xml");
 		if(file.delete()){
-			return true;
+			if(dir.delete())
+				return true;
+			else
+				return false;
 		}
 		else return false;
 	}

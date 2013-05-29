@@ -10,9 +10,9 @@ import main.java.com.photobay.webservice.PhotoBayRessourceManager;
 public class PhotoBayService {
 	
 	@GET
-	@Path("{photographer}")
+	@Path("/photographer/{id}")
 	@Produces({"application/xml"})
-	public Response getPhotographer(@PathParam("photographer") int id)
+	public Response getPhotographer(@PathParam("id") int id)
 	{
 		Photographer photographer = PhotoBayRessourceManager.getPhotographer(id);
 		if(photographer == null)
@@ -23,12 +23,12 @@ public class PhotoBayService {
 	}
 
 
-	@PUT
-	@Path("{photographer}")
+	@POST
+	@Path("/photographer")
 	@Consumes({"application/xml"})
-	public Response putPhotographer(Photographer photographer)
+	public Response postPhotographer(Photographer photographer)
 	{
-		if(PhotoBayRessourceManager.putPhotographer(photographer))
+		if(PhotoBayRessourceManager.postPhotographer(photographer))
 		{
 			return Response.ok().build();
 		}
@@ -36,8 +36,8 @@ public class PhotoBayService {
 	}
 	
 	@DELETE
-	@Path("{photographer}")
-	public Response deletePhotographer(@PathParam("photographer") int id)
+	@Path("/photographer/{id}")
+	public Response deletePhotographer(@PathParam("id") int id)
 	{
 		if(PhotoBayRessourceManager.deletePhotographer(id))
 		{
@@ -49,9 +49,9 @@ public class PhotoBayService {
 	
 	
 	@GET
-	@Path("{pressAgency}")
+	@Path("/pressAgency/{id}")
 	@Produces({"application/xml"})
-	public Response getPressAgency(@PathParam("pressAgency") int id)
+	public Response getPressAgency(@PathParam("id") int id)
 	{
 		PressAgency pressAgency = PhotoBayRessourceManager.getPressAgency(id);
 		if(pressAgency == null)
@@ -61,12 +61,12 @@ public class PhotoBayService {
 		return Response.ok(pressAgency).build();
 	}
 	
-	@PUT
-	@Path("{pressAgency}")
+	@POST
+	@Path("/pressAgency")
 	@Consumes({"application/xml"})
-	public Response putPressAgency(PressAgency pressAgency)
+	public Response postPressAgency(PressAgency pressAgency)
 	{
-		if(PhotoBayRessourceManager.putPressAgency(pressAgency))
+		if(PhotoBayRessourceManager.postPressAgency(pressAgency))
 		{
 			return Response.ok().build();
 		}
@@ -75,8 +75,8 @@ public class PhotoBayService {
 	}
 	
 	@DELETE
-	@Path("{pressAgency}")
-	public Response deletePressAgency(@PathParam("pressAgency") int id)
+	@Path("/pressAgency/{id}")
+	public Response deletePressAgency(@PathParam("id") int id)
 	{
 		if(PhotoBayRessourceManager.deletePressAgency(id))
 		{
