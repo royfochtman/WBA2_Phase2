@@ -14,16 +14,6 @@ import com.sun.xml.bind.v2.TODO;
  */
 public class PhotoBayRessourceManager {
 	
-	static Random generator = new Random();
-	
-	private static int generateID()
-	{
-		int id = generator.nextInt();
-		if(id<0)
-			id *= -1;
-		return id;
-	}
-	
 	/**
 	 * This Method returns the Photographer Object mit ID "id".
 	 * 
@@ -55,7 +45,7 @@ public class PhotoBayRessourceManager {
 	{
 		try
 		{
-			int id = generateID();
+			int id = IdGenerator.generateID("photographers");
 			File dir = new File("./host/photographers/" + id);
 			File file = new File(dir + "/photographer.xml");
 			if(dir.mkdir() && file.createNewFile())
@@ -123,7 +113,7 @@ public class PhotoBayRessourceManager {
 	{
 		try
 		{
-			int id = generateID();
+			int id = IdGenerator.generateID("pressAgencies");
 			File dir = new File("./host/pressAgency/" + id);
 			File file = new File(dir + "/PressAgency.xml");
 			if(dir.mkdir() && file.createNewFile())
