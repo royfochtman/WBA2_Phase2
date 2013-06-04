@@ -57,6 +57,8 @@ public class PhotoBayRessourceManager {
 			File file = new File(dir + "/photographer.xml");
 			if(dir.mkdir() && file.createNewFile())
 			{
+				File subDir = new File("./host/photographers/" + id + "/photos");
+				subDir.mkdir();
 				JAXBContext context = JAXBContext.newInstance(Photographer.class);
 			    Marshaller m = context.createMarshaller();
 			    m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
@@ -124,6 +126,8 @@ public class PhotoBayRessourceManager {
 			File file = new File(dir + "/PressAgency.xml");
 			if(dir.mkdir() && file.createNewFile())
 			{
+				dir = new File("./host/pressAgencies/" + id + "/photos");
+				dir.mkdir();
 				JAXBContext context = JAXBContext.newInstance(PressAgency.class);
 			    Marshaller m = context.createMarshaller();
 			    m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
@@ -165,7 +169,7 @@ public class PhotoBayRessourceManager {
 				File file = new File(dir + "/Bid.xml");
 				if(dir.mkdir() && file.createNewFile())
 				{
-					JAXBContext context = JAXBContext.newInstance("main.java.com.photobay.webservice");
+					JAXBContext context = JAXBContext.newInstance(Bid.class);
 				    Marshaller m = context.createMarshaller();
 				    m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 				    bid.setID(id);
@@ -180,7 +184,7 @@ public class PhotoBayRessourceManager {
 			}
 	}
 
-	public static Bid getBid(int bidID, int photoSellsID) {
+	public static Bid getBid(int photoSellsID, int bidID) {
 		try
 		{
 			File file = new File("./host/photoSells/" + photoSellsID + "/bids/" + bidID + "/bid.xml");
@@ -206,6 +210,8 @@ public class PhotoBayRessourceManager {
 				File file = new File(dir + "/job.xml");
 				if(dir.mkdir() && file.createNewFile())
 				{
+					dir = new File("./host/jobs/" + id + "/jobApplications");
+					dir.mkdir();
 					JAXBContext context = JAXBContext.newInstance(Job.class);
 				    Marshaller m = context.createMarshaller();
 				    m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
@@ -248,7 +254,7 @@ public class PhotoBayRessourceManager {
 			File file = new File(dir + "/jobApplication.xml");
 			if(dir.mkdir() && file.createNewFile())
 			{
-				JAXBContext context = JAXBContext.newInstance(Job.class);
+				JAXBContext context = JAXBContext.newInstance(JobApplication.class);
 			    Marshaller m = context.createMarshaller();
 			    m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 			    jobApplication.setID(id);
@@ -263,7 +269,7 @@ public class PhotoBayRessourceManager {
 		}
 	}
 	
-	public static JobApplication getjobApplication(int jobApplicationID, int jobID) {
+	public static JobApplication getJobApplication(int jobID, int jobApplicationID) {
 		try
 		{
 			File file = new File("./host/jobs/" + jobID + "/jobApplications/" + jobApplicationID + "/jobApplication.xml");
@@ -291,6 +297,8 @@ public class PhotoBayRessourceManager {
 			File file = new File(dir + "/photoSell.xml");
 			if(dir.mkdir() && file.createNewFile())
 			{
+				dir = new File("./host/photoSells/" + id + "/bids");
+				dir.mkdir();
 				JAXBContext context = JAXBContext.newInstance(PhotoSell.class);
 			    Marshaller m = context.createMarshaller();
 			    m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);

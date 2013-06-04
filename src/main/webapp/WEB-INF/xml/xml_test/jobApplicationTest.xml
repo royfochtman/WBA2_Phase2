@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<appjob:jobApplication ID="0" jobID="0" photographerID="0" xmlns:appjob="http://www.example.org/photoBay" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.example.org/photoBay ../xml_schema_files/jobApplication.xsd ">
+  <appjob:description>appjob:description</appjob:description>
+  <appjob:images>
+    <appjob:image>MA==</appjob:image>
+  </appjob:images>
+</appjob:jobApplication>

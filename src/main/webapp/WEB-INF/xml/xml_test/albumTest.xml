@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<alb:album ID="idvalue0" dateOfCreation="2001-01-01" xmlns:alb="http://www.example.org/photoBay" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.example.org/photoBay ../xml_schema_files/album.xsd ">
-  <alb:title>alb:title</alb:title>
-  <alb:description>alb:description</alb:description>
-  <alb:photos>
-    <alb:photo>MA==</alb:photo>
-  </alb:photos>
-</alb:album>
