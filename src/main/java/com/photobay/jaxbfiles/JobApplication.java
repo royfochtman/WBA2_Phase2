@@ -2,7 +2,7 @@
 // Diese Datei wurde mit der JavaTM Architecture for XML Binding(JAXB) Reference Implementation, v2.2.6 generiert 
 // Siehe <a href="http://java.sun.com/xml/jaxb">http://java.sun.com/xml/jaxb</a> 
 // Änderungen an dieser Datei gehen bei einer Neukompilierung des Quellschemas verloren. 
-// Generiert: 2013.05.29 um 02:09:24 PM CEST 
+// Generiert: 2013.05.29 um 03:06:00 PM CEST 
 //
 
 
@@ -34,7 +34,7 @@ import javax.xml.bind.annotation.XmlType;
  *             &lt;complexContent>
  *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *                 &lt;sequence>
- *                   &lt;element name="image" type="{http://www.w3.org/2001/XMLSchema}string" maxOccurs="unbounded"/>
+ *                   &lt;element name="image" type="{http://www.w3.org/2001/XMLSchema}base64Binary" maxOccurs="unbounded"/>
  *                 &lt;/sequence>
  *               &lt;/restriction>
  *             &lt;/complexContent>
@@ -174,7 +174,7 @@ public class JobApplication {
      *   &lt;complexContent>
      *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
      *       &lt;sequence>
-     *         &lt;element name="image" type="{http://www.w3.org/2001/XMLSchema}string" maxOccurs="unbounded"/>
+     *         &lt;element name="image" type="{http://www.w3.org/2001/XMLSchema}base64Binary" maxOccurs="unbounded"/>
      *       &lt;/sequence>
      *     &lt;/restriction>
      *   &lt;/complexContent>
@@ -190,7 +190,7 @@ public class JobApplication {
     public static class Images {
 
         @XmlElement(required = true)
-        protected List<String> image;
+        protected List<byte[]> image;
 
         /**
          * Gets the value of the image property.
@@ -210,13 +210,12 @@ public class JobApplication {
          * 
          * <p>
          * Objects of the following type(s) are allowed in the list
-         * {@link String }
-         * 
+         * byte[]
          * 
          */
-        public List<String> getImage() {
+        public List<byte[]> getImage() {
             if (image == null) {
-                image = new ArrayList<String>();
+                image = new ArrayList<byte[]>();
             }
             return this.image;
         }
