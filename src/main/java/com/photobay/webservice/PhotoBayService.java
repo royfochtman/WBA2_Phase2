@@ -112,18 +112,6 @@ public class PhotoBayService {
 		else return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
 	}
 	
-	@DELETE
-	@Path("/jobs/{id}")
-	public Response deleteJob(@PathParam("id") int id)
-	{
-		if(PhotoBayRessourceManager.deleteJob(id))
-		{
-			return Response.ok().build();
-		}
-		else return Response.status(Response.Status.NOT_FOUND).build();
-		
-	}
-	
 	@GET
 	@Path("/photoSells/{id}")
 	@Produces({"application/xml"})
