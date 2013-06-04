@@ -86,4 +86,79 @@ public class PhotoBayService {
 		
 	}
 	
+	@GET
+	@Path("/jobs/{id}")
+	@Produces({"application/xml"})
+	public Response getJob(@PathParam("id") int id)
+	{
+		Job job = PhotoBayRessourceManager.getJob(id);
+		if(job == null)
+		{
+			return Response.status(Response.Status.NOT_FOUND).build();
+		}
+		return Response.ok(job).build();
+	}
+
+
+	@POST
+	@Path("/jobs")
+	@Consumes({"application/xml"})
+	public Response postJob(Job job)
+	{
+		if(PhotoBayRessourceManager.postJob(job))
+		{
+			return Response.ok().build();
+		}
+		else return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+	}
+	
+	@DELETE
+	@Path("/jobs/{id}")
+	public Response deleteJob(@PathParam("id") int id)
+	{
+		if(PhotoBayRessourceManager.deleteJob(id))
+		{
+			return Response.ok().build();
+		}
+		else return Response.status(Response.Status.NOT_FOUND).build();
+		
+	}
+	
+	@GET
+	@Path("/photoSells/{id}")
+	@Produces({"application/xml"})
+	public Response getPhotoSell(@PathParam("id") int id)
+	{
+		PhotoSell photoSell = PhotoBayRessourceManager.getPhotoSell(id);
+		if(photoSell == null)
+		{
+			return Response.status(Response.Status.NOT_FOUND).build();
+		}
+		return Response.ok(photoSell).build();
+	}
+
+
+	@POST
+	@Path("/photoSells")
+	@Consumes({"application/xml"})
+	public Response postPhotoSell(PhotoSell photoSell)
+	{
+		if(PhotoBayRessourceManager.postPhotoSell(photoSell))
+		{
+			return Response.ok().build();
+		}
+		else return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+	}
+	
+	@DELETE
+	@Path("/photoSells/{id}")
+	public Response deletePhotoSell(@PathParam("id") int id)
+	{
+		if(PhotoBayRessourceManager.deletePhotoSell(id))
+		{
+			return Response.ok().build();
+		}
+		else return Response.status(Response.Status.NOT_FOUND).build();
+		
+	}
 }
