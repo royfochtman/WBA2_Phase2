@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<jobApplication xmlns="http://www.example.org/photoBay" photographerID="0" jobID="0" ID="1">
+    <description>appjob:description</description>
+    <images>
+        <image>MA==</image>
+    </images>
+</jobApplication>

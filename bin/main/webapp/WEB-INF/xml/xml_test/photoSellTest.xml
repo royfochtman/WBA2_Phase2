@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phs:photoSell ID="0" photographerID="0" xmlns:phs="http://www.example.org/photoBay" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.example.org/photoBay ../xml_schema_files/photoSell.xsd ">
+  <phs:price>1</phs:price>
+  <phs:description>phs:description</phs:description>
+  <phs:photo>MA==</phs:photo>
+  <phs:topics>
+    <phs:topicName>Sport</phs:topicName>
+  </phs:topics>
+  <phs:status>new</phs:status>
+</phs:photoSell>

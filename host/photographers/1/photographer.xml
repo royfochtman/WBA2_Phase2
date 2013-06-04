@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<photographer xmlns="http://www.example.org/photoBay" ID="1" registrationDate="2001-01-01">
+    <firstname>pho:firstname</firstname>
+    <lastname>pho:lastname</lastname>
+    <birthdate>2001-01-01</birthdate>
+    <sex>m</sex>
+    <equipment>pho:equipment</equipment>
+    <generalPersonalData>
+        <address>
+            <street>pho:street</street>
+            <houseNumber>pho:houseNumber</houseNumber>
+            <postalCode>0</postalCode>
+            <city>pho:city</city>
+            <country>pho:country</country>
+        </address>
+        <email>pho:email</email>
+        <phone>pho:phone</phone>
+        <description>pho:description</description>
+        <website>http://tempuri.org</website>
+        <password>pho:password</password>
+    </generalPersonalData>
+</photographer>

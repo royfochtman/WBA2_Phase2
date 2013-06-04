@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ns1:job xmlns:ns1="http://www.example.org/photoBay" ns1:ID="1" pressAgencyID="0" dateOfCreation="2001-01-01">
+    <ns1:jobName>job:jobName</ns1:jobName>
+    <ns1:urgency>job:urgency</ns1:urgency>
+    <ns1:deadline>2001-01-01</ns1:deadline>
+    <ns1:description>job:description</ns1:description>
+    <ns1:payment>1</ns1:payment>
+    <ns1:topics>
+        <ns1:topicName>Sport</ns1:topicName>
+    </ns1:topics>
+    <ns1:status>new</ns1:status>
+</ns1:job>
