@@ -1,9 +1,16 @@
 package main.java.com.photobay.webservice;
-import main.java.com.photobay.jaxbfiles.*;
 import java.io.File;
-import java.util.Random;
-import javax.xml.bind.*;
-import com.sun.xml.bind.v2.TODO;
+
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
+
+import main.java.com.photobay.jaxbfiles.Bid;
+import main.java.com.photobay.jaxbfiles.Job;
+import main.java.com.photobay.jaxbfiles.JobApplication;
+import main.java.com.photobay.jaxbfiles.PhotoSell;
+import main.java.com.photobay.jaxbfiles.Photographer;
+import main.java.com.photobay.jaxbfiles.PressAgency;
 
 
 /**
@@ -72,7 +79,6 @@ public class PhotoBayRessourceManager {
 	 */
 	public static Boolean deletePhotographer(int id)
 	{
-		//oder muss auch Ordner gelöscht werden???
 		File dir = new File("./host/photographers/" + id);
 		File file = new File("./host/photographers/" + id + "/photographer.xml");
 		if(file.delete()){
@@ -140,8 +146,8 @@ public class PhotoBayRessourceManager {
 	 */
 	public static Boolean deletePressAgency(int id)
 	{
-		File dir = new File("./host/pressAgency/" + id);
-		File file = new File("./host/pressAgency/" + id + "/pressAgency.xml");
+		File dir = new File("./host/pressAgencies/" + id);
+		File file = new File("./host/pressAgencies/" + id + "/pressAgency.xml");
 		if(file.delete()){
 			if(dir.delete())
 				return true;
@@ -151,33 +157,41 @@ public class PhotoBayRessourceManager {
 		else return false;
 	}
 
-	//TODO
-	public static Boolean postBid(Bid bid) {
-//			try
-//			{
-//				int id = IdGenerator.generateID("bids");
-//				File dir = new File("./host/pressAgency/" + id);
-//				File file = new File(dir + "/PressAgency.xml");
-//				if(dir.mkdir() && file.createNewFile())
-//				{
-//					JAXBContext context = JAXBContext.newInstance("main.java.com.photobay.webservice");
-//				    Marshaller m = context.createMarshaller();
-//				    m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-//				    pressAgency.setID(id);
-//				    m.marshal(pressAgency, file);
-//				    return true;
-//				}
-//				return false;
-//			}
-//			catch(Exception ex)
-//			{
-//				return false;
-//			}
-		return true;
+	public static Boolean postBid(Bid bid, int photoSellID) {
+			try
+			{
+				int id = IdGenerator.generateID("photoSells/" + photoSellID + "/bids");
+				File dir = new File("./host/photoSells/" + photoSellID + "/bids/" + id );
+				File file = new File(dir + "/Bid.xml");
+				if(dir.mkdir() && file.createNewFile())
+				{
+					JAXBContext context = JAXBContext.newInstance("main.java.com.photobay.webservice");
+				    Marshaller m = context.createMarshaller();
+				    m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+				    bid.setID(id);
+				    m.marshal(bid, file);
+				    return true;
+				}
+				return false;
+			}
+			catch(Exception ex)
+			{
+				return false;
+			}
 	}
-	//TODO
-	public static Bid getBid(int id) {
-		return null;
+
+	public static Bid getBid(int bidID, int photoSellsID) {
+		try
+		{
+			File file = new File("./host/photoSells/" + photoSellsID + "/bids/" + bidID + "/bid.xml");
+			JAXBContext context = JAXBContext.newInstance(Bid.class);
+			Unmarshaller unmarshaller = context.createUnmarshaller();
+			return (Bid)unmarshaller.unmarshal(file);
+		}
+		catch(Exception ex)
+		{
+			return null;
+		}
 	}
 	/**
 	 * 
@@ -226,13 +240,42 @@ public class PhotoBayRessourceManager {
 			}
 	}
 	
-	//TODO
-	public static Boolean postJobApplication(JobApplication jobApplication){
-		return true;
+	public static Boolean postJobApplication(JobApplication jobApplication, int jobID){
+		try
+		{
+			int id = IdGenerator.generateID("jobs/" + jobID + "/jobApplications");
+			File dir = new File("./host/jobs/" + jobID + "/jobApplications/" + id);
+			File file = new File(dir + "/jobApplication.xml");
+			if(dir.mkdir() && file.createNewFile())
+			{
+				JAXBContext context = JAXBContext.newInstance(Job.class);
+			    Marshaller m = context.createMarshaller();
+			    m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+			    jobApplication.setID(id);
+			    m.marshal(jobApplication, file);
+			    return true;
+			}
+			return false;
+		}
+		catch(Exception ex)
+		{
+			return false;
+		}
 	}
-	//TODO
-	public static JobApplication getjobApplication(int id) {
-		return null;
+	
+	public static JobApplication getjobApplication(int jobApplicationID, int jobID) {
+		try
+		{
+			File file = new File("./host/jobs/" + jobID + "/jobApplications/" + jobApplicationID + "/jobApplication.xml");
+			JAXBContext context = JAXBContext.newInstance(JobApplication.class);
+			Unmarshaller unmarshaller = context.createUnmarshaller();
+			return (JobApplication)unmarshaller.unmarshal(file);
+		}
+		catch(Exception ex)
+		{
+			return null;
+		}
+
 	}
 	
 	/**
@@ -288,7 +331,7 @@ public class PhotoBayRessourceManager {
 	 * @return
 	 */
 	public static Boolean deletePhotoSell(int id){
-		File dir = new File("./host/photoSellss/" + id);
+		File dir = new File("./host/photoSells/" + id);
 		File file = new File("./host/photoSell/" + id + "/photoSell.xml");
 		if(file.delete()){
 			if(dir.delete())
