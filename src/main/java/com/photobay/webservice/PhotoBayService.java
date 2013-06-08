@@ -10,9 +10,9 @@ import main.java.com.photobay.webservice.PhotoBayRessourceManager;
 public class PhotoBayService {
 	
 	@GET
-	@Path("/photographers")
+	@Path("/photographers/{id}")
 	@Produces({"application/xml"})
-	public Response getPhotographer(@QueryParam("id") int id)
+	public Response getPhotographer(@PathParam("id") int id)
 	{
 		Photographer photographer = PhotoBayRessourceManager.getPhotographer(id);
 		if(photographer == null)
@@ -36,8 +36,8 @@ public class PhotoBayService {
 	}
 	
 	@DELETE
-	@Path("/photographers")
-	public Response deletePhotographer(@QueryParam("id") int id)
+	@Path("/photographers/{id}")
+	public Response deletePhotographer(@PathParam("id") int id)
 	{
 		if(PhotoBayRessourceManager.deletePhotographer(id))
 		{
@@ -49,9 +49,9 @@ public class PhotoBayService {
 	
 	
 	@GET
-	@Path("/pressAgencies")
+	@Path("/pressAgencies/{id}")
 	@Produces({"application/xml"})
-	public Response getPressAgency(@QueryParam("id") int id)
+	public Response getPressAgency(@PathParam("id") int id)
 	{
 		PressAgency pressAgency = PhotoBayRessourceManager.getPressAgency(id);
 		if(pressAgency == null)
@@ -75,8 +75,8 @@ public class PhotoBayService {
 	}
 	
 	@DELETE
-	@Path("/pressAgencies")
-	public Response deletePressAgency(@QueryParam("id") int id)
+	@Path("/pressAgencies/{id}")
+	public Response deletePressAgency(@PathParam("id") int id)
 	{
 		if(PhotoBayRessourceManager.deletePressAgency(id))
 		{
@@ -87,9 +87,9 @@ public class PhotoBayService {
 	}
 	
 	@GET
-	@Path("/jobs")
+	@Path("/jobs/{id}")
 	@Produces({"application/xml"})
-	public Response getJob(@QueryParam("id") int id)
+	public Response getJob(@PathParam("id") int id)
 	{
 		Job job = PhotoBayRessourceManager.getJob(id);
 		if(job == null)
@@ -113,9 +113,9 @@ public class PhotoBayService {
 	}
 	
 	@GET
-	@Path("/photoSells")
+	@Path("/photoSells/{id}")
 	@Produces({"application/xml"})
-	public Response getPhotoSell(@QueryParam("id") int id)
+	public Response getPhotoSell(@PathParam("id") int id)
 	{
 		PhotoSell photoSell = PhotoBayRessourceManager.getPhotoSell(id);
 		if(photoSell == null)
@@ -139,8 +139,8 @@ public class PhotoBayService {
 	}
 	
 	@DELETE
-	@Path("/photoSells")
-	public Response deletePhotoSell(@QueryParam("id") int id)
+	@Path("/photoSells/{id}")
+	public Response deletePhotoSell(@PathParam("id") int id)
 	{
 		if(PhotoBayRessourceManager.deletePhotoSell(id))
 		{
@@ -163,9 +163,9 @@ public class PhotoBayService {
 	}
 	
 	@GET
-	@Path("/photoSells/{id}/bids")
+	@Path("/photoSells/{photoSellID}/bids/{bidID}")
 	@Produces({"application/xml"})
-	public Response getBid(@PathParam("id") int photoSellId, @QueryParam("id") int bidId)
+	public Response getBid(@PathParam("photoSellID") int photoSellId, @PathParam("bidID") int bidId)
 	{
 		Bid bid = PhotoBayRessourceManager.getBid(photoSellId, bidId);
 		if(bid == null)
@@ -188,9 +188,9 @@ public class PhotoBayService {
 	}
 	
 	@GET
-	@Path("/jobs/{id}/jobApplications")
+	@Path("/jobs/{jobID}/jobApplications/{jobApplicationID}")
 	@Produces({"application/xml"})
-	public Response getJobApplication(@PathParam("id") int jobId, @QueryParam("id") int jobApplicationId)
+	public Response getJobApplication(@PathParam("jobID") int jobId, @PathParam("jobApplicationID") int jobApplicationId)
 	{
 		JobApplication jobApplication = PhotoBayRessourceManager.getJobApplication(jobId, jobApplicationId);
 		if(jobApplication == null)

@@ -15,5 +15,9 @@
 	<classpathentry kind="lib" path="lib/jars_lib/jersey/jsr311-api-1.1.1.jar"/>
 	<classpathentry kind="lib" path="lib/jars_lib/grizzly-servlet-webserver-1.9.18.jar"/>
 	<classpathentry kind="lib" path="lib/jars_lib/commons-codec-1.7.jar"/>
+	<classpathentry kind="lib" path="lib/jars_lib/smack_api/smack.jar"/>
+	<classpathentry kind="lib" path="lib/jars_lib/smack_api/smackx-debug.jar"/>
+	<classpathentry kind="lib" path="lib/jars_lib/smack_api/smackx-jingle.jar"/>
+	<classpathentry kind="lib" path="lib/jars_lib/smack_api/smackx.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
