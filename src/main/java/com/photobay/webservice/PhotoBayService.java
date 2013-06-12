@@ -6,7 +6,7 @@ import main.java.com.photobay.jaxbfiles.*;
 
 import main.java.com.photobay.webservice.PhotoBayRessourceManager;
 
-@Path("/host")
+//@Path("/host")
 public class PhotoBayService {
 	
 	@GET

@@ -31,7 +31,7 @@ public class PhotoBayRessourceManager {
 	{
 		try
 		{
-			File file = new File("./host/photographers/" + id + "/photographer.xml");
+			File file = new File("./photographers/" + id + "/photographer.xml");
 			JAXBContext context = JAXBContext.newInstance(Photographer.class);
 			Unmarshaller unmarshaller = context.createUnmarshaller();
 			return (Photographer)unmarshaller.unmarshal(file);
@@ -53,11 +53,11 @@ public class PhotoBayRessourceManager {
 		try
 		{
 			int id = IdGenerator.generateID("photographers");
-			File dir = new File("./host/photographers/" + id);
+			File dir = new File("./photographers/" + id);
 			File file = new File(dir + "/photographer.xml");
 			if(dir.mkdir() && file.createNewFile())
 			{
-				File subDir = new File("./host/photographers/" + id + "/photos");
+				File subDir = new File("./photographers/" + id + "/photos");
 				subDir.mkdir();
 				JAXBContext context = JAXBContext.newInstance(Photographer.class);
 			    Marshaller m = context.createMarshaller();
@@ -81,8 +81,8 @@ public class PhotoBayRessourceManager {
 	 */
 	public static Boolean deletePhotographer(int id)
 	{
-		File dir = new File("./host/photographers/" + id);
-		File file = new File("./host/photographers/" + id + "/photographer.xml");
+		File dir = new File("./photographers/" + id);
+		File file = new File("./photographers/" + id + "/photographer.xml");
 		if(file.delete()){
 			if(dir.delete())
 				return true;
@@ -101,7 +101,7 @@ public class PhotoBayRessourceManager {
 	{
 		try
 		{
-			File file = new File("./host/pressAgencies/" + id + "/pressAgency.xml");
+			File file = new File("./pressAgencies/" + id + "/pressAgency.xml");
 			JAXBContext context = JAXBContext.newInstance(PressAgency.class);
 			Unmarshaller unmarshaller = context.createUnmarshaller();
 			return (PressAgency)unmarshaller.unmarshal(file);
@@ -122,11 +122,11 @@ public class PhotoBayRessourceManager {
 		try
 		{
 			int id = IdGenerator.generateID("pressAgencies");
-			File dir = new File("./host/pressAgencies/" + id);
+			File dir = new File("./pressAgencies/" + id);
 			File file = new File(dir + "/PressAgency.xml");
 			if(dir.mkdir() && file.createNewFile())
 			{
-				dir = new File("./host/pressAgencies/" + id + "/photos");
+				dir = new File("./pressAgencies/" + id + "/photos");
 				dir.mkdir();
 				JAXBContext context = JAXBContext.newInstance(PressAgency.class);
 			    Marshaller m = context.createMarshaller();
@@ -150,8 +150,8 @@ public class PhotoBayRessourceManager {
 	 */
 	public static Boolean deletePressAgency(int id)
 	{
-		File dir = new File("./host/pressAgencies/" + id);
-		File file = new File("./host/pressAgencies/" + id + "/pressAgency.xml");
+		File dir = new File("./pressAgencies/" + id);
+		File file = new File("./pressAgencies/" + id + "/pressAgency.xml");
 		if(file.delete()){
 			if(dir.delete())
 				return true;
@@ -165,7 +165,7 @@ public class PhotoBayRessourceManager {
 			try
 			{
 				int id = IdGenerator.generateID("photoSells/" + photoSellID + "/bids");
-				File dir = new File("./host/photoSells/" + photoSellID + "/bids/" + id );
+				File dir = new File("./photoSells/" + photoSellID + "/bids/" + id );
 				File file = new File(dir + "/Bid.xml");
 				if(dir.mkdir() && file.createNewFile())
 				{
@@ -187,7 +187,7 @@ public class PhotoBayRessourceManager {
 	public static Bid getBid(int photoSellsID, int bidID) {
 		try
 		{
-			File file = new File("./host/photoSells/" + photoSellsID + "/bids/" + bidID + "/bid.xml");
+			File file = new File("./photoSells/" + photoSellsID + "/bids/" + bidID + "/bid.xml");
 			JAXBContext context = JAXBContext.newInstance(Bid.class);
 			Unmarshaller unmarshaller = context.createUnmarshaller();
 			return (Bid)unmarshaller.unmarshal(file);
@@ -206,11 +206,11 @@ public class PhotoBayRessourceManager {
 			try
 			{
 				int id = IdGenerator.generateID("jobs");
-				File dir = new File("./host/jobs/" + id);
+				File dir = new File("./jobs/" + id);
 				File file = new File(dir + "/job.xml");
 				if(dir.mkdir() && file.createNewFile())
 				{
-					dir = new File("./host/jobs/" + id + "/jobApplications");
+					dir = new File("./jobs/" + id + "/jobApplications");
 					dir.mkdir();
 					JAXBContext context = JAXBContext.newInstance(Job.class);
 				    Marshaller m = context.createMarshaller();
@@ -235,7 +235,7 @@ public class PhotoBayRessourceManager {
 	public static Job getJob(int id) {
 			try
 			{
-				File file = new File("./host/jobs/" + id + "/job.xml");
+				File file = new File("./jobs/" + id + "/job.xml");
 				JAXBContext context = JAXBContext.newInstance(Job.class);
 				Unmarshaller unmarshaller = context.createUnmarshaller();
 				return (Job)unmarshaller.unmarshal(file);
@@ -250,7 +250,7 @@ public class PhotoBayRessourceManager {
 		try
 		{
 			int id = IdGenerator.generateID("jobs/" + jobID + "/jobApplications");
-			File dir = new File("./host/jobs/" + jobID + "/jobApplications/" + id);
+			File dir = new File("./jobs/" + jobID + "/jobApplications/" + id);
 			File file = new File(dir + "/jobApplication.xml");
 			if(dir.mkdir() && file.createNewFile())
 			{
@@ -272,7 +272,7 @@ public class PhotoBayRessourceManager {
 	public static JobApplication getJobApplication(int jobID, int jobApplicationID) {
 		try
 		{
-			File file = new File("./host/jobs/" + jobID + "/jobApplications/" + jobApplicationID + "/jobApplication.xml");
+			File file = new File("./jobs/" + jobID + "/jobApplications/" + jobApplicationID + "/jobApplication.xml");
 			JAXBContext context = JAXBContext.newInstance(JobApplication.class);
 			Unmarshaller unmarshaller = context.createUnmarshaller();
 			return (JobApplication)unmarshaller.unmarshal(file);
@@ -293,11 +293,11 @@ public class PhotoBayRessourceManager {
 		try
 		{
 			int id = IdGenerator.generateID("photoSells");
-			File dir = new File("./host/photoSells/" + id);
+			File dir = new File("./photoSells/" + id);
 			File file = new File(dir + "/photoSell.xml");
 			if(dir.mkdir() && file.createNewFile())
 			{
-				dir = new File("./host/photoSells/" + id + "/bids");
+				dir = new File("./photoSells/" + id + "/bids");
 				dir.mkdir();
 				JAXBContext context = JAXBContext.newInstance(PhotoSell.class);
 			    Marshaller m = context.createMarshaller();
@@ -322,7 +322,7 @@ public class PhotoBayRessourceManager {
 	public static PhotoSell getPhotoSell(int id) {
 		try
 		{
-			File file = new File("./host/photoSells/" + id + "/photoSell.xml");
+			File file = new File("./photoSells/" + id + "/photoSell.xml");
 			JAXBContext context = JAXBContext.newInstance(PhotoSell.class);
 			Unmarshaller unmarshaller = context.createUnmarshaller();
 			return (PhotoSell)unmarshaller.unmarshal(file);
@@ -339,8 +339,8 @@ public class PhotoBayRessourceManager {
 	 * @return
 	 */
 	public static Boolean deletePhotoSell(int id){
-		File dir = new File("./host/photoSells/" + id);
-		File file = new File("./host/photoSell/" + id + "/photoSell.xml");
+		File dir = new File("./photoSells/" + id);
+		File file = new File("./photoSell/" + id + "/photoSell.xml");
 		if(file.delete()){
 			if(dir.delete())
 				return true;
