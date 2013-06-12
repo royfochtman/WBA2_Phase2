@@ -10,7 +10,10 @@ import main.java.com.photobay.jaxbfiles.Job;
 import main.java.com.photobay.jaxbfiles.JobApplication;
 import main.java.com.photobay.jaxbfiles.PhotoSell;
 import main.java.com.photobay.jaxbfiles.Photographer;
+import main.java.com.photobay.jaxbfiles.Photographers;
+import main.java.com.photobay.jaxbfiles.Photographers.PhotographerRef;
 import main.java.com.photobay.jaxbfiles.PressAgency;
+import main.java.com.photobay.util.IdGenerator;
 
 
 /**
@@ -64,6 +67,7 @@ public class PhotoBayRessourceManager {
 			    m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 			    photographer.setID(id);
 			    m.marshal(photographer, file);
+			    putPhotographersList(photographer);
 			    return true;
 			}
 			return false;
@@ -348,6 +352,51 @@ public class PhotoBayRessourceManager {
 				return false;
 		}
 		else return false;
+	}
+	
+	
+	public static Photographers getPhotographersList() {
+		try
+		{
+			File file = new File("./photographers/photographers.xml");
+			JAXBContext context = JAXBContext.newInstance(Photographers.class);
+			Unmarshaller unmarshaller = context.createUnmarshaller();
+			return (Photographers)unmarshaller.unmarshal(file);
+		}
+		catch(Exception ex)
+		{
+			return null;
+		}
+	}
+	
+	public static Boolean putPhotographersList(Photographer photographer){
+		try
+		{
+			File photographersListFile = new File("./photographers/photographers.xml");
+		    Photographers photographersList;
+		    if(photographersListFile.createNewFile())
+		    	photographersList = new Photographers();
+		    else
+		    	photographersList = getPhotographersList();
+		    
+		    if(photographersList != null)
+		    {
+		    	PhotographerRef photographerRef = new PhotographerRef();
+		    	photographerRef.setFirstName(photographer.getFirstname());
+		    	photographerRef.setLastName(photographer.getLastname());
+		    	photographerRef.setUri("/photographers/" + photographer.getID());
+		    	photographersList.getPhotographerRef().add(photographerRef);
+		    }
+			JAXBContext context = JAXBContext.newInstance(Photographers.class);
+			Marshaller m = context.createMarshaller();
+		    m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+		    m.marshal(photographersList, photographersListFile);
+		    return true;
+		}
+		catch(Exception ex)
+		{
+			return false;
+		}
 	}
 	
 }

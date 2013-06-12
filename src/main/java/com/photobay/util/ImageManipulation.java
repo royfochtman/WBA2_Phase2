@@ -22,7 +22,7 @@
  * THE SOFTWARE. 
  * 
  */
-package main.java.com.photobay.webservice;
+package main.java.com.photobay.util;
 
 import java.io.File;
 import java.io.FileInputStream;
