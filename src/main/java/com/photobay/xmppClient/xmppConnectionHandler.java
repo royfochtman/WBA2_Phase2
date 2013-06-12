@@ -27,6 +27,8 @@ public class xmppConnectionHandler {
 	private XMPPConnection xmppConn;
 	private AccountManager accMan;
 	private PubSubManager pubSubManager;
+	private final String HOST = "localhost";
+	private final int PORT = 9090;
 	
 	
 	public xmppConnectionHandler()
@@ -35,12 +37,12 @@ public class xmppConnectionHandler {
 	}
 	
 	
-	public boolean connect(String host, int port)
+	public boolean connect()
 	{
 		if(xmppConn != null && xmppConn.isConnected())
 			return true;
 		
-		ConnectionConfiguration connConf = new ConnectionConfiguration(host, port);
+		ConnectionConfiguration connConf = new ConnectionConfiguration(HOST, PORT);
 		xmppConn = new XMPPConnection(connConf);
 		accMan = new AccountManager(xmppConn);
 		
