@@ -1,4 +1,4 @@
-package main.java.com.photobay.webservice;
+package main.java.com.photobay.util;
 
 import java.io.File;
 
@@ -9,7 +9,7 @@ public class IdGenerator {
 
 	public static int generateID(String path)
 	{
-		File file = new File("./host/" + path);
+		File file = new File("./" + path);
 		String[] files = file.list();
 		int id = 0;
 		for(int i=0; i<files.length; i++)
