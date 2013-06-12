@@ -22,14 +22,14 @@ import org.jivesoftware.smackx.pubsub.SimplePayload;
 import org.jivesoftware.smackx.pubsub.Subscription;
 import org.jivesoftware.smackx.pubsub.listener.ItemEventListener;
 
-public class xmppConncetionHandler {
+public class xmppConnectionHandler {
 
 	private XMPPConnection xmppConn;
 	private AccountManager accMan;
 	private PubSubManager pubSubManager;
 	
 	
-	public xmppConncetionHandler()
+	public xmppConnectionHandler()
 	{	
 //	  SimplePayload bla = new SimplePayload(elementName, namespace, xmlPayload)
 	}
