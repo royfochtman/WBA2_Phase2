@@ -18,6 +18,6 @@
 	<classpathentry kind="lib" path="lib/jars_lib/smack_api/smack.jar"/>
 	<classpathentry kind="lib" path="lib/jars_lib/smack_api/smackx-debug.jar"/>
 	<classpathentry kind="lib" path="lib/jars_lib/smack_api/smackx-jingle.jar"/>
-	<classpathentry kind="lib" path="lib/jars_lib/smack_api/smackx.jar"/>
+	<classpathentry kind="lib" path="lib/jars_lib/smack_api/smackx.jar" sourcepath="lib/jars_lib/smack_api/javadoc"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
