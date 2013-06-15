@@ -44,6 +44,11 @@ public class xmppConnectionHandler {
 			connected = true;
 	}
 	
+	public boolean isConnected()
+	{
+		return this.connected;
+	}
+	
 	/**
 	 * Baut eine Verbindung zum angegeben Host über den angegeben Port auf
 	 * @return
