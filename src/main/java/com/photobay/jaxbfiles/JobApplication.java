@@ -2,7 +2,7 @@
 // Diese Datei wurde mit der JavaTM Architecture for XML Binding(JAXB) Reference Implementation, v2.2.6 generiert 
 // Siehe <a href="http://java.sun.com/xml/jaxb">http://java.sun.com/xml/jaxb</a> 
 // Änderungen an dieser Datei gehen bei einer Neukompilierung des Quellschemas verloren. 
-// Generiert: 2013.05.29 um 03:06:00 PM CEST 
+// Generiert: 2013.06.15 um 02:15:39 PM CEST 
 //
 
 
@@ -15,6 +15,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
 
 
@@ -41,8 +42,9 @@ import javax.xml.bind.annotation.XmlType;
  *           &lt;/complexType>
  *         &lt;/element>
  *       &lt;/all>
- *       &lt;attribute name="photographerID" use="required" type="{http://www.w3.org/2001/XMLSchema}int" />
- *       &lt;attribute name="jobID" use="required" type="{http://www.w3.org/2001/XMLSchema}int" />
+ *       &lt;attribute name="ref" use="required" type="{http://www.w3.org/2001/XMLSchema}anyURI" />
+ *       &lt;attribute name="photographerRef" use="required" type="{http://www.w3.org/2001/XMLSchema}anyURI" />
+ *       &lt;attribute name="jobRef" use="required" type="{http://www.w3.org/2001/XMLSchema}anyURI" />
  *       &lt;attribute name="ID" use="required" type="{http://www.w3.org/2001/XMLSchema}int" />
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -60,10 +62,15 @@ public class JobApplication {
 
     protected String description;
     protected JobApplication.Images images;
-    @XmlAttribute(name = "photographerID", required = true)
-    protected int photographerID;
-    @XmlAttribute(name = "jobID", required = true)
-    protected int jobID;
+    @XmlAttribute(name = "ref", required = true)
+    @XmlSchemaType(name = "anyURI")
+    protected String ref;
+    @XmlAttribute(name = "photographerRef", required = true)
+    @XmlSchemaType(name = "anyURI")
+    protected String photographerRef;
+    @XmlAttribute(name = "jobRef", required = true)
+    @XmlSchemaType(name = "anyURI")
+    protected String jobRef;
     @XmlAttribute(name = "ID", required = true)
     protected int id;
 
@@ -116,35 +123,75 @@ public class JobApplication {
     }
 
     /**
-     * Ruft den Wert der photographerID-Eigenschaft ab.
+     * Ruft den Wert der ref-Eigenschaft ab.
      * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
      */
-    public int getPhotographerID() {
-        return photographerID;
+    public String getRef() {
+        return ref;
     }
 
     /**
-     * Legt den Wert der photographerID-Eigenschaft fest.
+     * Legt den Wert der ref-Eigenschaft fest.
      * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
      */
-    public void setPhotographerID(int value) {
-        this.photographerID = value;
+    public void setRef(String value) {
+        this.ref = value;
     }
 
     /**
-     * Ruft den Wert der jobID-Eigenschaft ab.
+     * Ruft den Wert der photographerRef-Eigenschaft ab.
      * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
      */
-    public int getJobID() {
-        return jobID;
+    public String getPhotographerRef() {
+        return photographerRef;
     }
 
     /**
-     * Legt den Wert der jobID-Eigenschaft fest.
+     * Legt den Wert der photographerRef-Eigenschaft fest.
      * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
      */
-    public void setJobID(int value) {
-        this.jobID = value;
+    public void setPhotographerRef(String value) {
+        this.photographerRef = value;
+    }
+
+    /**
+     * Ruft den Wert der jobRef-Eigenschaft ab.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getJobRef() {
+        return jobRef;
+    }
+
+    /**
+     * Legt den Wert der jobRef-Eigenschaft fest.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setJobRef(String value) {
+        this.jobRef = value;
     }
 
     /**

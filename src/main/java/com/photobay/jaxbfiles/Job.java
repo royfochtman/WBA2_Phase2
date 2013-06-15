@@ -2,7 +2,7 @@
 // Diese Datei wurde mit der JavaTM Architecture for XML Binding(JAXB) Reference Implementation, v2.2.6 generiert 
 // Siehe <a href="http://java.sun.com/xml/jaxb">http://java.sun.com/xml/jaxb</a> 
 // Änderungen an dieser Datei gehen bei einer Neukompilierung des Quellschemas verloren. 
-// Generiert: 2013.05.29 um 02:09:19 PM CEST 
+// Generiert: 2013.06.15 um 02:15:35 PM CEST 
 //
 
 
@@ -45,8 +45,9 @@ import javax.xml.datatype.XMLGregorianCalendar;
  *           &lt;/simpleType>
  *         &lt;/element>
  *       &lt;/all>
- *       &lt;attribute ref="{http://www.example.org/photoBay}ID use="required""/>
- *       &lt;attribute name="pressAgencyID" type="{http://www.w3.org/2001/XMLSchema}int" />
+ *       &lt;attribute name="ID" use="required" type="{http://www.w3.org/2001/XMLSchema}int" />
+ *       &lt;attribute name="ref" use="required" type="{http://www.w3.org/2001/XMLSchema}anyURI" />
+ *       &lt;attribute name="pressAgencyRef" use="required" type="{http://www.w3.org/2001/XMLSchema}anyURI" />
  *       &lt;attribute name="dateOfCreation" use="required" type="{http://www.w3.org/2001/XMLSchema}date" />
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -78,10 +79,14 @@ public class Job {
     protected TopicType topics;
     @XmlElement(required = true)
     protected String status;
-    @XmlAttribute(name = "ID", namespace = "http://www.example.org/photoBay", required = true)
+    @XmlAttribute(name = "ID", required = true)
     protected int id;
-    @XmlAttribute(name = "pressAgencyID")
-    protected Integer pressAgencyID;
+    @XmlAttribute(name = "ref", required = true)
+    @XmlSchemaType(name = "anyURI")
+    protected String ref;
+    @XmlAttribute(name = "pressAgencyRef", required = true)
+    @XmlSchemaType(name = "anyURI")
+    protected String pressAgencyRef;
     @XmlAttribute(name = "dateOfCreation", required = true)
     @XmlSchemaType(name = "date")
     protected XMLGregorianCalendar dateOfCreation;
@@ -271,27 +276,51 @@ public class Job {
     }
 
     /**
-     * Ruft den Wert der pressAgencyID-Eigenschaft ab.
+     * Ruft den Wert der ref-Eigenschaft ab.
      * 
      * @return
      *     possible object is
-     *     {@link Integer }
+     *     {@link String }
      *     
      */
-    public Integer getPressAgencyID() {
-        return pressAgencyID;
+    public String getRef() {
+        return ref;
     }
 
     /**
-     * Legt den Wert der pressAgencyID-Eigenschaft fest.
+     * Legt den Wert der ref-Eigenschaft fest.
      * 
      * @param value
      *     allowed object is
-     *     {@link Integer }
+     *     {@link String }
      *     
      */
-    public void setPressAgencyID(Integer value) {
-        this.pressAgencyID = value;
+    public void setRef(String value) {
+        this.ref = value;
+    }
+
+    /**
+     * Ruft den Wert der pressAgencyRef-Eigenschaft ab.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getPressAgencyRef() {
+        return pressAgencyRef;
+    }
+
+    /**
+     * Legt den Wert der pressAgencyRef-Eigenschaft fest.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setPressAgencyRef(String value) {
+        this.pressAgencyRef = value;
     }
 
     /**

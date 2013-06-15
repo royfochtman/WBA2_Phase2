@@ -2,7 +2,7 @@
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.example.org/photoBay"  xmlns:job="http://www.example.org/photoBay" elementFormDefault="qualified">
 <xs:include schemaLocation="topic.xsd"></xs:include>
 <!-- definition of attributes -->
-<xs:attribute name="ID" type="xs:int" />
+
 
 <!-- definition of complex elements -->
 <xs:element name="job">
@@ -28,8 +28,9 @@
 			</xs:element>
 			
 		</xs:all> 
-		<xs:attribute ref="job:ID" use="required"/>
-		<xs:attribute name="pressAgencyID" type="xs:int" />
+		<xs:attribute name="ID" type="xs:int" use="required"/>
+		<xs:attribute name="ref" type="xs:anyURI" use="required"/>
+		<xs:attribute name="pressAgencyRef" type="xs:anyURI" use="required"/>
 		<xs:attribute name="dateOfCreation" type="xs:date" use="required"></xs:attribute>
 	</xs:complexType>
 </xs:element>

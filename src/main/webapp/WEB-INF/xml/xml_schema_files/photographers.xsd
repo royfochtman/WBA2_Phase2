@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.example.org/photoBay"  elementFormDefault="qualified" xmlns:phos="http://www.example.org/photoBay">
-<xs:element name="photographers">       
+<xs:element name="photographers">   
         <xs:complexType>
+        	
 			<xs:sequence minOccurs="0" maxOccurs="unbounded" >
 				<xs:element name="photographerRef">
 					<xs:complexType>
@@ -13,6 +14,7 @@
 					</xs:complexType>
 				</xs:element>
 			</xs:sequence> 
+			<xs:attribute name="ref" type="xs:anyURI" use="required"/>
 		</xs:complexType>
     </xs:element>
 </xs:schema>

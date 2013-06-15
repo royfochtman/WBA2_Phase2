@@ -1,20 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.example.org/photoBay"  elementFormDefault="qualified" xmlns:phos="http://www.example.org/photoBay">
-<xs:element name="photographers">   
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.example.org/photoBay"  elementFormDefault="qualified" xmlns:bids="http://www.example.org/photoBay">
+<xs:element name="bids">       
         <xs:complexType>
-        	
 			<xs:sequence minOccurs="0" maxOccurs="unbounded" >
-				<xs:element name="photographerRef">
+				<xs:element name="bidRef">
 					<xs:complexType>
 						<xs:all minOccurs="1">
-							<xs:element name="firstName" type="xs:string"/>
-							<xs:element name="lastName" type="xs:string"/>
+							<xs:element name="value" type="xs:positiveInteger"/>
 							<xs:element name="uri" type="xs:anyURI"/>
 						</xs:all>
 					</xs:complexType>
 				</xs:element>
 			</xs:sequence> 
 			<xs:attribute name="ref" type="xs:anyURI" use="required"/>
+			<xs:attribute name="photoSellRef" type="xs:anyURI" use="required"/>
 		</xs:complexType>
     </xs:element>
 </xs:schema>

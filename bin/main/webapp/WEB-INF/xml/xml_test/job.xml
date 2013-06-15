@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<job:job dateOfCreation="2001-01-01" job:ID="0" pressAgencyID="0" xmlns:job="http://www.example.org/photoBay" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.example.org/photoBay ../xml_schema_files/job.xsd ">
+<job:job ID="0" dateOfCreation="2001-01-01" pressAgencyRef="http://tempuri.org" ref="http://tempuri.org" xmlns:job="http://www.example.org/photoBay" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.example.org/photoBay ../xml_schema_files/job.xsd ">
   <job:jobName>job:jobName</job:jobName>
   <job:urgency>job:urgency</job:urgency>
   <job:deadline>2001-01-01</job:deadline>

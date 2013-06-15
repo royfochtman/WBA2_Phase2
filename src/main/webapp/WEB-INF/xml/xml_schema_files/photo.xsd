@@ -1,13 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.example.org/photoBay"  elementFormDefault="qualified" xmlns:ph="http://www.example.org/photoBay">
-	<xs:complexType name="photo">
-		<xs:all minOccurs="0" maxOccurs="1">
-			<xs:element name="title" type="xs:string" minOccurs="1"/>
-			<xs:element name="image" type="xs:base64Binary" minOccurs="1"/>
-			<xs:element name="description" type="xs:string"/>
-		</xs:all>
-		
-		<xs:attribute name="ID" type="xs:int" use="required"></xs:attribute>	
-		<xs:attribute name="uploadDate" type="xs:date" use="required"></xs:attribute>		
-	</xs:complexType>
+	
+	<xs:element name="photo">
+		<xs:complexType>
+			<xs:all minOccurs="0" maxOccurs="1">
+				<xs:element name="title" type="xs:string" minOccurs="1"/>
+				<xs:element name="image" type="xs:base64Binary" minOccurs="1"/>
+				<xs:element name="description" type="xs:string"/>
+			</xs:all>
+			<xs:attribute name="ID" type="xs:int" use="required"/>	
+			<xs:attribute name="ref" type="xs:anyURI" use="required"/>
+			<xs:attribute name="ownerRef" type="xs:anyURI" use="required"/>
+			<xs:attribute name="uploadDate" type="xs:date" use="required"/>		
+		</xs:complexType>
+	</xs:element>
 </xs:schema>

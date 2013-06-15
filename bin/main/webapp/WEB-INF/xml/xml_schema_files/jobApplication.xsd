@@ -12,8 +12,9 @@
 					</xs:complexType>
 				</xs:element>
 			</xs:all> 
-			<xs:attribute name="photographerID" type="xs:int" use="required"></xs:attribute>
-			<xs:attribute name="jobID" type="xs:int" use="required"></xs:attribute>
+			<xs:attribute name="ref" type="xs:anyURI" use="required"/>
+			<xs:attribute name="photographerRef" type="xs:anyURI" use="required"></xs:attribute>
+			<xs:attribute name="jobRef" type="xs:anyURI" use="required"></xs:attribute>
 			<xs:attribute name="ID" type="xs:int" use="required"></xs:attribute>
 	</xs:complexType>
     </xs:element>

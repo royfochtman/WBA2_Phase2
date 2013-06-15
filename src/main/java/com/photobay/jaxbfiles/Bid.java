@@ -2,7 +2,7 @@
 // Diese Datei wurde mit der JavaTM Architecture for XML Binding(JAXB) Reference Implementation, v2.2.6 generiert 
 // Siehe <a href="http://java.sun.com/xml/jaxb">http://java.sun.com/xml/jaxb</a> 
 // Änderungen an dieser Datei gehen bei einer Neukompilierung des Quellschemas verloren. 
-// Generiert: 2013.05.29 um 02:09:09 PM CEST 
+// Generiert: 2013.06.15 um 03:39:57 PM CEST 
 //
 
 
@@ -30,10 +30,10 @@ import javax.xml.bind.annotation.XmlType;
  *       &lt;all>
  *         &lt;element name="bidValue" type="{http://www.w3.org/2001/XMLSchema}positiveInteger"/>
  *       &lt;/all>
- *       &lt;attribute name="ID" type="{http://www.w3.org/2001/XMLSchema}int" />
- *       &lt;attribute name="photoSellID" use="required" type="{http://www.w3.org/2001/XMLSchema}int" />
- *       &lt;attribute name="pressID" use="required" type="{http://www.w3.org/2001/XMLSchema}int" />
- *       &lt;attribute name="photographerID" use="required" type="{http://www.w3.org/2001/XMLSchema}int" />
+ *       &lt;attribute name="ID" use="required" type="{http://www.w3.org/2001/XMLSchema}int" />
+ *       &lt;attribute name="ref" type="{http://www.w3.org/2001/XMLSchema}anyURI" />
+ *       &lt;attribute name="photoSellRef" use="required" type="{http://www.w3.org/2001/XMLSchema}anyURI" />
+ *       &lt;attribute name="pressAgencyRef" use="required" type="{http://www.w3.org/2001/XMLSchema}anyURI" />
  *     &lt;/restriction>
  *   &lt;/complexContent>
  * &lt;/complexType>
@@ -51,14 +51,17 @@ public class Bid {
     @XmlElement(required = true)
     @XmlSchemaType(name = "positiveInteger")
     protected BigInteger bidValue;
-    @XmlAttribute(name = "ID")
-    protected Integer id;
-    @XmlAttribute(name = "photoSellID", required = true)
-    protected int photoSellID;
-    @XmlAttribute(name = "pressID", required = true)
-    protected int pressID;
-    @XmlAttribute(name = "photographerID", required = true)
-    protected int photographerID;
+    @XmlAttribute(name = "ID", required = true)
+    protected int id;
+    @XmlAttribute(name = "ref")
+    @XmlSchemaType(name = "anyURI")
+    protected String ref;
+    @XmlAttribute(name = "photoSellRef", required = true)
+    @XmlSchemaType(name = "anyURI")
+    protected String photoSellRef;
+    @XmlAttribute(name = "pressAgencyRef", required = true)
+    @XmlSchemaType(name = "anyURI")
+    protected String pressAgencyRef;
 
     /**
      * Ruft den Wert der bidValue-Eigenschaft ab.
@@ -87,73 +90,89 @@ public class Bid {
     /**
      * Ruft den Wert der id-Eigenschaft ab.
      * 
-     * @return
-     *     possible object is
-     *     {@link Integer }
-     *     
      */
-    public Integer getID() {
+    public int getID() {
         return id;
     }
 
     /**
      * Legt den Wert der id-Eigenschaft fest.
      * 
-     * @param value
-     *     allowed object is
-     *     {@link Integer }
-     *     
      */
-    public void setID(Integer value) {
+    public void setID(int value) {
         this.id = value;
     }
 
     /**
-     * Ruft den Wert der photoSellID-Eigenschaft ab.
+     * Ruft den Wert der ref-Eigenschaft ab.
      * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
      */
-    public int getPhotoSellID() {
-        return photoSellID;
+    public String getRef() {
+        return ref;
     }
 
     /**
-     * Legt den Wert der photoSellID-Eigenschaft fest.
+     * Legt den Wert der ref-Eigenschaft fest.
      * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
      */
-    public void setPhotoSellID(int value) {
-        this.photoSellID = value;
+    public void setRef(String value) {
+        this.ref = value;
     }
 
     /**
-     * Ruft den Wert der pressID-Eigenschaft ab.
+     * Ruft den Wert der photoSellRef-Eigenschaft ab.
      * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
      */
-    public int getPressID() {
-        return pressID;
+    public String getPhotoSellRef() {
+        return photoSellRef;
     }
 
     /**
-     * Legt den Wert der pressID-Eigenschaft fest.
+     * Legt den Wert der photoSellRef-Eigenschaft fest.
      * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
      */
-    public void setPressID(int value) {
-        this.pressID = value;
+    public void setPhotoSellRef(String value) {
+        this.photoSellRef = value;
     }
 
     /**
-     * Ruft den Wert der photographerID-Eigenschaft ab.
+     * Ruft den Wert der pressAgencyRef-Eigenschaft ab.
      * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
      */
-    public int getPhotographerID() {
-        return photographerID;
+    public String getPressAgencyRef() {
+        return pressAgencyRef;
     }
 
     /**
-     * Legt den Wert der photographerID-Eigenschaft fest.
+     * Legt den Wert der pressAgencyRef-Eigenschaft fest.
      * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
      */
-    public void setPhotographerID(int value) {
-        this.photographerID = value;
+    public void setPressAgencyRef(String value) {
+        this.pressAgencyRef = value;
     }
 
 }

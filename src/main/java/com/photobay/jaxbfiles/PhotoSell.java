@@ -2,7 +2,7 @@
 // Diese Datei wurde mit der JavaTM Architecture for XML Binding(JAXB) Reference Implementation, v2.2.6 generiert 
 // Siehe <a href="http://java.sun.com/xml/jaxb">http://java.sun.com/xml/jaxb</a> 
 // Änderungen an dieser Datei gehen bei einer Neukompilierung des Quellschemas verloren. 
-// Generiert: 2013.05.29 um 02:09:33 PM CEST 
+// Generiert: 2013.06.15 um 02:15:54 PM CEST 
 //
 
 
@@ -41,8 +41,10 @@ import javax.xml.bind.annotation.XmlType;
  *           &lt;/simpleType>
  *         &lt;/element>
  *       &lt;/all>
+ *       &lt;attribute name="ref" use="required" type="{http://www.w3.org/2001/XMLSchema}anyURI" />
  *       &lt;attribute name="ID" type="{http://www.w3.org/2001/XMLSchema}int" />
- *       &lt;attribute name="photographerID" use="required" type="{http://www.w3.org/2001/XMLSchema}int" />
+ *       &lt;attribute name="photographerRef" use="required" type="{http://www.w3.org/2001/XMLSchema}anyURI" />
+ *       &lt;attribute name="bidsRef" type="{http://www.w3.org/2001/XMLSchema}anyURI" />
  *     &lt;/restriction>
  *   &lt;/complexContent>
  * &lt;/complexType>
@@ -68,10 +70,17 @@ public class PhotoSell {
     protected TopicType topics;
     @XmlElement(required = true)
     protected String status;
+    @XmlAttribute(name = "ref", required = true)
+    @XmlSchemaType(name = "anyURI")
+    protected String ref;
     @XmlAttribute(name = "ID")
     protected Integer id;
-    @XmlAttribute(name = "photographerID", required = true)
-    protected int photographerID;
+    @XmlAttribute(name = "photographerRef", required = true)
+    @XmlSchemaType(name = "anyURI")
+    protected String photographerRef;
+    @XmlAttribute(name = "bidsRef")
+    @XmlSchemaType(name = "anyURI")
+    protected String bidsRef;
 
     /**
      * Ruft den Wert der price-Eigenschaft ab.
@@ -192,6 +201,30 @@ public class PhotoSell {
     }
 
     /**
+     * Ruft den Wert der ref-Eigenschaft ab.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getRef() {
+        return ref;
+    }
+
+    /**
+     * Legt den Wert der ref-Eigenschaft fest.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setRef(String value) {
+        this.ref = value;
+    }
+
+    /**
      * Ruft den Wert der id-Eigenschaft ab.
      * 
      * @return
@@ -216,19 +249,51 @@ public class PhotoSell {
     }
 
     /**
-     * Ruft den Wert der photographerID-Eigenschaft ab.
+     * Ruft den Wert der photographerRef-Eigenschaft ab.
      * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
      */
-    public int getPhotographerID() {
-        return photographerID;
+    public String getPhotographerRef() {
+        return photographerRef;
     }
 
     /**
-     * Legt den Wert der photographerID-Eigenschaft fest.
+     * Legt den Wert der photographerRef-Eigenschaft fest.
      * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
      */
-    public void setPhotographerID(int value) {
-        this.photographerID = value;
+    public void setPhotographerRef(String value) {
+        this.photographerRef = value;
+    }
+
+    /**
+     * Ruft den Wert der bidsRef-Eigenschaft ab.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getBidsRef() {
+        return bidsRef;
+    }
+
+    /**
+     * Legt den Wert der bidsRef-Eigenschaft fest.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setBidsRef(String value) {
+        this.bidsRef = value;
     }
 
 }

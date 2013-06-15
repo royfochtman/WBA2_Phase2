@@ -31,9 +31,9 @@ public class PhotoSellsService {
 	@POST
 	//@Path("/photoSells")
 	@Consumes({"application/xml"})
-	public Response postPhotoSell(PhotoSell photoSell)
+	public Response postPhotoSell(PhotoSell photoSell, String photographerRef)
 	{
-		if(PhotoBayRessourceManager.postPhotoSell(photoSell))
+		if(PhotoBayRessourceManager.postPhotoSell(photoSell, photographerRef))
 		{
 			return Response.ok().build();
 		}

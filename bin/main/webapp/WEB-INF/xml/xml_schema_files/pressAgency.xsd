@@ -4,13 +4,16 @@
 <xs:element name="pressAgency">       
         <xs:complexType>
 			<xs:all maxOccurs="1" minOccurs="1">
-				<xs:element name="name" type="xs:string"></xs:element>
-				<xs:element name="mainLocation" type="xs:string"></xs:element>
-				<xs:element name="dateOfCreation" type="xs:date"></xs:element>
+				<xs:element name="name" type="xs:string"/>
+				<xs:element name="mainLocation" type="xs:string"/>
+				<xs:element name="dateOfCreation" type="xs:date"/>
 				<xs:element name="generalPersonalData" type="pre:generalPersonalDataType"/>
 			</xs:all> 
-		<xs:attribute name="ID" type="xs:int" use="required"></xs:attribute>
-		<xs:attribute name="registrationDate" type="xs:date" use="required"></xs:attribute>
+		<xs:attribute name="ref" type="xs:anyURI" use="required"/>
+		<xs:attribute name="ID" type="xs:int" use="required"/>
+		<xs:attribute name="photosRef" type="xs:anyURI" use="optional"/>
+		<xs:attribute name="jobsRef" type="xs:anyURI" use="optional"/>
+		<xs:attribute name="registrationDate" type="xs:date" use="required"/>
 	</xs:complexType>
     </xs:element>
 </xs:schema>

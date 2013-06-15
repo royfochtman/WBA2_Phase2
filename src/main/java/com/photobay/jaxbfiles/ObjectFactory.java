@@ -2,7 +2,7 @@
 // Diese Datei wurde mit der JavaTM Architecture for XML Binding(JAXB) Reference Implementation, v2.2.6 generiert 
 // Siehe <a href="http://java.sun.com/xml/jaxb">http://java.sun.com/xml/jaxb</a> 
 // Änderungen an dieser Datei gehen bei einer Neukompilierung des Quellschemas verloren. 
-// Generiert: 2013.06.14 um 04:34:19 PM CEST 
+// Generiert: 2013.06.15 um 03:39:57 PM CEST 
 //
 
 
@@ -37,11 +37,11 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link PayloadMessage }
+     * Create an instance of {@link Bid }
      * 
      */
-    public PayloadMessage createPayloadMessage() {
-        return new PayloadMessage();
+    public Bid createBid() {
+        return new Bid();
     }
 
 }

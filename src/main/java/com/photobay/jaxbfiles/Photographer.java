@@ -2,7 +2,7 @@
 // Diese Datei wurde mit der JavaTM Architecture for XML Binding(JAXB) Reference Implementation, v2.2.6 generiert 
 // Siehe <a href="http://java.sun.com/xml/jaxb">http://java.sun.com/xml/jaxb</a> 
 // Änderungen an dieser Datei gehen bei einer Neukompilierung des Quellschemas verloren. 
-// Generiert: 2013.05.17 um 06:06:29 PM CEST 
+// Generiert: 2013.06.15 um 03:35:52 PM CEST 
 //
 
 
@@ -34,7 +34,10 @@ import javax.xml.datatype.XMLGregorianCalendar;
  *         &lt;element name="equipment" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="generalPersonalData" type="{http://www.example.org/photoBay}generalPersonalDataType"/>
  *       &lt;/all>
+ *       &lt;attribute name="ref" use="required" type="{http://www.w3.org/2001/XMLSchema}anyURI" />
  *       &lt;attribute name="ID" use="required" type="{http://www.w3.org/2001/XMLSchema}int" />
+ *       &lt;attribute name="photosRef" use="required" type="{http://www.w3.org/2001/XMLSchema}anyURI" />
+ *       &lt;attribute name="photoSellsRef" use="required" type="{http://www.w3.org/2001/XMLSchema}anyURI" />
  *       &lt;attribute name="registrationDate" use="required" type="{http://www.w3.org/2001/XMLSchema}date" />
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -57,8 +60,17 @@ public class Photographer {
     protected SexEnum sex;
     protected String equipment;
     protected GeneralPersonalDataType generalPersonalData;
+    @XmlAttribute(name = "ref", required = true)
+    @XmlSchemaType(name = "anyURI")
+    protected String ref;
     @XmlAttribute(name = "ID", required = true)
     protected int id;
+    @XmlAttribute(name = "photosRef", required = true)
+    @XmlSchemaType(name = "anyURI")
+    protected String photosRef;
+    @XmlAttribute(name = "photoSellsRef", required = true)
+    @XmlSchemaType(name = "anyURI")
+    protected String photoSellsRef;
     @XmlAttribute(name = "registrationDate", required = true)
     @XmlSchemaType(name = "date")
     protected XMLGregorianCalendar registrationDate;
@@ -208,6 +220,30 @@ public class Photographer {
     }
 
     /**
+     * Ruft den Wert der ref-Eigenschaft ab.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getRef() {
+        return ref;
+    }
+
+    /**
+     * Legt den Wert der ref-Eigenschaft fest.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setRef(String value) {
+        this.ref = value;
+    }
+
+    /**
      * Ruft den Wert der id-Eigenschaft ab.
      * 
      */
@@ -221,6 +257,54 @@ public class Photographer {
      */
     public void setID(int value) {
         this.id = value;
+    }
+
+    /**
+     * Ruft den Wert der photosRef-Eigenschaft ab.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getPhotosRef() {
+        return photosRef;
+    }
+
+    /**
+     * Legt den Wert der photosRef-Eigenschaft fest.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setPhotosRef(String value) {
+        this.photosRef = value;
+    }
+
+    /**
+     * Ruft den Wert der photoSellsRef-Eigenschaft ab.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getPhotoSellsRef() {
+        return photoSellsRef;
+    }
+
+    /**
+     * Legt den Wert der photoSellsRef-Eigenschaft fest.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setPhotoSellsRef(String value) {
+        this.photoSellsRef = value;
     }
 
     /**

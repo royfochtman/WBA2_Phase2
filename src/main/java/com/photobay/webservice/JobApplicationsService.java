@@ -16,9 +16,9 @@ public class JobApplicationsService {
 	@POST
 	//@Path("/jobs/{id}/jobApplications")
 	@Consumes({"application/xml"})
-	public Response postJobApplication(JobApplication jobApplication, @PathParam("id") int jobId)
+	public Response postJobApplication(JobApplication jobApplication, @PathParam("id") int jobId, String photographerRef)
 	{
-		if(PhotoBayRessourceManager.postJobApplication(jobApplication, jobId))
+		if(PhotoBayRessourceManager.postJobApplication(jobApplication, jobId, photographerRef))
 		{
 			return Response.ok().build();
 		}

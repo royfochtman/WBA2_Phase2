@@ -60,12 +60,29 @@ public class PhotoBayRessourceManager {
 			File file = new File(dir + "/photographer.xml");
 			if(dir.mkdir() && file.createNewFile())
 			{
+				/*creates the folder for the photos*/
 				File subDir = new File("./photographers/" + id + "/photos");
 				subDir.mkdir();
+				/* creates a new XML File for the photos, but empty */
+				File photosXML = new File(subDir + "/photos.xml");
+				photosXML.createNewFile();
+				
+				/* creates a new XML File for the PhotoSells*/
+				File photoSellsDir = new File(dir + "/photoSells");
+				photoSellsDir.mkdir();
+				File photoSellsXML = new File(photoSellsDir + "/photoSells.xml");
+				photoSellsXML.createNewFile();
+				
+				
 				JAXBContext context = JAXBContext.newInstance(Photographer.class);
 			    Marshaller m = context.createMarshaller();
 			    m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+			    
 			    photographer.setID(id);
+			    photographer.setRef(dir.toString());
+			    photographer.setPhotosRef(subDir.toString());
+			    photographer.setPhotoSellsRef(photoSellsDir.toString());
+			    
 			    m.marshal(photographer, file);
 			    putPhotographersList(photographer);
 			    return true;
@@ -130,12 +147,27 @@ public class PhotoBayRessourceManager {
 			File file = new File(dir + "/PressAgency.xml");
 			if(dir.mkdir() && file.createNewFile())
 			{
-				dir = new File("./pressAgencies/" + id + "/photos");
-				dir.mkdir();
+				/* creates a new XML File for the photos */
+				File photosDir = new File("./pressAgencies/" + id + "/photos");
+				photosDir.mkdir();
+				File photosXML = new File(photosDir + "/photos.xml");
+				photosXML.createNewFile();
+				
+				/* creates a new XML File for Jobs */
+				File jobsDir = new File(dir + "/jobs");
+				jobsDir.mkdir();
+				File jobsXML = new File(jobsDir + "/jobs.xml");
+				jobsXML.createNewFile();
+				
 				JAXBContext context = JAXBContext.newInstance(PressAgency.class);
 			    Marshaller m = context.createMarshaller();
 			    m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 			    pressAgency.setID(id);
+			    /* Referenz zu sich selbst */
+			    pressAgency.setRef(dir.toString());
+			    pressAgency.setJobsRef(jobsDir.toString());
+			    pressAgency.setPhotosRef(photosDir.toString());
+			    
 			    m.marshal(pressAgency, file);
 			    return true;
 			}
@@ -165,7 +197,7 @@ public class PhotoBayRessourceManager {
 		else return false;
 	}
 
-	public static Boolean postBid(Bid bid, int photoSellID) {
+	public static Boolean postBid(Bid bid, int photoSellID, String pressAgencyRef ) {
 			try
 			{
 				int id = IdGenerator.generateID("photoSells/" + photoSellID + "/bids");
@@ -176,7 +208,12 @@ public class PhotoBayRessourceManager {
 					JAXBContext context = JAXBContext.newInstance(Bid.class);
 				    Marshaller m = context.createMarshaller();
 				    m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+				    
 				    bid.setID(id);
+				    bid.setRef(dir.toString());
+				    bid.setPhotoSellRef("./photoSells/" + photoSellID);
+				    bid.setPressAgencyRef(pressAgencyRef);
+				    
 				    m.marshal(bid, file);
 				    return true;
 				}
@@ -206,7 +243,7 @@ public class PhotoBayRessourceManager {
 	 * @param job
 	 * @return
 	 */
-	public static Boolean postJob(Job job){
+	public static Boolean postJob(Job job, String pressAgencyRef){
 			try
 			{
 				int id = IdGenerator.generateID("jobs");
@@ -219,7 +256,11 @@ public class PhotoBayRessourceManager {
 					JAXBContext context = JAXBContext.newInstance(Job.class);
 				    Marshaller m = context.createMarshaller();
 				    m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+				   
 				    job.setID(id);
+				    job.setRef(dir.toString());
+				    job.setPressAgencyRef(pressAgencyRef);
+				    
 				    m.marshal(job, file);
 				    return true;
 				}
@@ -250,7 +291,7 @@ public class PhotoBayRessourceManager {
 			}
 	}
 	
-	public static Boolean postJobApplication(JobApplication jobApplication, int jobID){
+	public static Boolean postJobApplication(JobApplication jobApplication, int jobID, String photographerRef){
 		try
 		{
 			int id = IdGenerator.generateID("jobs/" + jobID + "/jobApplications");
@@ -261,7 +302,12 @@ public class PhotoBayRessourceManager {
 				JAXBContext context = JAXBContext.newInstance(JobApplication.class);
 			    Marshaller m = context.createMarshaller();
 			    m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+			    
 			    jobApplication.setID(id);
+			    jobApplication.setRef(dir.toString());
+			    jobApplication.setJobRef("./jobs/" + jobID);
+			    jobApplication.setPhotographerRef(photographerRef);
+			    
 			    m.marshal(jobApplication, file);
 			    return true;
 			}
@@ -291,9 +337,10 @@ public class PhotoBayRessourceManager {
 	/**
 	 * 
 	 * @param photoSell
+	 * @param photographerRef
 	 * @return
 	 */
-	public static Boolean postPhotoSell(PhotoSell photoSell){
+	public static Boolean postPhotoSell(PhotoSell photoSell, String photographerRef){
 		try
 		{
 			int id = IdGenerator.generateID("photoSells");
@@ -306,7 +353,12 @@ public class PhotoBayRessourceManager {
 				JAXBContext context = JAXBContext.newInstance(PhotoSell.class);
 			    Marshaller m = context.createMarshaller();
 			    m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+			    
 			    photoSell.setID(id);
+			    photoSell.setRef(dir.toString());
+			    photoSell.setBidsRef(dir.toString() + "/bids");
+			    photoSell.setPhotographerRef(photographerRef);
+			    
 			    m.marshal(photoSell, file);
 			    return true;
 			}

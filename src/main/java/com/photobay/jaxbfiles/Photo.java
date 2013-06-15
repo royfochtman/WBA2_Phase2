@@ -2,7 +2,7 @@
 // Diese Datei wurde mit der JavaTM Architecture for XML Binding(JAXB) Reference Implementation, v2.2.6 generiert 
 // Siehe <a href="http://java.sun.com/xml/jaxb">http://java.sun.com/xml/jaxb</a> 
 // Änderungen an dieser Datei gehen bei einer Neukompilierung des Quellschemas verloren. 
-// Generiert: 2013.05.29 um 02:09:29 PM CEST 
+// Generiert: 2013.06.15 um 02:15:41 PM CEST 
 //
 
 
@@ -31,6 +31,8 @@ import javax.xml.datatype.XMLGregorianCalendar;
  *         &lt;element name="description" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *       &lt;/all>
  *       &lt;attribute name="ID" use="required" type="{http://www.w3.org/2001/XMLSchema}int" />
+ *       &lt;attribute name="ref" use="required" type="{http://www.w3.org/2001/XMLSchema}anyURI" />
+ *       &lt;attribute name="ownerRef" use="required" type="{http://www.w3.org/2001/XMLSchema}anyURI" />
  *       &lt;attribute name="uploadDate" use="required" type="{http://www.w3.org/2001/XMLSchema}date" />
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -50,6 +52,12 @@ public class Photo {
     protected String description;
     @XmlAttribute(name = "ID", required = true)
     protected int id;
+    @XmlAttribute(name = "ref", required = true)
+    @XmlSchemaType(name = "anyURI")
+    protected String ref;
+    @XmlAttribute(name = "ownerRef", required = true)
+    @XmlSchemaType(name = "anyURI")
+    protected String ownerRef;
     @XmlAttribute(name = "uploadDate", required = true)
     @XmlSchemaType(name = "date")
     protected XMLGregorianCalendar uploadDate;
@@ -138,6 +146,54 @@ public class Photo {
      */
     public void setID(int value) {
         this.id = value;
+    }
+
+    /**
+     * Ruft den Wert der ref-Eigenschaft ab.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getRef() {
+        return ref;
+    }
+
+    /**
+     * Legt den Wert der ref-Eigenschaft fest.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setRef(String value) {
+        this.ref = value;
+    }
+
+    /**
+     * Ruft den Wert der ownerRef-Eigenschaft ab.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getOwnerRef() {
+        return ownerRef;
+    }
+
+    /**
+     * Legt den Wert der ownerRef-Eigenschaft fest.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setOwnerRef(String value) {
+        this.ownerRef = value;
     }
 
     /**
