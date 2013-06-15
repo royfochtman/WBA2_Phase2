@@ -284,7 +284,6 @@ public class xmppConnectionHandler {
 	
 	public boolean deleteNode(String nodeID)
 	{
-		LeafNode node = null;
 		try
 		{
 			pubSubManager.deleteNode(nodeID);
