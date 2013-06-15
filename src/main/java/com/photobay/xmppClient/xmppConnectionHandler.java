@@ -26,6 +26,7 @@ public class xmppConnectionHandler {
 	private AccountManager accMan;
 	private String host = "localhost";
 	private int port = 9090;
+	private boolean connected = false;
 	private PubSubManager pubSubManager;
 	private final String NAMESPACE = "http://www.example.org/photoBay";
 	private ItemEventListener<Item> listener;
@@ -39,7 +40,8 @@ public class xmppConnectionHandler {
 	{	
 		this.host = host;
 		this.port = port;
-		connect();
+		if(connect())
+			connected = true;
 	}
 	
 	/**
@@ -115,6 +117,7 @@ public class xmppConnectionHandler {
 			return false;
 			
 		xmppConn.disconnect();
+		connected = false;
 		return true;
 	}
 	
