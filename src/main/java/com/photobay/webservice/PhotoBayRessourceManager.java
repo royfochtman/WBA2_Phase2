@@ -6,12 +6,18 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
 import main.java.com.photobay.jaxbfiles.Bid;
+import main.java.com.photobay.jaxbfiles.Bids;
 import main.java.com.photobay.jaxbfiles.Job;
 import main.java.com.photobay.jaxbfiles.JobApplication;
+import main.java.com.photobay.jaxbfiles.Jobs;
+import main.java.com.photobay.jaxbfiles.Photo;
 import main.java.com.photobay.jaxbfiles.PhotoSell;
 import main.java.com.photobay.jaxbfiles.Photographer;
 import main.java.com.photobay.jaxbfiles.Photographers;
 import main.java.com.photobay.jaxbfiles.Photographers.PhotographerRef;
+import main.java.com.photobay.jaxbfiles.PressAgencies.PressAgencyRef;
+import main.java.com.photobay.jaxbfiles.Photos;
+import main.java.com.photobay.jaxbfiles.PressAgencies;
 import main.java.com.photobay.jaxbfiles.PressAgency;
 import main.java.com.photobay.util.IdGenerator;
 
@@ -25,10 +31,10 @@ import main.java.com.photobay.util.IdGenerator;
 public class PhotoBayRessourceManager {
 	
 	/**
-	 * This Method returns the Photographer Object with ID "id".
+	 * Gets existing Photographer.
 	 * 
-	 * @param id
-	 * @return Photographer
+	 * @param id ID from the Photographer
+	 * @return Photographer with ID "id".
 	 */
 	public static Photographer getPhotographer(int id)
 	{
@@ -46,10 +52,10 @@ public class PhotoBayRessourceManager {
 	}
 	
 	/**
-	 * Method for setting a new Photographer
+	 * Posts a new Photographer.
 	 * 
-	 * @param photographer
-	 * @return
+	 * @param photographer Photographer object
+	 * @return true if photograph was posted successfully, false if not
 	 */
 	public static Boolean postPhotographer(Photographer photographer)
 	{
@@ -96,9 +102,9 @@ public class PhotoBayRessourceManager {
 	}
 	
 	/**
-	 * 
-	 * @param id
-	 * @return
+	 * Deletes a photograph
+	 * @param id id from photograph
+	 * @return true if photograph was deleted successfully, false if not
 	 */
 	public static Boolean deletePhotographer(int id)
 	{
@@ -114,9 +120,10 @@ public class PhotoBayRessourceManager {
 	}
 
 	/**
+	 * Get existing PressAgency
 	 * 
-	 * @param id
-	 * @return
+	 * @param id ID from the PressAgency
+	 * @return PressAgency object
 	 */
 	public static PressAgency getPressAgency(int id)
 	{
@@ -134,9 +141,10 @@ public class PhotoBayRessourceManager {
 	}
 	
 	/**
+	 * Posts a new PressAgency
 	 * 
 	 * @param pressAgency
-	 * @return
+	 * @return true if PressAgency was posted successfully, false if not
 	 */
 	public static Boolean postPressAgency(PressAgency pressAgency)
 	{
@@ -180,6 +188,7 @@ public class PhotoBayRessourceManager {
 	}
 	
 	/**
+	 * Deletes an existing PressAgency
 	 * 
 	 * @param id
 	 * @return
@@ -196,7 +205,15 @@ public class PhotoBayRessourceManager {
 		}
 		else return false;
 	}
-
+	
+	/**
+	 * Posts a new Bid.
+	 * 
+	 * @param bid
+	 * @param photoSellID
+	 * @param pressAgencyRef
+	 * @return
+	 */
 	public static Boolean postBid(Bid bid, int photoSellID, String pressAgencyRef ) {
 			try
 			{
@@ -225,6 +242,13 @@ public class PhotoBayRessourceManager {
 			}
 	}
 
+	/**
+	 * Gets a Bid.
+	 * 
+	 * @param photoSellsID
+	 * @param bidID
+	 * @return
+	 */
 	public static Bid getBid(int photoSellsID, int bidID) {
 		try
 		{
@@ -238,9 +262,12 @@ public class PhotoBayRessourceManager {
 			return null;
 		}
 	}
+	
 	/**
+	 * Posts a new Job
 	 * 
 	 * @param job
+	 * @param pressAgencyRef
 	 * @return
 	 */
 	public static Boolean postJob(Job job, String pressAgencyRef){
@@ -273,9 +300,10 @@ public class PhotoBayRessourceManager {
 	}
 	
 	/**
+	 * Gets an existing Job.
 	 * 
-	 * @param id
-	 * @return
+	 * @param id ID from the job.
+	 * @return Job Object
 	 */
 	public static Job getJob(int id) {
 			try
@@ -291,6 +319,14 @@ public class PhotoBayRessourceManager {
 			}
 	}
 	
+	/**
+	 *  Posts a new JobApplication.
+	 *  
+	 * @param jobApplication
+	 * @param jobID
+	 * @param photographerRef
+	 * @return true if JobApplication was posted successfully, false if not
+	 */
 	public static Boolean postJobApplication(JobApplication jobApplication, int jobID, String photographerRef){
 		try
 		{
@@ -319,6 +355,13 @@ public class PhotoBayRessourceManager {
 		}
 	}
 	
+	/**
+	 * Gets an existing JobApplication.
+	 * 
+	 * @param jobID
+	 * @param jobApplicationID
+	 * @return
+	 */
 	public static JobApplication getJobApplication(int jobID, int jobApplicationID) {
 		try
 		{
@@ -335,10 +378,11 @@ public class PhotoBayRessourceManager {
 	}
 	
 	/**
+	 * Posts a new PhotoSell.
 	 * 
 	 * @param photoSell
 	 * @param photographerRef
-	 * @return
+	 * @return true if PhotoSell was posted successfully, false if not
 	 */
 	public static Boolean postPhotoSell(PhotoSell photoSell, String photographerRef){
 		try
@@ -371,6 +415,7 @@ public class PhotoBayRessourceManager {
 	}
 	
 	/**
+	 * Gets an existing PhotoSell.
 	 * 
 	 * @param id
 	 * @return
@@ -390,6 +435,7 @@ public class PhotoBayRessourceManager {
 	}
 	
 	/**
+	 * Deletes PhotoSell.
 	 * 
 	 * @param id
 	 * @return
@@ -407,20 +453,21 @@ public class PhotoBayRessourceManager {
 	}
 	
 	
-	public static Photographers getPhotographersList() {
-		try
-		{
-			File file = new File("./photographers/photographers.xml");
-			JAXBContext context = JAXBContext.newInstance(Photographers.class);
-			Unmarshaller unmarshaller = context.createUnmarshaller();
-			return (Photographers)unmarshaller.unmarshal(file);
-		}
-		catch(Exception ex)
-		{
-			return null;
-		}
-	}
+	/*********************************************
+	 *
+	 * Hier werden alle Listen verwaltet
+	 * (PUT, GET)
+	 * 
+	 * 
+	 *
+	 *********************************************/
 	
+	/**
+	 * Puts a list of Photographers.
+	 * 
+	 * @param photographer
+	 * @return 
+	 */
 	public static Boolean putPhotographersList(Photographer photographer){
 		try
 		{
@@ -436,6 +483,7 @@ public class PhotoBayRessourceManager {
 		    	PhotographerRef photographerRef = new PhotographerRef();
 		    	photographerRef.setFirstName(photographer.getFirstname());
 		    	photographerRef.setLastName(photographer.getLastname());
+		    	//Muss nicht "./photographers/" sein ???
 		    	photographerRef.setUri("/photographers/" + photographer.getID());
 		    	photographersList.getPhotographerRef().add(photographerRef);
 		    }
@@ -450,5 +498,124 @@ public class PhotoBayRessourceManager {
 			return false;
 		}
 	}
+	
+	/**
+	 * Gets List of photographers.
+	 * 
+	 * @return List of photographers.
+	 */
+	public static Photographers getPhotographersList() {
+		try
+		{
+			File file = new File("./photographers/photographers.xml");
+			JAXBContext context = JAXBContext.newInstance(Photographers.class);
+			Unmarshaller unmarshaller = context.createUnmarshaller();
+			return (Photographers)unmarshaller.unmarshal(file);
+		}
+		catch(Exception ex)
+		{
+			return null;
+		}
+	}
+
+	public static Boolean putPressAgenciesList(PressAgency pressAgency){
+		try
+		{
+			File pressAgenciesListFile = new File("./pressAgencies/pressAgencies.xml");
+		    PressAgencies pressAgenciesList;
+		    if(pressAgenciesListFile.createNewFile())
+		    	pressAgenciesList = new PressAgencies();
+		    else
+		    	pressAgenciesList = getPressAgenciesList();
+		    
+		    if(pressAgenciesList != null)
+		    {
+		    	PressAgencyRef pressAgencyRef = new PressAgencyRef();
+		    	pressAgencyRef.setName(pressAgency.getName());
+		    	pressAgencyRef.setUri("./pressAgencies/" + pressAgency.getID());
+		    	pressAgenciesList.getPressAgencyRef().add(pressAgencyRef);
+		    }
+			JAXBContext context = JAXBContext.newInstance(PressAgencies.class);
+			Marshaller m = context.createMarshaller();
+		    m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+		    m.marshal(pressAgenciesList, pressAgenciesListFile);
+		    return true;
+		}
+		catch(Exception ex)
+		{
+			return false;
+		}
+	}
+	
+	public static PressAgencies getPressAgenciesList(){
+		try
+		{
+			File file = new File("./pressAgencies/pressAgencies.xml");
+			JAXBContext context = JAXBContext.newInstance(PressAgencies.class);
+			Unmarshaller unmarshaller = context.createUnmarshaller();
+			return (PressAgencies)unmarshaller.unmarshal(file);
+		}
+		catch(Exception ex)
+		{
+			return null;
+		}
+	}
+	//TODO
+	public static Boolean putBidsList(Bid bid){
+		return false;
+	}
+	
+	public static Bids getBidsList(String photoSellRef) {
+		try
+		{
+			File file = new File(photoSellRef + "/bids/bids.xml");
+			JAXBContext context = JAXBContext.newInstance(Bids.class);
+			Unmarshaller unmarshaller = context.createUnmarshaller();
+			return (Bids)unmarshaller.unmarshal(file);
+		}
+		catch(Exception ex)
+		{
+			return null;
+		}
+	}
+	//TODO
+	public static Boolean putJobsList(Job job){
+		return false;
+	}
+	
+	public static Jobs getJobsList(){
+		try
+		{
+			File file = new File("./jobs/jobs.xml");
+			JAXBContext context = JAXBContext.newInstance(Jobs.class);
+			Unmarshaller unmarshaller = context.createUnmarshaller();
+			return (Jobs)unmarshaller.unmarshal(file);
+		}
+		catch(Exception ex)
+		{
+			return null;
+		}
+	}
+	
+	//TODO
+	public static Boolean putPhotosList(Photo photo){
+		return false;
+	}
+	
+	public static Photos getPhotosList(String ownerRef){
+		try
+		{
+			File file = new File(ownerRef + "/photos/photos.xml");
+			JAXBContext context = JAXBContext.newInstance(Photos.class);
+			Unmarshaller unmarshaller = context.createUnmarshaller();
+			return (Photos)unmarshaller.unmarshal(file);
+		}
+		catch(Exception ex)
+		{
+			return null;
+		}
+	}
+	
+	
 	
 }

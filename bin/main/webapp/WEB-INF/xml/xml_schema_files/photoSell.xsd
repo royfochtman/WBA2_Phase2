@@ -4,10 +4,11 @@
 <xs:element name="photoSell">       
         <xs:complexType>
 			<xs:all maxOccurs="1" minOccurs="1">
-				<xs:element name="price" type="xs:positiveInteger"></xs:element>
-				<xs:element name="description" type="xs:string"></xs:element>
-				<xs:element name="photo" type="xs:base64Binary"></xs:element>
-				<xs:element name="topics" type="phs:topicType"></xs:element>
+				<xs:element name="name" type="xs:string"/>
+				<xs:element name="price" type="xs:positiveInteger"/>
+				<xs:element name="description" type="xs:string"/>
+				<xs:element name="photo" type="xs:base64Binary"/>
+				<xs:element name="topics" type="phs:topicType"/>
 				<xs:element name="status">
 				<xs:simpleType>
 					<xs:restriction base="xs:string">

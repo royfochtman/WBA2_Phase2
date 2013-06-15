@@ -2,7 +2,7 @@
 // Diese Datei wurde mit der JavaTM Architecture for XML Binding(JAXB) Reference Implementation, v2.2.6 generiert 
 // Siehe <a href="http://java.sun.com/xml/jaxb">http://java.sun.com/xml/jaxb</a> 
 // Änderungen an dieser Datei gehen bei einer Neukompilierung des Quellschemas verloren. 
-// Generiert: 2013.06.15 um 02:15:54 PM CEST 
+// Generiert: 2013.06.15 um 07:06:49 PM CEST 
 //
 
 
@@ -28,6 +28,7 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;all>
+ *         &lt;element name="name" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="price" type="{http://www.w3.org/2001/XMLSchema}positiveInteger"/>
  *         &lt;element name="description" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="photo" type="{http://www.w3.org/2001/XMLSchema}base64Binary"/>
@@ -60,6 +61,8 @@ import javax.xml.bind.annotation.XmlType;
 public class PhotoSell {
 
     @XmlElement(required = true)
+    protected String name;
+    @XmlElement(required = true)
     @XmlSchemaType(name = "positiveInteger")
     protected BigInteger price;
     @XmlElement(required = true)
@@ -81,6 +84,30 @@ public class PhotoSell {
     @XmlAttribute(name = "bidsRef")
     @XmlSchemaType(name = "anyURI")
     protected String bidsRef;
+
+    /**
+     * Ruft den Wert der name-Eigenschaft ab.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * Legt den Wert der name-Eigenschaft fest.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setName(String value) {
+        this.name = value;
+    }
 
     /**
      * Ruft den Wert der price-Eigenschaft ab.
