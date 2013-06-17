@@ -84,7 +84,7 @@ public class LoginFrame extends JFrame {
 				}
 				catch (Exception ex) 
 				{
-					JOptionPane.showMessageDialog(LoginFrame.this, "Bitte eine gültige Portnummer eingeben!", "Falsche Portnummer", 
+					JOptionPane.showMessageDialog(LoginFrame.this, ex.getMessage(), "Error", 
 							JOptionPane.ERROR_MESSAGE);
 				}
 			}

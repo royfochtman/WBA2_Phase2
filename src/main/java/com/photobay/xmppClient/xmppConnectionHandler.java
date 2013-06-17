@@ -35,8 +35,9 @@ public class xmppConnectionHandler {
 	 * Konstruktor, legt den Host und den Port fest und startet die Verbindung
 	 * @param host
 	 * @param port
+	 * @throws XMPPException 
 	 */
-	public xmppConnectionHandler(String host, int port)
+	public xmppConnectionHandler(String host, int port) throws XMPPException
 	{	
 		this.host = host;
 		this.port = port;
@@ -52,8 +53,9 @@ public class xmppConnectionHandler {
 	/**
 	 * Baut eine Verbindung zum angegeben Host über den angegeben Port auf
 	 * @return
+	 * @throws XMPPException 
 	 */
-	private boolean connect()
+	private boolean connect() throws XMPPException
 	{
 		if(xmppConn != null && xmppConn.isConnected())
 			return true;
@@ -65,12 +67,11 @@ public class xmppConnectionHandler {
 		try
 		{
 			xmppConn.connect();
-			pubSubManager = new PubSubManager(xmppConn, "pubsub."
-                    + xmppConn.getHost());
+			pubSubManager = new PubSubManager(xmppConn);
 		}
 		catch(XMPPException ex)
 		{
-			return false;
+			throw new XMPPException(ex.getMessage() + ex.getSmackError());
 		}
 		return true;
 	}
