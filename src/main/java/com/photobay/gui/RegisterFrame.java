@@ -22,6 +22,7 @@ import javax.swing.border.LineBorder;
 import java.awt.Color;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.Window.Type;
 
 public class RegisterFrame extends JFrame {
 
@@ -39,6 +40,9 @@ public class RegisterFrame extends JFrame {
 	private JTextField txtMainLocation;
 	private JPanel photographerPanel;
 	private JPanel pressAgencyPanel;
+	
+	public String username = null;
+	public String password = null;
 
 	/**
 	 * Launch the application.
@@ -60,7 +64,7 @@ public class RegisterFrame extends JFrame {
 	 * Create the frame.
 	 */
 	public RegisterFrame() {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setTitle("Register");
 		setBounds(100, 100, 450, 635);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -227,8 +231,8 @@ public class RegisterFrame extends JFrame {
 		lblCountry.setBounds(6, 324, 46, 14);
 		contentPane.add(lblCountry);
 		
-		JComboBox cbCountry = new JComboBox();
-		cbCountry.setModel(new DefaultComboBoxModel(new String[] {"Germany", "USA", "Argentina"}));
+		JComboBox<String> cbCountry = new JComboBox<String>();
+		cbCountry.setModel(new DefaultComboBoxModel<String>(new String[] {"Germany", "USA", "Argentina"}));
 		cbCountry.setBounds(117, 321, 93, 20);
 		contentPane.add(cbCountry);
 		
@@ -272,6 +276,12 @@ public class RegisterFrame extends JFrame {
 		contentPane.add(btnOk);
 		
 		JButton btnCancel = new JButton("Cancel");
+		btnCancel.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				RegisterFrame.this.setVisible(false);
+				RegisterFrame.this.dispose();
+			}
+		});
 		btnCancel.setBounds(335, 563, 89, 23);
 		contentPane.add(btnCancel);
 		

@@ -14,18 +14,23 @@ import java.awt.Font;
 import javax.swing.JOptionPane;
 import javax.swing.JSeparator;
 import javax.swing.JPasswordField;
-import main.java.com.photobay.xmppClient.xmppConnectionHandler;
+
+import org.jivesoftware.smack.XMPPException;
+
+import main.java.com.photobay.xmppClient.XmppConnectionHandler;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class LoginFrame extends JFrame {
 	
 	private static final long serialVersionUID = 1L;
 	
-	private xmppConnectionHandler cn;
+	//private XmppConnectionHandler cn;
 
 	private JPanel contentPane;
 	private JTextField txtHost;
-	private JTextField txtUsername;
-	private JPasswordField txtPassword;
+	public JTextField txtUsername;
+	public JPasswordField txtPassword;
 	private JTextField txtPort;
 
 	/**
@@ -44,6 +49,33 @@ public class LoginFrame extends JFrame {
 //		});
 //	}
 
+	private String getPassword()
+	{
+		String pw = "";
+		for(char c : txtPassword.getPassword())
+			pw += c;
+		
+		return pw;
+	}
+	
+	private XmppConnectionHandler connect()
+	{
+		XmppConnectionHandler cn;
+		try
+		{
+			int portInt = Integer.parseInt(txtPort.getText()); 
+			cn = new XmppConnectionHandler(txtHost.getText(), portInt);
+			return cn;
+		}
+		catch(XMPPException ex)
+		{
+			JOptionPane.showMessageDialog(LoginFrame.this, ex.getMessage(), "Error", 
+					JOptionPane.ERROR_MESSAGE);
+			return null;
+		}
+
+	}
+	
 	/**
 	 * Create the frame.
 	 */
@@ -59,40 +91,34 @@ public class LoginFrame extends JFrame {
 		JButton btnOk = new JButton("Ok");
 		btnOk.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				try
-				{ 
-					int portInt = Integer.parseInt(txtPort.getText()); 
-					cn = new xmppConnectionHandler(txtHost.getText(), portInt);
-					String pw = "";
-					for(char c : txtPassword.getPassword())
-						pw += c;
-					
-					if(cn.isConnected())
+				XmppConnectionHandler cn = connect();
+				String pw = getPassword();
+				
+				if(cn != null && cn.isConnected())
+				{
+					if(cn.login(txtUsername.getText(), pw))
 					{
-						if(cn.login(txtUsername.getText(), pw))
-						{
-							JOptionPane.showMessageDialog(LoginFrame.this, "Anmeldung erfolgreich."
-									, "Anmeldung erfolgreich", JOptionPane.INFORMATION_MESSAGE);
-						}
-						else
-							JOptionPane.showMessageDialog(LoginFrame.this, "Anmeldung fehlgeschlagen. Bitte Passwort und Username prüfen!"
-									, "Anmeldung fehlgeschlagen", JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(LoginFrame.this, "Anmeldung erfolgreich."
+								, "Anmeldung erfolgreich", JOptionPane.INFORMATION_MESSAGE);
 					}
 					else
-						JOptionPane.showMessageDialog(LoginFrame.this, "Keine Verbindung zum Server!"
-								, "Keine Verbindung", JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(LoginFrame.this, "Anmeldung fehlgeschlagen. Bitte Passwort und Username prüfen!"
+								, "Anmeldung fehlgeschlagen", JOptionPane.ERROR_MESSAGE);
 				}
-				catch (Exception ex) 
-				{
-					JOptionPane.showMessageDialog(LoginFrame.this, ex.getMessage(), "Error", 
-							JOptionPane.ERROR_MESSAGE);
-				}
+				else
+					JOptionPane.showMessageDialog(LoginFrame.this, "Keine Verbindung zum Server!"
+							, "Keine Verbindung", JOptionPane.ERROR_MESSAGE);
 			}
 		});
 		btnOk.setBounds(245, 182, 89, 23);
 		contentPane.add(btnOk);
 		
 		JButton btnCancel = new JButton("Cancel");
+		btnCancel.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				LoginFrame.this.dispose();
+			}
+		});
 		btnCancel.setBounds(344, 182, 89, 23);
 		contentPane.add(btnCancel);
 		
@@ -146,7 +172,17 @@ public class LoginFrame extends JFrame {
 		
 		JButton btnRegister = new JButton("Register");
 		btnRegister.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
+			public void actionPerformed(ActionEvent e) {
+				RegisterFrame frame = new RegisterFrame();
+				if(!txtUsername.getText().isEmpty() && !txtHost.getText().isEmpty() && !txtPort.getText().isEmpty() && 
+						!getPassword().isEmpty())
+				{
+					frame.password = getPassword();
+					frame.username = txtUsername.getText();
+					frame.setVisible(true);
+					LoginFrame.this.setVisible(false);
+					LoginFrame.this.dispose();
+				}
 			}
 		});
 		btnRegister.setBounds(10, 182, 100, 23);
