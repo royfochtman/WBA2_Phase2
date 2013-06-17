@@ -2,7 +2,7 @@ package main.java.com.photobay.util;
 
 import java.io.File;
 
-/*
+/**
  * This class generates IDs for the ressources (Photographer, PressAgencies, PhotoSells and Jobs)
  */
 public class IdGenerator {
