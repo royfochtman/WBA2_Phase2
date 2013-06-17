@@ -15,4 +15,5 @@
 			<xs:attribute name="ref" type="xs:anyURI" use="required"/>
 		</xs:complexType>
     </xs:element>
+    
 </xs:schema>
