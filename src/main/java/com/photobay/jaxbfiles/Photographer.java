@@ -8,12 +8,19 @@
 
 package main.java.com.photobay.jaxbfiles;
 
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.List;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 
 
@@ -74,6 +81,22 @@ public class Photographer {
     @XmlAttribute(name = "registrationDate", required = true)
     @XmlSchemaType(name = "date")
     protected XMLGregorianCalendar registrationDate;
+    
+
+    public Photographer(SexEnum sex, String firstName, String lastName, String username, int[] birthdate, String street, String houseNumber,
+    		int postalCode, String city, String country, String email)
+    {
+    	this.sex = sex;
+    	this.firstname = firstName;
+    	this.lastname = lastName;
+    	try
+    	{
+    		this.birthdate = DatatypeFactory.newInstance().newXMLGregorianCalendar(birthdate[0], 
+	    			birthdate[1], birthdate[2], 0, 0, 0, 0, 0);
+    	}catch(DatatypeConfigurationException ex){}
+    	GeneralPersonalDataType gd = new GeneralPersonalDataType(username, email, street, houseNumber, postalCode, city, country);
+    	this.generalPersonalData = gd;
+    }
 
     /**
      * Ruft den Wert der firstname-Eigenschaft ab.

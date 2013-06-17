@@ -2,7 +2,7 @@
 // Diese Datei wurde mit der JavaTM Architecture for XML Binding(JAXB) Reference Implementation, v2.2.6 generiert 
 // Siehe <a href="http://java.sun.com/xml/jaxb">http://java.sun.com/xml/jaxb</a> 
 // Änderungen an dieser Datei gehen bei einer Neukompilierung des Quellschemas verloren. 
-// Generiert: 2013.06.15 um 03:35:52 PM CEST 
+// Generiert: 2013.06.17 um 10:14:58 PM CEST 
 //
 
 
@@ -40,11 +40,11 @@ import javax.xml.bind.annotation.XmlType;
  *             &lt;/complexContent>
  *           &lt;/complexType>
  *         &lt;/element>
+ *         &lt;element name="username" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="email" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="phone" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="description" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="website" type="{http://www.w3.org/2001/XMLSchema}anyURI"/>
- *         &lt;element name="password" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -56,21 +56,40 @@ import javax.xml.bind.annotation.XmlType;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "generalPersonalDataType", propOrder = {
     "address",
+    "username",
     "email",
     "phone",
     "description",
-    "website",
-    "password"
+    "website"
 })
 public class GeneralPersonalDataType {
 
     protected GeneralPersonalDataType.Address address;
+    protected String username;
     protected String email;
     protected String phone;
     protected String description;
     @XmlSchemaType(name = "anyURI")
     protected String website;
-    protected String password;
+    
+    public GeneralPersonalDataType(String username, String email, String street, String houseNumber, int postalCode, String city,
+    		String country)
+    {
+    	this.username = username;
+    	this.email = email;
+    	Address add = new Address();
+    	add.city = city;
+    	add.country = country;
+    	add.street = street;
+    	add.houseNumber = houseNumber;
+    	add.postalCode = postalCode;
+    	this.address = add;
+    	
+    }
+    
+    public GeneralPersonalDataType()
+    {
+    }
 
     /**
      * Ruft den Wert der address-Eigenschaft ab.
@@ -94,6 +113,30 @@ public class GeneralPersonalDataType {
      */
     public void setAddress(GeneralPersonalDataType.Address value) {
         this.address = value;
+    }
+
+    /**
+     * Ruft den Wert der username-Eigenschaft ab.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getUsername() {
+        return username;
+    }
+
+    /**
+     * Legt den Wert der username-Eigenschaft fest.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setUsername(String value) {
+        this.username = value;
     }
 
     /**
@@ -190,30 +233,6 @@ public class GeneralPersonalDataType {
      */
     public void setWebsite(String value) {
         this.website = value;
-    }
-
-    /**
-     * Ruft den Wert der password-Eigenschaft ab.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getPassword() {
-        return password;
-    }
-
-    /**
-     * Legt den Wert der password-Eigenschaft fest.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setPassword(String value) {
-        this.password = value;
     }
 
 

@@ -19,14 +19,18 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import javax.swing.JButton;
 import javax.swing.border.LineBorder;
+import javax.xml.datatype.DatatypeFactory;
 
 import main.java.com.photobay.jaxbfiles.Photographer;
+import main.java.com.photobay.jaxbfiles.SexEnum;
 import main.java.com.photobay.xmppClient.XmppConnectionHandler;
 
 import java.awt.Color;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Window.Type;
+import java.util.Calendar;
+import java.util.List;
 
 public class RegisterFrame extends JFrame {
 
@@ -48,6 +52,10 @@ public class RegisterFrame extends JFrame {
 	private JRadioButton rdbtnPressAgeny;
 	private JRadioButton rdbtnMale;
 	private JRadioButton rdbtnFemale;
+	private JComboBox<Integer> cbDay;
+	private JComboBox<Integer> cbMonth;
+	private JComboBox<Integer> cbYear;
+	private JComboBox<String> cbCountry;
 	
 	public String username = null;
 	public String password = null;
@@ -130,21 +138,21 @@ public class RegisterFrame extends JFrame {
 		lblBirthdate.setBounds(16, 90, 66, 14);
 		photographerPanel.add(lblBirthdate);
 		
-		JComboBox<Integer> cbDay = new JComboBox<Integer>();
+		cbDay = new JComboBox<Integer>();
 		cbDay.setModel(new DefaultComboBoxModel<Integer>(new Integer[] {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31}));
 		cbDay.setSelectedIndex(0);
 		cbDay.setMaximumRowCount(31);
 		cbDay.setBounds(118, 87, 51, 20);
 		photographerPanel.add(cbDay);
 		
-		JComboBox<Integer> cbMonth = new JComboBox<Integer>();
+		cbMonth = new JComboBox<Integer>();
 		cbMonth.setModel(new DefaultComboBoxModel<Integer>(new Integer[] {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12}));
 		cbMonth.setSelectedIndex(0);
 		cbMonth.setMaximumRowCount(12);
 		cbMonth.setBounds(179, 87, 51, 20);
 		photographerPanel.add(cbMonth);
 		
-		JComboBox<Integer> cbYear = new JComboBox<Integer>();		
+		cbYear = new JComboBox<Integer>();		
 		cbYear.setBounds(240, 87, 57, 20);
 		cbYear.setModel(new DefaultComboBoxModel<Integer>(new Integer[] {1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997}));
 		cbYear.setSelectedIndex(0);
@@ -262,7 +270,7 @@ public class RegisterFrame extends JFrame {
 		lblCountry.setBounds(6, 324, 46, 14);
 		contentPane.add(lblCountry);
 		
-		JComboBox<String> cbCountry = new JComboBox<String>();
+		cbCountry = new JComboBox<String>();
 		cbCountry.setModel(new DefaultComboBoxModel<String>(new String[] {"Germany", "USA", "Argentina"}));
 		cbCountry.setBounds(117, 321, 93, 20);
 		contentPane.add(cbCountry);
@@ -309,7 +317,16 @@ public class RegisterFrame extends JFrame {
 				{
 					if(rdbtnPhotographer.isSelected())
 					{
-						Photographer pho = new Photographer();
+						SexEnum sex = SexEnum.M;
+						if(rdbtnMale.isSelected())
+							sex = SexEnum.M;
+						if(rdbtnFemale.isSelected())
+							sex = SexEnum.W;
+						int[] birthdate = {cbYear.getItemAt(cbYear.getSelectedIndex()), cbMonth.getItemAt(cbMonth.getSelectedIndex()),
+								cbDay.getItemAt(cbDay.getSelectedIndex())};
+						Photographer pho = new Photographer(sex, txtFirstname.getText(), txtLastname.getText(), username, birthdate,
+								txtStreet.getText(), txtHouseNumber.getText(), Integer.parseInt(txtPostalCode.getText()), txtCity.getText(), 
+								cbCountry.getItemAt(cbCountry.getSelectedIndex()), txtEmail.getText());
 					}
 				}
 			}

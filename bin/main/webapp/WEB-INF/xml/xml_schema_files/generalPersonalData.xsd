@@ -19,6 +19,7 @@
 			</xs:element>
 			<!-- Die Felder Profilbild und Themenbereiche wurden erstmal rausgelassen.
 			Es muss noch definiert werden aus welchen Daten diese Felder bestehen -->
+			<xs:element name="username" type="xs:string" minOccurs="1"></xs:element>
 			<xs:element name="email" type="xs:string" minOccurs="1"></xs:element>
 			<xs:element name="phone" type="xs:string"></xs:element>
 			<xs:element name="description" type="xs:string"></xs:element>
@@ -29,7 +30,7 @@
       				<xs:field xpath="."/>
    				</xs:unique>
 			</xs:element>  -->
-			<xs:element name="password" type="xs:string" minOccurs="1"></xs:element>
+			<!-- <xs:element name="password" type="xs:string" minOccurs="1"></xs:element> -->
 			<!--  <xs:element name="rating" type="xs:int"></xs:element> -->
 		</xs:sequence>
 </xs:complexType>
