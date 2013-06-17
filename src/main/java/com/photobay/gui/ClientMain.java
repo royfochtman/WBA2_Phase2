@@ -28,7 +28,9 @@ public class ClientMain {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					LoginFrame frame = new LoginFrame();
+//					LoginFrame frame = new LoginFrame();
+//					frame.setVisible(true);
+					RegisterFrame frame = new RegisterFrame();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
