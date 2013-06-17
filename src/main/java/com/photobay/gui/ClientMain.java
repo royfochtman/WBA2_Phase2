@@ -2,6 +2,7 @@ package main.java.com.photobay.gui;
 
 import java.awt.EventQueue;
 
+import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
@@ -28,9 +29,7 @@ public class ClientMain {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-//					LoginFrame frame = new LoginFrame();
-//					frame.setVisible(true);
-					RegisterFrame frame = new RegisterFrame();
+					LoginFrame frame = new LoginFrame();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();

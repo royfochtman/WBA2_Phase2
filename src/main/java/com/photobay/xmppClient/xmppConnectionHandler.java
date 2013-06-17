@@ -20,13 +20,12 @@ import org.jivesoftware.smackx.pubsub.SimplePayload;
 import org.jivesoftware.smackx.pubsub.Subscription;
 import org.jivesoftware.smackx.pubsub.listener.ItemEventListener;
 
-public class xmppConnectionHandler {
+public class XmppConnectionHandler {
 
 	private XMPPConnection xmppConn;
 	private AccountManager accMan;
 	private String host = "localhost";
 	private int port = 5222;
-	private boolean connected = false;
 	private PubSubManager pubSubManager;
 	private final String NAMESPACE = "http://www.example.org/photoBay";
 	private ItemEventListener<Item> listener;
@@ -37,18 +36,16 @@ public class xmppConnectionHandler {
 	 * @param port
 	 * @throws XMPPException 
 	 */
-	public xmppConnectionHandler(String host, int port) throws XMPPException
+	public XmppConnectionHandler(String host, int port) throws XMPPException
 	{	
 		this.port = port;
 		this.host = host;
-				
-		if(connect())
-			connected = true;
+		connect();
 	}
 	
 	public boolean isConnected()
 	{
-		return this.connected;
+		return xmppConn.isConnected();
 	}
 	
 	/**
@@ -124,7 +121,6 @@ public class xmppConnectionHandler {
 			return false;
 			
 		xmppConn.disconnect();
-		connected = false;
 		return true;
 	}
 	
