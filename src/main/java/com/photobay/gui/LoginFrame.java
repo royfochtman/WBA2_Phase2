@@ -73,6 +73,13 @@ public class LoginFrame extends JFrame {
 					JOptionPane.ERROR_MESSAGE);
 			return null;
 		}
+		catch(NumberFormatException ex)
+		{
+			JOptionPane.showMessageDialog(LoginFrame.this, "Wrong port number! Please insert a valid port number!", "Error", 
+					JOptionPane.ERROR_MESSAGE);
+			return null;
+		}
+		
 
 	}
 	
@@ -173,16 +180,27 @@ public class LoginFrame extends JFrame {
 		JButton btnRegister = new JButton("Register");
 		btnRegister.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				RegisterFrame frame = new RegisterFrame();
 				if(!txtUsername.getText().isEmpty() && !txtHost.getText().isEmpty() && !txtPort.getText().isEmpty() && 
 						!getPassword().isEmpty())
 				{
-					frame.password = getPassword();
-					frame.username = txtUsername.getText();
-					frame.setVisible(true);
-					LoginFrame.this.setVisible(false);
-					LoginFrame.this.dispose();
+					XmppConnectionHandler cn = connect();
+					if(cn.isConnected())
+					{
+						RegisterFrame frame = new RegisterFrame();
+						frame.cnHandler = cn;
+						frame.password = getPassword();
+						frame.username = txtUsername.getText();
+						frame.setVisible(true);
+						LoginFrame.this.setVisible(false);
+						LoginFrame.this.dispose();
+					}
+					else
+						JOptionPane.showMessageDialog(LoginFrame.this, "Keine Verbindung zum Server!"
+								, "Keine Verbindung", JOptionPane.ERROR_MESSAGE);
 				}
+				else
+					JOptionPane.showMessageDialog(LoginFrame.this, "Incomplete data. Please fill out all fields.", "Error", 
+							JOptionPane.ERROR_MESSAGE);
 			}
 		});
 		btnRegister.setBounds(10, 182, 100, 23);

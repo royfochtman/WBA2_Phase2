@@ -19,6 +19,10 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import javax.swing.JButton;
 import javax.swing.border.LineBorder;
+
+import main.java.com.photobay.jaxbfiles.Photographer;
+import main.java.com.photobay.xmppClient.XmppConnectionHandler;
+
 import java.awt.Color;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -30,9 +34,9 @@ public class RegisterFrame extends JFrame {
 	private JTextField txtFirstname;
 	private JTextField txtLastname;
 	private JTextField txtStreet;
-	private JTextField textField_1;
+	private JTextField txtHouseNumber;
 	private JTextField txtPostalCode;
-	private JTextField textField;
+	private JTextField txtCity;
 	private JTextField txtEmail;
 	private JTextField txtPhone;
 	private JTextField txtWebsite;
@@ -40,9 +44,14 @@ public class RegisterFrame extends JFrame {
 	private JTextField txtMainLocation;
 	private JPanel photographerPanel;
 	private JPanel pressAgencyPanel;
+	private JRadioButton rdbtnPhotographer;
+	private JRadioButton rdbtnPressAgeny;
+	private JRadioButton rdbtnMale;
+	private JRadioButton rdbtnFemale;
 	
 	public String username = null;
 	public String password = null;
+	public XmppConnectionHandler cnHandler = null;
 
 	/**
 	 * Launch the application.
@@ -60,6 +69,28 @@ public class RegisterFrame extends JFrame {
 //		});
 //	}
 
+	private Boolean validateData()
+	{
+		Boolean valid = false;
+		if(rdbtnPhotographer.isSelected())
+		{
+			if((rdbtnMale.isSelected() || rdbtnFemale.isSelected()) && !txtFirstname.getText().isEmpty() 
+					&& !txtLastname.getText().isEmpty())
+				valid = true;
+		}
+		if(rdbtnPressAgeny.isSelected())
+		{
+			if(!txtName.getText().isEmpty() && !txtMainLocation.getText().isEmpty())
+				valid = true;
+		}
+		
+		if(txtStreet.getText().isEmpty() || txtHouseNumber.getText().isEmpty() || txtPostalCode.getText().isEmpty()
+				|| txtCity.getText().isEmpty() || txtEmail.getText().isEmpty())
+			valid = false;
+		
+		return valid;
+	}
+	
 	/**
 	 * Create the frame.
 	 */
@@ -119,11 +150,11 @@ public class RegisterFrame extends JFrame {
 		cbYear.setSelectedIndex(0);
 		photographerPanel.add(cbYear);
 		
-		JRadioButton rdbtnMale = new JRadioButton("Male");
+		rdbtnMale = new JRadioButton("Male");
 		rdbtnMale.setBounds(16, 7, 95, 23);
 		photographerPanel.add(rdbtnMale);
 		
-		JRadioButton rdbtnFemale = new JRadioButton("Female");
+		rdbtnFemale = new JRadioButton("Female");
 		rdbtnFemale.setBounds(115, 7, 109, 23);
 		photographerPanel.add(rdbtnFemale);
 
@@ -136,7 +167,7 @@ public class RegisterFrame extends JFrame {
 		txtEquipment.setBounds(118, 109, 179, 109);
 		photographerPanel.add(txtEquipment);
 		
-		JRadioButton rdbtnPhotographer = new JRadioButton("Photographer");
+		rdbtnPhotographer = new JRadioButton("Photographer");
 		rdbtnPhotographer.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				photographerPanel.setVisible(true);
@@ -147,7 +178,7 @@ public class RegisterFrame extends JFrame {
 		rdbtnPhotographer.setBounds(6, 7, 109, 23);
 		contentPane.add(rdbtnPhotographer);
 		
-		JRadioButton rdbtnPressAgeny = new JRadioButton("Press Ageny");
+		rdbtnPressAgeny = new JRadioButton("Press Ageny");
 		rdbtnPressAgeny.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				photographerPanel.setVisible(false);
@@ -208,10 +239,10 @@ public class RegisterFrame extends JFrame {
 		contentPane.add(txtStreet);
 		txtStreet.setColumns(10);
 		
-		textField_1 = new JTextField();
-		textField_1.setBounds(371, 274, 53, 20);
-		contentPane.add(textField_1);
-		textField_1.setColumns(10);
+		txtHouseNumber = new JTextField();
+		txtHouseNumber.setBounds(371, 274, 53, 20);
+		contentPane.add(txtHouseNumber);
+		txtHouseNumber.setColumns(10);
 		
 		JLabel lblPostalCode = new JLabel("Postal Code/City:");
 		lblPostalCode.setBounds(6, 302, 109, 14);
@@ -222,10 +253,10 @@ public class RegisterFrame extends JFrame {
 		contentPane.add(txtPostalCode);
 		txtPostalCode.setColumns(10);
 		
-		textField = new JTextField();
-		textField.setBounds(220, 299, 141, 20);
-		contentPane.add(textField);
-		textField.setColumns(10);
+		txtCity = new JTextField();
+		txtCity.setBounds(220, 299, 141, 20);
+		contentPane.add(txtCity);
+		txtCity.setColumns(10);
 		
 		JLabel lblCountry = new JLabel("Country:");
 		lblCountry.setBounds(6, 324, 46, 14);
@@ -258,9 +289,9 @@ public class RegisterFrame extends JFrame {
 		lblDescription.setBounds(6, 424, 83, 14);
 		contentPane.add(lblDescription);
 		
-		JTextArea textArea = new JTextArea();
-		textArea.setBounds(117, 419, 307, 98);
-		contentPane.add(textArea);
+		JTextArea txtDescription = new JTextArea();
+		txtDescription.setBounds(117, 419, 307, 98);
+		contentPane.add(txtDescription);
 		
 		JLabel lblWebsite = new JLabel("Website*:");
 		lblWebsite.setBounds(6, 399, 83, 14);
@@ -272,6 +303,17 @@ public class RegisterFrame extends JFrame {
 		txtWebsite.setColumns(10);
 		
 		JButton btnOk = new JButton("Ok");
+		btnOk.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(validateData())
+				{
+					if(rdbtnPhotographer.isSelected())
+					{
+						Photographer pho = new Photographer();
+					}
+				}
+			}
+		});
 		btnOk.setBounds(236, 563, 89, 23);
 		contentPane.add(btnOk);
 		
