@@ -6,7 +6,7 @@
 			<xs:all maxOccurs="1" minOccurs="1">
 				<xs:element name="name" type="xs:string"/>
 				<xs:element name="mainLocation" type="xs:string"/>
-				<xs:element name="dateOfCreation" type="xs:date"/>
+				<xs:element name="yearOfEstablishment" type="xs:int"/>
 				<xs:element name="generalPersonalData" type="pre:generalPersonalDataType"/>
 			</xs:all> 
 		<xs:attribute name="ref" type="xs:anyURI" use="required"/>

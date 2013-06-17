@@ -143,5 +143,13 @@ public class LoginFrame extends JFrame {
 		txtPort.setBounds(314, 28, 86, 20);
 		contentPane.add(txtPort);
 		txtPort.setColumns(10);
+		
+		JButton btnRegister = new JButton("Register");
+		btnRegister.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+			}
+		});
+		btnRegister.setBounds(10, 182, 100, 23);
+		contentPane.add(btnRegister);
 	}
 }

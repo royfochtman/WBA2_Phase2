@@ -25,7 +25,7 @@ public class xmppConnectionHandler {
 	private XMPPConnection xmppConn;
 	private AccountManager accMan;
 	private String host = "localhost";
-	private int port = 9090;
+	private int port = 5222;
 	private boolean connected = false;
 	private PubSubManager pubSubManager;
 	private final String NAMESPACE = "http://www.example.org/photoBay";
@@ -39,8 +39,9 @@ public class xmppConnectionHandler {
 	 */
 	public xmppConnectionHandler(String host, int port) throws XMPPException
 	{	
-		this.host = host;
 		this.port = port;
+		this.host = host;
+				
 		if(connect())
 			connected = true;
 	}
