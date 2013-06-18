@@ -301,4 +301,9 @@ public class XmppConnectionHandler {
 			return false;
 		}
 	}
+	
+	public String getHost()
+	{
+		return xmppConn.getHost();
+	}
 }

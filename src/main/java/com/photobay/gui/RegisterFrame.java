@@ -13,15 +13,12 @@ import javax.swing.JTextField;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.border.LineBorder;
-import javax.ws.rs.core.Response;
-
 import main.java.com.photobay.jaxbfiles.Photographer;
 import main.java.com.photobay.jaxbfiles.SexEnum;
 import main.java.com.photobay.xmppClient.XmppConnectionHandler;
 import java.awt.Color;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import main.java.com.photobay.webservice.PhotographersService;
 
 public class RegisterFrame extends JFrame {
 
@@ -226,7 +223,7 @@ public class RegisterFrame extends JFrame {
 						
 						pho.getGeneralPersonalData().setUsername(username);
 						
-						Response res = PhotographersService.postPhotographer(pho);
+						//Client.create().resource(cnHandler.getHost())
 					}
 				}
 			}

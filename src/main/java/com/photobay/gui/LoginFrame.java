@@ -18,8 +18,7 @@ import javax.swing.JPasswordField;
 import org.jivesoftware.smack.XMPPException;
 
 import main.java.com.photobay.xmppClient.XmppConnectionHandler;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+
 
 public class LoginFrame extends JFrame {
 	
