@@ -234,13 +234,13 @@ public class UserFrame extends JFrame {
 		btnUpdateJob.setBounds(269, 326, 89, 23);
 		panelJob.add(btnUpdateJob);
 		
-		JButton btnDelete = new JButton("Delete");
-		btnDelete.addActionListener(new ActionListener() {
+		JButton btnDeleteJob = new JButton("Delete");
+		btnDeleteJob.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 			}
 		});
-		btnDelete.setBounds(467, 326, 89, 23);
-		panelJob.add(btnDelete);
+		btnDeleteJob.setBounds(467, 326, 89, 23);
+		panelJob.add(btnDeleteJob);
 		
 		JLabel lblJobName = new JLabel("Job Name:");
 		lblJobName.setFont(new Font("Tahoma", Font.BOLD, 11));
