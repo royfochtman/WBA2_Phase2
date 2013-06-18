@@ -1,9 +1,9 @@
 package main.java.com.photobay.xmppClient;
 
-public class xmppConfig {
+public class XmppConfig {
 	 public static String hostname = "localhost";
-	 public static int port = 9090;
+	 public static int port = 5222;
 	 
-	 private xmppConfig(){
+	 private XmppConfig(){
 	 };
 }

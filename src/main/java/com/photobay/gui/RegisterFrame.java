@@ -1,7 +1,5 @@
 package main.java.com.photobay.gui;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JFrame;
@@ -13,27 +11,24 @@ import javax.swing.JLabel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.DefaultComboBoxModel;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
 import javax.swing.JButton;
 import javax.swing.border.LineBorder;
-import javax.xml.datatype.DatatypeFactory;
+import javax.ws.rs.core.Response;
 
 import main.java.com.photobay.jaxbfiles.Photographer;
 import main.java.com.photobay.jaxbfiles.SexEnum;
 import main.java.com.photobay.xmppClient.XmppConnectionHandler;
-
 import java.awt.Color;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import java.awt.Window.Type;
-import java.util.Calendar;
-import java.util.List;
+import main.java.com.photobay.webservice.PhotographersService;
 
 public class RegisterFrame extends JFrame {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JTextField txtFirstname;
 	private JTextField txtLastname;
@@ -103,77 +98,14 @@ public class RegisterFrame extends JFrame {
 	 * Create the frame.
 	 */
 	public RegisterFrame() {
+		setResizable(false);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setTitle("Register");
 		setBounds(100, 100, 450, 635);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-		
-		photographerPanel = new JPanel();
-		photographerPanel.setBorder(new LineBorder(new Color(0, 0, 0)));
-		photographerPanel.setBounds(6, 37, 418, 229);
-		contentPane.add(photographerPanel);
-		photographerPanel.setLayout(null);
-		
-		JLabel lblFirstname = new JLabel("Firstname:");
-		lblFirstname.setBounds(16, 40, 66, 14);
-		photographerPanel.add(lblFirstname);
-		
-		JLabel lblLastname = new JLabel("Lastname:");
-		lblLastname.setBounds(16, 65, 66, 14);
-		photographerPanel.add(lblLastname);
-		
-		txtFirstname = new JTextField();
-		txtFirstname.setBounds(118, 37, 179, 20);
-		photographerPanel.add(txtFirstname);
-		txtFirstname.setColumns(10);
-		
-		txtLastname = new JTextField();
-		txtLastname.setBounds(118, 62, 179, 20);
-		photographerPanel.add(txtLastname);
-		txtLastname.setColumns(10);
-		
-		JLabel lblBirthdate = new JLabel("Birthdate:");
-		lblBirthdate.setBounds(16, 90, 66, 14);
-		photographerPanel.add(lblBirthdate);
-		
-		cbDay = new JComboBox<Integer>();
-		cbDay.setModel(new DefaultComboBoxModel<Integer>(new Integer[] {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31}));
-		cbDay.setSelectedIndex(0);
-		cbDay.setMaximumRowCount(31);
-		cbDay.setBounds(118, 87, 51, 20);
-		photographerPanel.add(cbDay);
-		
-		cbMonth = new JComboBox<Integer>();
-		cbMonth.setModel(new DefaultComboBoxModel<Integer>(new Integer[] {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12}));
-		cbMonth.setSelectedIndex(0);
-		cbMonth.setMaximumRowCount(12);
-		cbMonth.setBounds(179, 87, 51, 20);
-		photographerPanel.add(cbMonth);
-		
-		cbYear = new JComboBox<Integer>();		
-		cbYear.setBounds(240, 87, 57, 20);
-		cbYear.setModel(new DefaultComboBoxModel<Integer>(new Integer[] {1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997}));
-		cbYear.setSelectedIndex(0);
-		photographerPanel.add(cbYear);
-		
-		rdbtnMale = new JRadioButton("Male");
-		rdbtnMale.setBounds(16, 7, 95, 23);
-		photographerPanel.add(rdbtnMale);
-		
-		rdbtnFemale = new JRadioButton("Female");
-		rdbtnFemale.setBounds(115, 7, 109, 23);
-		photographerPanel.add(rdbtnFemale);
-
-		
-		JLabel lblEquipment = new JLabel("Equipment:");
-		lblEquipment.setBounds(16, 114, 66, 14);
-		photographerPanel.add(lblEquipment);
-		
-		JTextArea txtEquipment = new JTextArea();
-		txtEquipment.setBounds(118, 109, 179, 109);
-		photographerPanel.add(txtEquipment);
 		
 		rdbtnPhotographer = new JRadioButton("Photographer");
 		rdbtnPhotographer.addActionListener(new ActionListener() {
@@ -201,42 +133,6 @@ public class RegisterFrame extends JFrame {
 		group.add(rdbtnPhotographer);
 		
 		ButtonGroup sexGroup = new ButtonGroup();
-		sexGroup.add(rdbtnMale);
-		sexGroup.add(rdbtnFemale);
-		
-		pressAgencyPanel = new JPanel();
-		pressAgencyPanel.setVisible(false);
-		pressAgencyPanel.setBounds(6, 37, 418, 229);
-		contentPane.add(pressAgencyPanel);
-		pressAgencyPanel.setLayout(null);
-		
-		JLabel lblName = new JLabel("Name:");
-		lblName.setBounds(10, 11, 46, 14);
-		pressAgencyPanel.add(lblName);
-		
-		txtName = new JTextField();
-		txtName.setBounds(136, 8, 206, 20);
-		pressAgencyPanel.add(txtName);
-		txtName.setColumns(10);
-		
-		JLabel lblMainLocation = new JLabel("Main Location:");
-		lblMainLocation.setBounds(10, 35, 76, 14);
-		pressAgencyPanel.add(lblMainLocation);
-		
-		txtMainLocation = new JTextField();
-		txtMainLocation.setBounds(136, 32, 206, 20);
-		pressAgencyPanel.add(txtMainLocation);
-		txtMainLocation.setColumns(10);
-		
-		JLabel lblYearOfEstablishment = new JLabel("Year of Establishment:");
-		lblYearOfEstablishment.setBounds(10, 60, 108, 20);
-		pressAgencyPanel.add(lblYearOfEstablishment);
-		
-		JComboBox<Integer> cbYearOfEstablishment = new JComboBox<Integer>();
-		cbYearOfEstablishment.setBounds(136, 60, 67, 20);
-		cbYearOfEstablishment.setModel(new DefaultComboBoxModel<Integer>(new Integer[] {1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997}));
-		cbYearOfEstablishment.setSelectedIndex(0);
-		pressAgencyPanel.add(cbYearOfEstablishment);
 		
 		JLabel lblStreet = new JLabel("Street/No.:");
 		lblStreet.setBounds(6, 277, 83, 14);
@@ -267,7 +163,7 @@ public class RegisterFrame extends JFrame {
 		txtCity.setColumns(10);
 		
 		JLabel lblCountry = new JLabel("Country:");
-		lblCountry.setBounds(6, 324, 46, 14);
+		lblCountry.setBounds(6, 324, 66, 14);
 		contentPane.add(lblCountry);
 		
 		cbCountry = new JComboBox<String>();
@@ -327,6 +223,10 @@ public class RegisterFrame extends JFrame {
 						Photographer pho = new Photographer(sex, txtFirstname.getText(), txtLastname.getText(), username, birthdate,
 								txtStreet.getText(), txtHouseNumber.getText(), Integer.parseInt(txtPostalCode.getText()), txtCity.getText(), 
 								cbCountry.getItemAt(cbCountry.getSelectedIndex()), txtEmail.getText());
+						
+						pho.getGeneralPersonalData().setUsername(username);
+						
+						Response res = PhotographersService.postPhotographer(pho);
 					}
 				}
 			}
@@ -343,6 +243,107 @@ public class RegisterFrame extends JFrame {
 		});
 		btnCancel.setBounds(335, 563, 89, 23);
 		contentPane.add(btnCancel);
+				
+				pressAgencyPanel = new JPanel();
+				pressAgencyPanel.setVisible(false);
+				pressAgencyPanel.setBounds(6, 37, 418, 229);
+				contentPane.add(pressAgencyPanel);
+				pressAgencyPanel.setLayout(null);
+				
+				JLabel lblName = new JLabel("Name:");
+				lblName.setBounds(10, 11, 46, 14);
+				pressAgencyPanel.add(lblName);
+				
+				txtName = new JTextField();
+				txtName.setBounds(146, 8, 206, 20);
+				pressAgencyPanel.add(txtName);
+				txtName.setColumns(10);
+				
+				JLabel lblMainLocation = new JLabel("Main Location:");
+				lblMainLocation.setBounds(10, 35, 103, 14);
+				pressAgencyPanel.add(lblMainLocation);
+				
+				txtMainLocation = new JTextField();
+				txtMainLocation.setBounds(146, 32, 206, 20);
+				pressAgencyPanel.add(txtMainLocation);
+				txtMainLocation.setColumns(10);
+				
+				JLabel lblYearOfEstablishment = new JLabel("Year of Establishment:");
+				lblYearOfEstablishment.setBounds(10, 60, 134, 20);
+				pressAgencyPanel.add(lblYearOfEstablishment);
+				
+				JComboBox<Integer> cbYearOfEstablishment = new JComboBox<Integer>();
+				cbYearOfEstablishment.setBounds(146, 60, 67, 20);
+				cbYearOfEstablishment.setModel(new DefaultComboBoxModel<Integer>(new Integer[] {1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997}));
+				cbYearOfEstablishment.setSelectedIndex(0);
+				pressAgencyPanel.add(cbYearOfEstablishment);
+				
+				photographerPanel = new JPanel();
+				photographerPanel.setBorder(new LineBorder(new Color(0, 0, 0)));
+				photographerPanel.setBounds(6, 37, 418, 229);
+				contentPane.add(photographerPanel);
+				photographerPanel.setLayout(null);
+				
+				JLabel lblFirstname = new JLabel("Firstname:");
+				lblFirstname.setBounds(16, 40, 66, 14);
+				photographerPanel.add(lblFirstname);
+				
+				JLabel lblLastname = new JLabel("Lastname:");
+				lblLastname.setBounds(16, 65, 66, 14);
+				photographerPanel.add(lblLastname);
+				
+				txtFirstname = new JTextField();
+				txtFirstname.setBounds(118, 37, 179, 20);
+				photographerPanel.add(txtFirstname);
+				txtFirstname.setColumns(10);
+				
+				txtLastname = new JTextField();
+				txtLastname.setBounds(118, 62, 179, 20);
+				photographerPanel.add(txtLastname);
+				txtLastname.setColumns(10);
+				
+				JLabel lblBirthdate = new JLabel("Birthdate:");
+				lblBirthdate.setBounds(16, 90, 66, 14);
+				photographerPanel.add(lblBirthdate);
+				
+				cbDay = new JComboBox<Integer>();
+				cbDay.setModel(new DefaultComboBoxModel<Integer>(new Integer[] {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31}));
+				cbDay.setSelectedIndex(0);
+				cbDay.setMaximumRowCount(31);
+				cbDay.setBounds(118, 87, 51, 20);
+				photographerPanel.add(cbDay);
+				
+				cbMonth = new JComboBox<Integer>();
+				cbMonth.setModel(new DefaultComboBoxModel<Integer>(new Integer[] {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12}));
+				cbMonth.setSelectedIndex(0);
+				cbMonth.setMaximumRowCount(12);
+				cbMonth.setBounds(179, 87, 51, 20);
+				photographerPanel.add(cbMonth);
+				
+				cbYear = new JComboBox<Integer>();		
+				cbYear.setBounds(240, 87, 57, 20);
+				cbYear.setModel(new DefaultComboBoxModel<Integer>(new Integer[] {1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997}));
+				cbYear.setSelectedIndex(0);
+				photographerPanel.add(cbYear);
+				
+				rdbtnMale = new JRadioButton("Male");
+				rdbtnMale.setBounds(16, 7, 95, 23);
+				photographerPanel.add(rdbtnMale);
+				
+				rdbtnFemale = new JRadioButton("Female");
+				rdbtnFemale.setBounds(115, 7, 109, 23);
+				photographerPanel.add(rdbtnFemale);
+				
+						
+						JLabel lblEquipment = new JLabel("Equipment:");
+						lblEquipment.setBounds(16, 114, 66, 14);
+						photographerPanel.add(lblEquipment);
+						
+						JTextArea txtEquipment = new JTextArea();
+						txtEquipment.setBounds(118, 109, 179, 109);
+						photographerPanel.add(txtEquipment);
+						sexGroup.add(rdbtnMale);
+						sexGroup.add(rdbtnFemale);
 		
 	}
 }

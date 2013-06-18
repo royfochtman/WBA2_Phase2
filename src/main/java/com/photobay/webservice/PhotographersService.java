@@ -14,11 +14,13 @@ import main.java.com.photobay.jaxbfiles.Photographers;
 
 @Path("/photographers")
 public class PhotographersService {
+
+	private PhotographersService(){}
 	
 	@GET
 	@Path("/{id}")
 	@Produces({"application/xml"})
-	public Response getPhotographer(@PathParam("id") int id)
+	public static Response getPhotographer(@PathParam("id") int id)
 	{
 		Photographer photographer = PhotoBayRessourceManager.getPhotographer(id);
 		if(photographer == null)
@@ -32,7 +34,7 @@ public class PhotographersService {
 	@POST
 	//@Path("/photographers")
 	@Consumes({"application/xml"})
-	public Response postPhotographer(Photographer photographer)
+	public static Response postPhotographer(Photographer photographer)
 	{
 		if(PhotoBayRessourceManager.postPhotographer(photographer))
 		{
@@ -43,7 +45,7 @@ public class PhotographersService {
 	
 	@DELETE
 	@Path("{id}")
-	public Response deletePhotographer(@PathParam("id") int id)
+	public static Response deletePhotographer(@PathParam("id") int id)
 	{
 		if(PhotoBayRessourceManager.deletePhotographer(id))
 		{
@@ -55,7 +57,7 @@ public class PhotographersService {
 	
 	@GET
 	@Produces({"application/xml"})
-	public Response getPhotographersList()
+	public static Response getPhotographersList()
 	{
 		Photographers photographersList = PhotoBayRessourceManager.getPhotographersList();
 		if(photographersList == null)
