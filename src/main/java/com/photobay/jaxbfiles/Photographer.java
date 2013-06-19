@@ -11,6 +11,7 @@ package main.java.com.photobay.jaxbfiles;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
@@ -53,14 +54,19 @@ import javax.xml.datatype.XMLGregorianCalendar;
 
 })
 @XmlRootElement(name = "photographer")
-public class Photographer {
+public class Photographer{
 
+	@XmlElement(required = true)
     protected String firstname;
+	@XmlElement(required = true)
     protected String lastname;
+	@XmlElement(required = true)
     @XmlSchemaType(name = "date")
     protected XMLGregorianCalendar birthdate;
+	@XmlElement(required = true)
     protected SexEnum sex;
     protected String equipment;
+    @XmlElement(required = true)
     protected GeneralPersonalDataType generalPersonalData;
     @XmlAttribute(name = "ref", required = true)
     @XmlSchemaType(name = "anyURI")
@@ -352,5 +358,4 @@ public class Photographer {
     public void setRegistrationDate(XMLGregorianCalendar value) {
         this.registrationDate = value;
     }
-
 }

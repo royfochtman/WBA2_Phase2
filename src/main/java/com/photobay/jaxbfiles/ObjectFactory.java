@@ -1,10 +1,3 @@
-//
-// Diese Datei wurde mit der JavaTM Architecture for XML Binding(JAXB) Reference Implementation, v2.2.6 generiert 
-// Siehe <a href="http://java.sun.com/xml/jaxb">http://java.sun.com/xml/jaxb</a> 
-// Änderungen an dieser Datei gehen bei einer Neukompilierung des Quellschemas verloren. 
-// Generiert: 2013.06.19 um 11:24:57 AM CEST 
-//
-
 
 package main.java.com.photobay.jaxbfiles;
 
@@ -45,11 +38,11 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link PressAgency }
+     * Create an instance of {@link Photographer }
      * 
      */
-    public PressAgency createPressAgency() {
-        return new PressAgency();
+    public Photographer createPhotographer() {
+        return new Photographer();
     }
 
     /**
