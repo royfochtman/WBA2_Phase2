@@ -25,4 +25,9 @@
         <lastName>ewfe</lastName>
         <uri>.\photographers\5</uri>
     </photographerRef>
+    <photographerRef>
+        <firstName>David</firstName>
+        <lastName>Wachs</lastName>
+        <uri>.\photographers\6</uri>
+    </photographerRef>
 </photographers>

@@ -2,7 +2,7 @@
 // Diese Datei wurde mit der JavaTM Architecture for XML Binding(JAXB) Reference Implementation, v2.2.6 generiert 
 // Siehe <a href="http://java.sun.com/xml/jaxb">http://java.sun.com/xml/jaxb</a> 
 // Änderungen an dieser Datei gehen bei einer Neukompilierung des Quellschemas verloren. 
-// Generiert: 2013.06.15 um 02:16:00 PM CEST 
+// Generiert: 2013.06.19 um 11:24:57 AM CEST 
 //
 
 
@@ -30,7 +30,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
  *       &lt;all>
  *         &lt;element name="name" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="mainLocation" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="dateOfCreation" type="{http://www.w3.org/2001/XMLSchema}date"/>
+ *         &lt;element name="yearOfEstablishment" type="{http://www.w3.org/2001/XMLSchema}int"/>
  *         &lt;element name="generalPersonalData" type="{http://www.example.org/photoBay}generalPersonalDataType"/>
  *       &lt;/all>
  *       &lt;attribute name="ref" use="required" type="{http://www.w3.org/2001/XMLSchema}anyURI" />
@@ -51,14 +51,24 @@ import javax.xml.datatype.XMLGregorianCalendar;
 })
 @XmlRootElement(name = "pressAgency")
 public class PressAgency {
+	
+	public PressAgency(){};
+	
+	public PressAgency(String username, String name, String mainLocation, int yearOfEstablishment, String street, String houseNumber,
+    		int postalCode, String city, String country, String email)
+	{
+		this.name = name;
+		this.mainLocation = mainLocation;
+		this.yearOfEstablishment = yearOfEstablishment;
+		GeneralPersonalDataType gt = new GeneralPersonalDataType(username, email, street, houseNumber, postalCode, city, country);
+		this.generalPersonalData = gt;
+	}
 
     @XmlElement(required = true)
     protected String name;
     @XmlElement(required = true)
     protected String mainLocation;
-    @XmlElement(required = true)
-    @XmlSchemaType(name = "date")
-    protected XMLGregorianCalendar dateOfCreation;
+    protected int yearOfEstablishment;
     @XmlElement(required = true)
     protected GeneralPersonalDataType generalPersonalData;
     @XmlAttribute(name = "ref", required = true)
@@ -125,27 +135,19 @@ public class PressAgency {
     }
 
     /**
-     * Ruft den Wert der dateOfCreation-Eigenschaft ab.
+     * Ruft den Wert der yearOfEstablishment-Eigenschaft ab.
      * 
-     * @return
-     *     possible object is
-     *     {@link XMLGregorianCalendar }
-     *     
      */
-    public XMLGregorianCalendar getDateOfCreation() {
-        return dateOfCreation;
+    public int getYearOfEstablishment() {
+        return yearOfEstablishment;
     }
 
     /**
-     * Legt den Wert der dateOfCreation-Eigenschaft fest.
+     * Legt den Wert der yearOfEstablishment-Eigenschaft fest.
      * 
-     * @param value
-     *     allowed object is
-     *     {@link XMLGregorianCalendar }
-     *     
      */
-    public void setDateOfCreation(XMLGregorianCalendar value) {
-        this.dateOfCreation = value;
+    public void setYearOfEstablishment(int value) {
+        this.yearOfEstablishment = value;
     }
 
     /**

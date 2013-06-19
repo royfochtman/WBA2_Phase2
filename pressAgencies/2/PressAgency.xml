@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<pressAgency xmlns="http://www.example.org/photoBay" ref=".\pressAgencies\2" ID="2" photosRef=".\pressAgencies\2\photos" jobsRef=".\pressAgencies\2\jobs">
+    <name>Times Magazine</name>
+    <mainLocation>New York</mainLocation>
+    <yearOfEstablishment>1990</yearOfEstablishment>
+    <generalPersonalData>
+        <address>
+            <street>Street</street>
+            <houseNumber>455</houseNumber>
+            <postalCode>54285</postalCode>
+            <city>New York</city>
+            <country>Germany</country>
+        </address>
+        <username>times</username>
+        <email>time@times.de</email>
+        <phone></phone>
+        <description></description>
+        <website></website>
+    </generalPersonalData>
+</pressAgency>

@@ -2,7 +2,7 @@
 // Diese Datei wurde mit der JavaTM Architecture for XML Binding(JAXB) Reference Implementation, v2.2.6 generiert 
 // Siehe <a href="http://java.sun.com/xml/jaxb">http://java.sun.com/xml/jaxb</a> 
 // Änderungen an dieser Datei gehen bei einer Neukompilierung des Quellschemas verloren. 
-// Generiert: 2013.06.17 um 10:14:58 PM CEST 
+// Generiert: 2013.06.19 um 11:24:57 AM CEST 
 //
 
 
@@ -63,6 +63,21 @@ import javax.xml.bind.annotation.XmlType;
     "website"
 })
 public class GeneralPersonalDataType {
+	
+	public GeneralPersonalDataType(){}
+	
+	public GeneralPersonalDataType(String username, String email, String street, String houseNumber, int postalCode, String city, String country)
+	{
+		this.username = username;
+		this.email = email;
+		Address add = new Address();
+		add.city = city;
+		add.street = street;
+		add.houseNumber = houseNumber;
+		add.postalCode = postalCode;
+		add.country = country;
+		this.address = add;
+	}
 
     protected GeneralPersonalDataType.Address address;
     protected String username;
@@ -71,25 +86,6 @@ public class GeneralPersonalDataType {
     protected String description;
     @XmlSchemaType(name = "anyURI")
     protected String website;
-    
-    public GeneralPersonalDataType(String username, String email, String street, String houseNumber, int postalCode, String city,
-    		String country)
-    {
-    	this.username = username;
-    	this.email = email;
-    	Address add = new Address();
-    	add.city = city;
-    	add.country = country;
-    	add.street = street;
-    	add.houseNumber = houseNumber;
-    	add.postalCode = postalCode;
-    	this.address = add;
-    	
-    }
-    
-    public GeneralPersonalDataType()
-    {
-    }
 
     /**
      * Ruft den Wert der address-Eigenschaft ab.

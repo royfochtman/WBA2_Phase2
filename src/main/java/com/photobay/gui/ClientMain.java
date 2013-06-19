@@ -2,10 +2,6 @@ package main.java.com.photobay.gui;
 
 import java.awt.EventQueue;
 
-import javax.swing.JOptionPane;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
-
 public class ClientMain {
 
 	/**

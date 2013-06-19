@@ -214,6 +214,8 @@ public class LoginFrame extends JFrame {
 					{
 						if(register(cn))
 						{
+							JOptionPane.showMessageDialog(LoginFrame.this, "Registration successful!", "Registration successful!", 
+									JOptionPane.INFORMATION_MESSAGE);
 							if(login(cn))
 							{
 								RegisterFrame frame = new RegisterFrame();
