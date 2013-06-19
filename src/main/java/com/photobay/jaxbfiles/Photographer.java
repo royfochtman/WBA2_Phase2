@@ -92,6 +92,10 @@ public class Photographer {
     	GeneralPersonalDataType gd = new GeneralPersonalDataType(username, email, street, houseNumber, postalCode, city, country);
     	this.generalPersonalData = gd;
     }
+    
+    public Photographer()
+    {
+    }
 
     /**
      * Ruft den Wert der firstname-Eigenschaft ab.

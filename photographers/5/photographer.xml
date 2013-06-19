@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<photographer xmlns="http://www.example.org/photoBay" ref=".\photographers\5" ID="5" photosRef=".\photographers\5\photos" photoSellsRef=".\photographers\5\photoSells">
+    <firstname>efe</firstname>
+    <lastname>ewfe</lastname>
+    <birthdate>1990-01-01Z</birthdate>
+    <sex>m</sex>
+    <generalPersonalData>
+        <address>
+            <street>efwe</street>
+            <houseNumber>95</houseNumber>
+            <postalCode>695895</postalCode>
+            <city>efwe</city>
+            <country>Germany</country>
+        </address>
+        <username>dwachs</username>
+        <email>efwe</email>
+    </generalPersonalData>
+</photographer>

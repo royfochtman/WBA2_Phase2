@@ -31,6 +31,7 @@ public class LoginFrame extends JFrame {
 	public JTextField txtUsername;
 	public JPasswordField txtPassword;
 	private JTextField txtPort;
+	private String password;
 
 	/**
 	 * Launch the application.
@@ -82,6 +83,34 @@ public class LoginFrame extends JFrame {
 
 	}
 	
+	private Boolean login(XmppConnectionHandler cn)
+	{
+		try
+		{
+			return cn.login(txtUsername.getText(), password);
+		}
+		catch(XMPPException ex)
+		{
+			JOptionPane.showMessageDialog(LoginFrame.this, "Login failed. Please check password and username!\n" + 
+					"Error message:" + ex.getMessage(), "Login failed", JOptionPane.ERROR_MESSAGE);
+			return false;
+		}
+	}
+	
+	private Boolean register(XmppConnectionHandler cn)
+	{
+		try
+		{
+			return cn.register(txtUsername.getText(), password);
+		}
+		catch(XMPPException ex)
+		{
+			JOptionPane.showMessageDialog(LoginFrame.this, "Username is already in use!\nError message: " + ex.getMessage(), 
+					"Registration Error", JOptionPane.ERROR_MESSAGE);
+			return false;
+		}
+	}
+	
 	/**
 	 * Create the frame.
 	 */
@@ -99,22 +128,18 @@ public class LoginFrame extends JFrame {
 		btnOk.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				XmppConnectionHandler cn = connect();
-				String pw = getPassword();
+				password = getPassword();
 				
 				if(cn != null && cn.isConnected())
 				{
-					if(cn.login(txtUsername.getText(), pw))
+					if(login(cn))
 					{
 						JOptionPane.showMessageDialog(LoginFrame.this, "Anmeldung erfolgreich."
 								, "Anmeldung erfolgreich", JOptionPane.INFORMATION_MESSAGE);
 					}
-					else
-						JOptionPane.showMessageDialog(LoginFrame.this, "Anmeldung fehlgeschlagen. Bitte Passwort und Username prüfen!"
-								, "Anmeldung fehlgeschlagen", JOptionPane.ERROR_MESSAGE);
 				}
-				else
-					JOptionPane.showMessageDialog(LoginFrame.this, "Keine Verbindung zum Server!"
-							, "Keine Verbindung", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(LoginFrame.this, "Keine Verbindung zum Server!"
+						, "Keine Verbindung", JOptionPane.ERROR_MESSAGE);
 			}
 		});
 		btnOk.setBounds(245, 182, 89, 23);
@@ -180,23 +205,26 @@ public class LoginFrame extends JFrame {
 		JButton btnRegister = new JButton("Register");
 		btnRegister.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				password = getPassword();
 				if(!txtUsername.getText().isEmpty() && !txtHost.getText().isEmpty() && !txtPort.getText().isEmpty() && 
-						!getPassword().isEmpty())
+						!password.isEmpty())
 				{
 					XmppConnectionHandler cn = connect();
 					if(cn.isConnected())
 					{
-						RegisterFrame frame = new RegisterFrame();
-						frame.cnHandler = cn;
-						frame.password = getPassword();
-						frame.username = txtUsername.getText();
-						frame.setVisible(true);
-						LoginFrame.this.setVisible(false);
-						LoginFrame.this.dispose();
+						if(register(cn))
+						{
+							if(login(cn))
+							{
+								RegisterFrame frame = new RegisterFrame();
+								frame.cnHandler = cn;
+								frame.username = txtUsername.getText();
+								frame.setVisible(true);
+								LoginFrame.this.setVisible(false);
+								LoginFrame.this.dispose();
+							}
+						}
 					}
-					else
-						JOptionPane.showMessageDialog(LoginFrame.this, "Keine Verbindung zum Server!"
-								, "Keine Verbindung", JOptionPane.ERROR_MESSAGE);
 				}
 				else
 					JOptionPane.showMessageDialog(LoginFrame.this, "Incomplete data. Please fill out all fields.", "Error", 

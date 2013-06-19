@@ -10,4 +10,19 @@
         <lastName>pho:lastname</lastName>
         <uri>/photographers/2</uri>
     </photographerRef>
+    <photographerRef>
+        <firstName>David</firstName>
+        <lastName>Wachs</lastName>
+        <uri>.\photographers\3</uri>
+    </photographerRef>
+    <photographerRef>
+        <firstName>test</firstName>
+        <lastName>test</lastName>
+        <uri>.\photographers\4</uri>
+    </photographerRef>
+    <photographerRef>
+        <firstName>efe</firstName>
+        <lastName>ewfe</lastName>
+        <uri>.\photographers\5</uri>
+    </photographerRef>
 </photographers>

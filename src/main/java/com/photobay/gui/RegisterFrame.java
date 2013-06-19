@@ -5,6 +5,7 @@ import javax.swing.ButtonGroup;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -13,12 +14,19 @@ import javax.swing.JTextField;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.border.LineBorder;
+
+import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.ClientResponse;
+import com.sun.jersey.api.client.ClientResponse.Status;
+
 import main.java.com.photobay.jaxbfiles.Photographer;
 import main.java.com.photobay.jaxbfiles.SexEnum;
 import main.java.com.photobay.xmppClient.XmppConnectionHandler;
 import java.awt.Color;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+
+import main.java.com.photobay.gui.WebserviceConfig;
 
 public class RegisterFrame extends JFrame {
 
@@ -50,7 +58,7 @@ public class RegisterFrame extends JFrame {
 	private JComboBox<String> cbCountry;
 	
 	public String username = null;
-	public String password = null;
+	//public String password = null;
 	public XmppConnectionHandler cnHandler = null;
 
 	/**
@@ -221,9 +229,16 @@ public class RegisterFrame extends JFrame {
 								txtStreet.getText(), txtHouseNumber.getText(), Integer.parseInt(txtPostalCode.getText()), txtCity.getText(), 
 								cbCountry.getItemAt(cbCountry.getSelectedIndex()), txtEmail.getText());
 						
-						pho.getGeneralPersonalData().setUsername(username);
-						
-						//Client.create().resource(cnHandler.getHost())
+						pho.getGeneralPersonalData().setUsername(username);			
+						ClientResponse response = Client.create().resource(WebserviceConfig.WS_ADDRESS).path("/photographers").entity(pho).post(ClientResponse.class, pho);
+						if(response.getClientResponseStatus() == Status.OK)
+						{
+							JOptionPane.showMessageDialog(RegisterFrame.this, "Daten wurden gespeichert"
+									, "Erfolgreich gespeichert", JOptionPane.INFORMATION_MESSAGE);
+						}
+						else
+							JOptionPane.showMessageDialog(RegisterFrame.this, response.getClientResponseStatus()
+									, "Fehler", JOptionPane.INFORMATION_MESSAGE);
 					}
 				}
 			}

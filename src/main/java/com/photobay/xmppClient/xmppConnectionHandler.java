@@ -69,7 +69,7 @@ public class XmppConnectionHandler {
 		}
 		catch(XMPPException ex)
 		{
-			throw new XMPPException(ex.getMessage() + ex.getSmackError());
+			throw ex;
 		}
 		return true;
 	}
@@ -79,8 +79,9 @@ public class XmppConnectionHandler {
 	 * @param username
 	 * @param password
 	 * @return
+	 * @throws XMPPException 
 	 */
-	public boolean register(String username, String password)
+	public boolean register(String username, String password) throws XMPPException
 	{
 		try
 		{
@@ -88,7 +89,7 @@ public class XmppConnectionHandler {
 			return true;
 		}
 		catch(XMPPException ex){
-			return false;
+			throw ex;
 		}
 	}
 	
@@ -97,8 +98,9 @@ public class XmppConnectionHandler {
 	 * @param username
 	 * @param password
 	 * @return 
+	 * @throws XMPPException 
 	 */
-	public boolean login(String username, String password)
+	public boolean login(String username, String password) throws XMPPException
 	{
 		try
 		{
@@ -107,7 +109,7 @@ public class XmppConnectionHandler {
 		}
 		catch(XMPPException ex)
 		{
-			return false;
+			throw ex;
 		}
 	}
 	
