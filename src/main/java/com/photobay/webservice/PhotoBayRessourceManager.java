@@ -673,6 +673,22 @@ public class PhotoBayRessourceManager {
 			return null;
 		}
 	}
+	/* hinzugefügt am: 18.06.2013, 16:16 Uhr. */
+	public static Jobs getJobsList(String ownerRef){
+		try
+		{
+			File file = new File(ownerRef +"/jobs/jobs.xml");
+			JAXBContext context = JAXBContext.newInstance(Jobs.class);
+			Unmarshaller unmarshaller = context.createUnmarshaller();
+			return (Jobs)unmarshaller.unmarshal(file);
+		}
+		catch(Exception ex)
+		{
+			return null;
+		}
+	}
+	
+	
 	
 	/*Nachschauen!*/
 	/**
