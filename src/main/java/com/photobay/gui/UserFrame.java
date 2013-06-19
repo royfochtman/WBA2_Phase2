@@ -30,10 +30,14 @@ import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JEditorPane;
 
+import main.java.com.photobay.jaxbfiles.Job;
 import main.java.com.photobay.jaxbfiles.Jobs;
+import main.java.com.photobay.jaxbfiles.Photographer;
 import main.java.com.photobay.jaxbfiles.Photos;
 import main.java.com.photobay.jaxbfiles.PressAgency;
+import main.java.com.photobay.jaxbfiles.Jobs.JobRef;
 import main.java.com.photobay.util.ImagePanel;
+import main.java.com.photobay.webservice.JobsService;
 import main.java.com.photobay.webservice.PhotoBayRessourceManager;
 
 import java.awt.event.ActionListener;
@@ -48,6 +52,13 @@ import java.awt.FlowLayout;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.ListSelectionEvent;
 
+import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.ClientRequest;
+import com.sun.jersey.api.client.ClientResponse;
+import com.sun.jersey.api.client.ClientResponse.Status;
+import com.sun.jersey.api.client.WebResource;
+//import com.sun.jersey.api.client.ClientRequest;
+
 public class UserFrame extends JFrame {
 
 	private static final long serialVersionUID = 1L;
@@ -59,6 +70,13 @@ public class UserFrame extends JFrame {
 	private JTextField textFieldTitelPhoto;
 	private JTextField textFieldEnterValueBid;
 	private JList listJobs;
+	private Job job;
+	private Jobs jobs;
+	private String jobRef;
+	private PressAgency pressAgency;
+	private Photographer photographer;
+	private WebResource webResource;
+	private JComboBox comboBoxStatusJob;
 
 	/**
 	 * Launch the application.
@@ -77,15 +95,17 @@ public class UserFrame extends JFrame {
 	// }
 
 	/**
-	 * Create the Frame
-	 * 
-	 * @param role
-	 *            [0: Photograph], [1: Press Agency]
-	 * @param id
-	 *            ID from the resource
+	 *  Create the Frame
+	 *  
+	 * @param userObject
 	 */
-	public UserFrame(int role, int id) {
-		setTitle("Logged in as: [username], [id]");
+	public UserFrame(Object userObject) {
+		
+		/**
+		 * webResource variable.
+		 */
+		webResource = Client.create().resource(WebserviceConfig.WS_ADDRESS);
+		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 737, 500);
 		contentPane = new JPanel();
@@ -97,13 +117,24 @@ public class UserFrame extends JFrame {
 		 * TabbedPane for the Press Agency. Will be showed, when a Press Agency
 		 * is logged in.
 		 */
-//		if (role == 1) {
+		/**
+		 * Check type of userObject
+		 */
+		//Aktivieren wenn alles fertig ist !
+//		if (userObject.getClass().equals(PressAgency.class))
+//		{
+		//Variante
+//		if(userObject instanceof PressAgency){}
 			
 			/**
-			 * Get press agency with ID "id" and create a new object.
+			 * New PressAgency object from userObject.
 			 */
 		
-			PressAgency pressAgency = PhotoBayRessourceManager.getPressAgency(id);
+			pressAgency = (PressAgency) userObject;
+			
+			setTitle("Logged in as: " + pressAgency.getGeneralPersonalData().getUsername() + ", ID: " + pressAgency.getID());
+			
+//			PressAgency pressAgency = PhotoBayRessourceManager.getPressAgency(id);
 			JTabbedPane pressAgencyTabbedPane = new JTabbedPane(JTabbedPane.TOP);
 			pressAgencyTabbedPane.setBounds(10, 11, 701, 410);
 			contentPane.add(pressAgencyTabbedPane);
@@ -280,19 +311,49 @@ public class UserFrame extends JFrame {
 			/**
 			 * Get jobs list from the press agency.
 			 */
-			Jobs jobs = PhotoBayRessourceManager.getJobsList(pressAgency.getJobsRef());
-			jobs.getJobRef().get(0);
+			
+			ClientResponse jobsResponse = webResource.path("/jobs").get(ClientResponse.class);
+			jobs = jobsResponse.getEntity(Jobs.class);
+			
 			String[] jobsListValues = new String[]{};
 			
 			for(int i=0; i>jobs.getJobRef().size(); i++){
 				jobsListValues[i] = jobs.getJobRef().get(i).getJobName();
 			}
 			
-			//Als Private variable.
+			//Als Private globale variable.
 			listJobs = new JList(jobsListValues);
 			listJobs.addListSelectionListener(new ListSelectionListener() {
-				public void valueChanged(ListSelectionEvent arg0) {
-					int index = listJobs.getSelectedIndex();
+				public void valueChanged(ListSelectionEvent event) {
+					if (!event.getValueIsAdjusting()){
+//						ClientResponse response = null;
+//						response = Client.create().resource(WebserviceConfig.WS_ADDRESS).path("/photographers").entity(pho).post(ClientResponse.class, pho);
+						
+						/**
+						 * Index from the Element, which has been selected by the user.
+						 */
+						JList source = (JList)event.getSource();
+			            int index = source.getSelectedIndex();
+			            
+			            /**
+			             * String with the URI of the job, which is going to be requested.
+			             */
+						String jobRef = jobs.getJobRef().get(index).getUri();
+						
+						ClientResponse jobResponse = webResource.path(jobRef).get(ClientResponse.class);
+						job = jobResponse.getEntity(Job.class);
+						
+						/**
+						 * Get Job over the URI.
+						 */
+//						PhotoBayRessourceManager.getJ
+						
+						/**
+						 * Update data from the selected job.
+						 */
+						
+						updateJob(job);
+					}
 				}
 			});
 //			listJobs.setModel(new AbstractListModel() {
@@ -695,6 +756,18 @@ public class UserFrame extends JFrame {
 			lblPhotographer.setBounds(10, 11, 90, 14);
 			panelSearch.add(lblPhotographer);
 
+//			} else { // Photograph
+//			/**
+//			 * TabbedPane for the Photographer. Will be showed, when a
+//			 * Photographer is logged in.
+//			 */
+//			JTabbedPane photographerTabbedPane = new JTabbedPane(
+//					JTabbedPane.TOP);
+//			photographerTabbedPane.setBounds(10, 11, 701, 410);
+//			photographerTabbedPane.setVisible(false);
+//			contentPane.add(photographerTabbedPane);
+//		}
+			
 			/**
 			 * Logout and dispose Frame if button is pressed.
 			 */
@@ -709,17 +782,31 @@ public class UserFrame extends JFrame {
 			btnLogout.setBounds(622, 428, 89, 23);
 			contentPane.add(btnLogout);
 
-//		} else { // Photograph
-//			/**
-//			 * TabbedPane for the Photographer. Will be showed, when a
-//			 * Photographer is logged in.
-//			 */
-//			JTabbedPane photographerTabbedPane = new JTabbedPane(
-//					JTabbedPane.TOP);
-//			photographerTabbedPane.setBounds(10, 11, 701, 410);
-//			photographerTabbedPane.setVisible(false);
-//			contentPane.add(photographerTabbedPane);
-//		}
 
+
+	}
+	
+	/**
+	 * Updates the JobPanel.
+	 * @param job Job object.
+	 */
+	private void updateJob(Job job){
+		
+		//noch nicht fertig!
+		
+		textFieldJobName.setText(job.getJobName());
+
+		textFieldUrgencyJob.setText(job.getUrgency());
+
+		textFieldPaymentJob.setText(String.valueOf(job.getPayment()));
+//		new
+//		assigned
+//		closed
+		if(job.getStatus().equals("new"))
+		comboBoxStatusJob.setSelectedIndex(0);
+		else if(job.getStatus().equals("assigned"))
+			comboBoxStatusJob.setSelectedIndex(1);
+		else comboBoxStatusJob.setSelectedIndex(2);
+		
 	}
 }
