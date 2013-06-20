@@ -11,19 +11,16 @@ import java.awt.event.ActionEvent;
 import javax.swing.SwingConstants;
 import javax.swing.JTextField;
 import java.awt.Font;
-import java.util.AbstractList;
-import java.util.Collection;
+
 
 import javax.swing.JOptionPane;
 import javax.swing.JSeparator;
 import javax.swing.JPasswordField;
 
-import org.jivesoftware.smack.Roster;
 import org.jivesoftware.smack.XMPPException;
 
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
-
 import main.java.com.photobay.jaxbfiles.Photographer;
 import main.java.com.photobay.jaxbfiles.PressAgency;
 import main.java.com.photobay.xmppClient.XmppConnectionHandler;
@@ -42,21 +39,6 @@ public class LoginFrame extends JFrame {
 	private JTextField txtPort;
 	private String password;
 
-	/**
-	 * Launch the application.
-	 */
-//	public static void main(String[] args) {
-//		EventQueue.invokeLater(new Runnable() {
-//			public void run() {
-//				try {
-//					LoginFrame frame = new LoginFrame();
-//					frame.setVisible(true);
-//				} catch (Exception e) {
-//					e.printStackTrace();
-//				}
-//			}
-//		});
-//	}
 
 	private String getPassword()
 	{
@@ -140,6 +122,8 @@ public class LoginFrame extends JFrame {
 						if(ref.contains("photographers"))
 						{
 							pho = res.getEntity(Photographer.class);
+							PhotographerFrame frame = new PhotographerFrame(pho);
+							frame.setVisible(true);
 						}
 						else if(ref.contains("pressAgencies"))
 						{
@@ -147,9 +131,10 @@ public class LoginFrame extends JFrame {
 							PressAgencyFrame frame = new PressAgencyFrame(press);
 							frame.setVisible(true);
 						}
-						
-						JOptionPane.showMessageDialog(LoginFrame.this, "Anmeldung erfolgreich."
-								, "Anmeldung erfolgreich", JOptionPane.INFORMATION_MESSAGE);
+						LoginFrame.this.setVisible(false);
+						LoginFrame.this.dispose();
+//						JOptionPane.showMessageDialog(LoginFrame.this, "Anmeldung erfolgreich."
+//								, "Anmeldung erfolgreich", JOptionPane.INFORMATION_MESSAGE);
 					}
 				}
 				else

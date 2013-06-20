@@ -28,7 +28,6 @@ import main.java.com.photobay.xmppClient.XmppConnectionHandler;
 import java.awt.Color;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import java.util.AbstractMap;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -67,27 +66,9 @@ public class RegisterFrame extends JFrame {
 	private JComboBox<Integer> cbYearOfEstablishment;
 	private int postalCode = -1;
 	private String username = null;
-	//public String password = null;
 	private XmppConnectionHandler cnHandler = null;
 	private String password = null;
-	private final String PHOTOGRAPHER_ROLE = "Photographer";
-	private final String PRESSAGENCY_ROLE = "PressAgency";
 
-	/**
-	 * Launch the application.
-	 */
-//	public static void main(String[] args) {
-//		EventQueue.invokeLater(new Runnable() {
-//			public void run() {
-//				try {
-//					registerFrame frame = new registerFrame();
-//					frame.setVisible(true);
-//				} catch (Exception e) {
-//					e.printStackTrace();
-//				}
-//			}
-//		});
-//	}
 	
 	private Boolean register(XmppConnectionHandler cn, String ref)
 	{
@@ -280,7 +261,6 @@ public class RegisterFrame extends JFrame {
 		btnOk.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				ClientResponse response = null;
-				String ref = null;
 				if(validateData())
 				{
 					if(rdbtnPhotographer.isSelected())
