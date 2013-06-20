@@ -37,6 +37,7 @@ import main.java.com.photobay.jaxbfiles.Photographer;
 import main.java.com.photobay.jaxbfiles.Photos;
 import main.java.com.photobay.jaxbfiles.PressAgency;
 import main.java.com.photobay.jaxbfiles.Jobs.JobRef;
+import main.java.com.photobay.jaxbfiles.TopicType;
 import main.java.com.photobay.util.ImagePanel;
 import main.java.com.photobay.webservice.JobsService;
 import main.java.com.photobay.webservice.PhotoBayRessourceManager;
@@ -44,20 +45,30 @@ import main.java.com.photobay.webservice.PhotoBayRessourceManager;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.io.File;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.net.URL;
+import java.util.GregorianCalendar;
+import java.util.Locale;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.TimeZone;
 import java.awt.Dimension;
 import java.awt.Canvas;
 import java.awt.FlowLayout;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.ListSelectionEvent;
+import javax.xml.datatype.Duration;
+import javax.xml.datatype.XMLGregorianCalendar;
+import javax.xml.namespace.QName;
 
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientRequest;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.ClientResponse.Status;
 import com.sun.jersey.api.client.WebResource;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 //import com.sun.jersey.api.client.ClientRequest;
 
@@ -83,7 +94,6 @@ public class PressAgencyFrame extends JFrame {
 	private JComboBox comboBoxDeadlineDay;
 	private JComboBox comboBoxDeadlineMonth;
 	private JComboBox comboBoxDeadlineYear;
-	private JTextField textFieldTopics;
 	private JTextField textFieldPhotoPath;
 
 	/**
@@ -299,62 +309,37 @@ public class PressAgencyFrame extends JFrame {
 		panelMyData.add(btnUpdateData);
 
 		JPanel panelMyJobs = new JPanel();
+		/*OnMouseClicked --> get List*/
+		panelMyJobs.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent event) {
+				
+				/**
+				 * Get jobs list from the press agency.
+				 */
+
+				ClientResponse jobsResponse = webResource.path("/jobs").get(
+						ClientResponse.class);
+				jobs = jobsResponse.getEntity(Jobs.class);
+
+				String[] jobsListValues = new String[] {};
+
+				for (int i = 0; i > jobs.getJobRef().size(); i++) {
+					jobsListValues[i] = jobs.getJobRef().get(i).getJobName();
+				}
+
+				// Als Private globale variable.
+				listJobs = new JList(jobsListValues);
+				
+			}
+		});
+		
 		pressAgencyTabbedPane.addTab("My Jobs", null, panelMyJobs, null);
 		panelMyJobs.setLayout(null);
 
 		JScrollPane scrollPaneJobs = new JScrollPane();
 		scrollPaneJobs.setBounds(10, 11, 100, 360);
 		panelMyJobs.add(scrollPaneJobs);
-
-		/**
-		 * Get jobs list from the press agency.
-		 */
-
-		ClientResponse jobsResponse = webResource.path("/jobs").get(
-				ClientResponse.class);
-		jobs = jobsResponse.getEntity(Jobs.class);
-
-		String[] jobsListValues = new String[] {};
-
-		for (int i = 0; i > jobs.getJobRef().size(); i++) {
-			jobsListValues[i] = jobs.getJobRef().get(i).getJobName();
-		}
-
-		// Als Private globale variable.
-		listJobs = new JList(jobsListValues);
-		listJobs.addListSelectionListener(new ListSelectionListener() {
-			public void valueChanged(ListSelectionEvent event) {
-				if (!event.getValueIsAdjusting()) {
-
-					/**
-					 * Index from the Element, which has been selected by the
-					 * user.
-					 */
-					JList source = (JList) event.getSource();
-					int index = source.getSelectedIndex();
-
-					/**
-					 * String with the URI of the job, which is going to be
-					 * requested.
-					 */
-					String jobRef = jobs.getJobRef().get(index).getUri();
-
-					ClientResponse jobResponse = webResource.path(jobRef).get(
-							ClientResponse.class);
-					job = jobResponse.getEntity(Job.class);
-
-					/**
-					 * Get Job over the URI.
-					 */
-
-					/**
-					 * Update data from the selected job.
-					 */
-
-					updateJob(job);
-				}
-			}
-		});
 
 		scrollPaneJobs.setViewportView(listJobs);
 
@@ -394,9 +379,43 @@ public class PressAgencyFrame extends JFrame {
 		JButton btnUpdateJob = new JButton("Update");
 		btnUpdateJob.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
+				
+				
+				
 				/**/
 			}
 		});
+		
+		listJobs.addListSelectionListener(new ListSelectionListener() {
+			public void valueChanged(ListSelectionEvent event) {
+				if (!event.getValueIsAdjusting()) {
+
+					/**
+					 * Index from the Element, which has been selected by the
+					 * user.
+					 */
+					JList source = (JList) event.getSource();
+					int index = source.getSelectedIndex();
+
+					/**
+					 * String with the URI of the job, which is going to be
+					 * requested.
+					 */
+					String jobRef = jobs.getJobRef().get(index).getUri();
+
+					ClientResponse jobResponse = webResource.path(jobRef).get(
+							ClientResponse.class);
+					job = jobResponse.getEntity(Job.class);
+
+					/**
+					 * Update data from the selected job.
+					 */
+
+					updateJob(job);
+				}
+			}
+		});
+		
 		btnUpdateJob.setBounds(269, 326, 89, 23);
 		panelJob.add(btnUpdateJob);
 
@@ -486,16 +505,6 @@ public class PressAgencyFrame extends JFrame {
 		comboBoxDeadlineYear.setBounds(235, 58, 60, 20);
 		panelJob.add(comboBoxDeadlineYear);
 
-		JLabel lblTopics = new JLabel("Topics:");
-		lblTopics.setFont(new Font("Tahoma", Font.BOLD, 11));
-		lblTopics.setBounds(322, 11, 60, 14);
-		panelJob.add(lblTopics);
-
-		textFieldTopics = new JTextField();
-		textFieldTopics.setColumns(10);
-		textFieldTopics.setBounds(388, 8, 168, 20);
-		panelJob.add(textFieldTopics);
-
 		/**
 		 * Panel for the photos.
 		 */
@@ -550,9 +559,6 @@ public class PressAgencyFrame extends JFrame {
 		ImagePanel imgPanel = new ImagePanel(file);
 		imgPanel.setLocation(0, 0);
 		imgPanel.setSize(344, 264);
-		// imgPanel.setPreferredSize(new Dimension(100, 100));
-		// imgPanel.setMinimumSize(new Dimension(100, 100));
-		// imgPanel.setMaximumSize(new Dimension(100, 100));
 		imgPanel.setBorder(new LineBorder(new Color(0, 0, 0)));
 		panelPhoto.add(imgPanel);
 
@@ -726,11 +732,6 @@ public class PressAgencyFrame extends JFrame {
 		lblDescriptionPhotoSell.setBounds(117, 63, 97, 14);
 		panelBids.add(lblDescriptionPhotoSell);
 
-		JLabel lblTopicsPhotoSell = new JLabel("Topics");
-		lblTopicsPhotoSell.setFont(new Font("Tahoma", Font.BOLD, 11));
-		lblTopicsPhotoSell.setBounds(342, 13, 46, 14);
-		panelBids.add(lblTopicsPhotoSell);
-
 		JLabel lblStatusPhotoSell = new JLabel("Status");
 		lblStatusPhotoSell.setFont(new Font("Tahoma", Font.BOLD, 11));
 		lblStatusPhotoSell.setBounds(342, 38, 46, 14);
@@ -789,10 +790,6 @@ public class PressAgencyFrame extends JFrame {
 		lblDesciptionPhotoSellValue.setBounds(197, 63, 349, 14);
 		panelBids.add(lblDesciptionPhotoSellValue);
 
-		JLabel lblTopicsPhotoSellValue = new JLabel("Topics");
-		lblTopicsPhotoSellValue.setBounds(398, 13, 46, 14);
-		panelBids.add(lblTopicsPhotoSellValue);
-
 		JLabel lblStatusPhotoSellValue = new JLabel("Status");
 		lblStatusPhotoSellValue.setBounds(408, 38, 46, 14);
 		panelBids.add(lblStatusPhotoSellValue);
@@ -806,20 +803,8 @@ public class PressAgencyFrame extends JFrame {
 		lblPhotographer.setBounds(10, 11, 90, 14);
 		panelSearch.add(lblPhotographer);
 
-		// } else { // Photograph
-		// /**
-		// * TabbedPane for the Photographer. Will be showed, when a
-		// * Photographer is logged in.
-		// */
-		// JTabbedPane photographerTabbedPane = new JTabbedPane(
-		// JTabbedPane.TOP);
-		// photographerTabbedPane.setBounds(10, 11, 701, 410);
-		// photographerTabbedPane.setVisible(false);
-		// contentPane.add(photographerTabbedPane);
-		// }
-
 		/**
-		 * Logout and dispose Frame if button is pressed.
+		 * Logout and dispose Frame if btnLogout is pressed.
 		 */
 		JButton btnLogout = new JButton("Logout");
 		btnLogout.addActionListener(new ActionListener() {
@@ -849,10 +834,11 @@ public class PressAgencyFrame extends JFrame {
 		textFieldUrgencyJob.setText(job.getUrgency());
 
 		textFieldPaymentJob.setText(String.valueOf(job.getPayment()));
-		// Day,Month,Yeah fehlt!!!!!
-		// new
-		// assigned
-		// closed
+		
+		comboBoxDeadlineDay.setSelectedIndex(job.getDeadline().getDay()-1);
+		comboBoxDeadlineMonth.setSelectedIndex(job.getDeadline().getMonth()-1);
+		comboBoxDeadlineYear.setSelectedIndex(job.getDeadline().getYear()-1);
+		
 		if (job.getStatus().equals("new"))
 			comboBoxStatusJob.setSelectedIndex(0);
 		else if (job.getStatus().equals("assigned"))
@@ -878,13 +864,13 @@ public class PressAgencyFrame extends JFrame {
 
 	private Job readJobFields() {
 		Job readJob = new Job();
-		// readJob.setDeadline(null);
+//		XMLGregorianCalendar deadline = new XMLGregorianCalendar();
+//		readJob.setDeadline()
 		readJob.setDescription(dtrpnDescriptionJob.getText());
 		readJob.setJobName(textFieldJobName.getText());
-		// readJob.setPayment((int)Integer.parseInt(textFieldPaymentJob.getText());
+		readJob.setPayment(BigInteger.valueOf(Long.parseLong(textFieldPaymentJob.getText())));
+//		readJob.setPayment((int)Integer.parseInt(textFieldPaymentJob.getText());
 		readJob.setStatus(comboBoxStatusJob.getSelectedItem().toString());
-		// Topic type!!!
-		// readJob.setTopics(textFieldTopics.getText());
 		readJob.setUrgency(textFieldUrgencyJob.getText());
 		return readJob;
 	}
