@@ -1,3 +1,10 @@
+//
+// Diese Datei wurde mit der JavaTM Architecture for XML Binding(JAXB) Reference Implementation, v2.2.6 generiert 
+// Siehe <a href="http://java.sun.com/xml/jaxb">http://java.sun.com/xml/jaxb</a> 
+// Änderungen an dieser Datei gehen bei einer Neukompilierung des Quellschemas verloren. 
+// Generiert: 2013.06.20 um 04:16:21 PM CEST 
+//
+
 
 package main.java.com.photobay.jaxbfiles;
 
@@ -30,27 +37,19 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link GeneralPersonalDataType }
+     * Create an instance of {@link Job }
      * 
      */
-    public GeneralPersonalDataType createGeneralPersonalDataType() {
-        return new GeneralPersonalDataType();
+    public Job createJob() {
+        return new Job();
     }
 
     /**
-     * Create an instance of {@link Photographer }
+     * Create an instance of {@link TopicType }
      * 
      */
-    public Photographer createPhotographer() {
-        return new Photographer();
-    }
-
-    /**
-     * Create an instance of {@link GeneralPersonalDataType.Address }
-     * 
-     */
-    public GeneralPersonalDataType.Address createGeneralPersonalDataTypeAddress() {
-        return new GeneralPersonalDataType.Address();
+    public TopicType createTopicType() {
+        return new TopicType();
     }
 
 }

@@ -2,7 +2,7 @@
 // Diese Datei wurde mit der JavaTM Architecture for XML Binding(JAXB) Reference Implementation, v2.2.6 generiert 
 // Siehe <a href="http://java.sun.com/xml/jaxb">http://java.sun.com/xml/jaxb</a> 
 // Änderungen an dieser Datei gehen bei einer Neukompilierung des Quellschemas verloren. 
-// Generiert: 2013.06.15 um 02:15:35 PM CEST 
+// Generiert: 2013.06.20 um 04:16:21 PM CEST 
 //
 
 
@@ -34,7 +34,6 @@ import javax.xml.datatype.XMLGregorianCalendar;
  *         &lt;element name="deadline" type="{http://www.w3.org/2001/XMLSchema}date"/>
  *         &lt;element name="description" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="payment" type="{http://www.w3.org/2001/XMLSchema}positiveInteger"/>
- *         &lt;element name="topics" type="{http://www.example.org/photoBay}topicType"/>
  *         &lt;element name="status">
  *           &lt;simpleType>
  *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
@@ -75,8 +74,6 @@ public class Job {
     @XmlElement(required = true)
     @XmlSchemaType(name = "positiveInteger")
     protected BigInteger payment;
-    @XmlElement(required = true)
-    protected TopicType topics;
     @XmlElement(required = true)
     protected String status;
     @XmlAttribute(name = "ID", required = true)
@@ -209,30 +206,6 @@ public class Job {
      */
     public void setPayment(BigInteger value) {
         this.payment = value;
-    }
-
-    /**
-     * Ruft den Wert der topics-Eigenschaft ab.
-     * 
-     * @return
-     *     possible object is
-     *     {@link TopicType }
-     *     
-     */
-    public TopicType getTopics() {
-        return topics;
-    }
-
-    /**
-     * Legt den Wert der topics-Eigenschaft fest.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link TopicType }
-     *     
-     */
-    public void setTopics(TopicType value) {
-        this.topics = value;
     }
 
     /**
