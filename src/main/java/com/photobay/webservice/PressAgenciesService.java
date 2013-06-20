@@ -34,7 +34,7 @@ public class PressAgenciesService {
 	{
 		if(PhotoBayRessourceManager.postPressAgency(pressAgency))
 		{
-			return Response.ok().build();
+			return Response.ok(pressAgency).build();
 		}
 		else return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
 		
