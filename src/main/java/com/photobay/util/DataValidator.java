@@ -1,6 +1,5 @@
 package main.java.com.photobay.util;
 
-import main.java.com.photobay.gui.UserFrame;
 
 public class DataValidator {
 	
