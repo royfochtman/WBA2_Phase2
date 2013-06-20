@@ -58,6 +58,8 @@ import java.awt.Canvas;
 import java.awt.FlowLayout;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.ListSelectionEvent;
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.Duration;
 import javax.xml.datatype.XMLGregorianCalendar;
 import javax.xml.namespace.QName;
@@ -82,21 +84,21 @@ public class PressAgencyFrame extends JFrame {
 	private JTextField textFieldPaymentJob;
 	private JTextField textFieldTitelPhoto;
 	private JTextField textFieldEnterValueBid;
-	private JList listJobs;
+	private JList<String> listJobs;
 	private Job job;
 	private Jobs jobs;
 	private String jobRef;
 	private PressAgency pressAgency;
 	private Photographer photographer;
 	private WebResource webResource;
-	private JComboBox comboBoxStatusJob;
+	private JComboBox<String> comboBoxStatusJob;
 	private JEditorPane dtrpnDescriptionJob;
-	private JComboBox comboBoxDeadlineDay;
-	private JComboBox comboBoxDeadlineMonth;
-	private JComboBox comboBoxDeadlineYear;
+	private JComboBox<Integer> comboBoxDeadlineDay;
+	private JComboBox<Integer> comboBoxDeadlineMonth;
+	private JComboBox<Integer> comboBoxDeadlineYear;
 	private JTextField textFieldPhotoPath;
 	private int jobIndex;
-	
+	private JList listPhotos;
 	
 	/**
 	 * Launch the application.
@@ -332,7 +334,7 @@ public class PressAgencyFrame extends JFrame {
 				}
 
 				// Als Private globale variable.
-				listJobs = new JList(jobsListValues);
+				listJobs = new JList<String>(jobsListValues);
 				
 				
 				//////////////
@@ -489,8 +491,8 @@ public class PressAgencyFrame extends JFrame {
 		textFieldPaymentJob.setBounds(127, 83, 168, 20);
 		panelJob.add(textFieldPaymentJob);
 
-		JComboBox comboBoxStatusJob = new JComboBox();
-		comboBoxStatusJob.setModel(new DefaultComboBoxModel(new String[] {
+		comboBoxStatusJob = new JComboBox<String>();
+		comboBoxStatusJob.setModel(new DefaultComboBoxModel<String>(new String[] {
 				"new", "assigned", "closed" }));
 		comboBoxStatusJob.setBounds(127, 108, 168, 20);
 		panelJob.add(comboBoxStatusJob);
@@ -500,24 +502,24 @@ public class PressAgencyFrame extends JFrame {
 		dtrpnDescriptionJob.setBounds(10, 155, 546, 160);
 		panelJob.add(dtrpnDescriptionJob);
 
-		JComboBox comboBoxDeadlineDay = new JComboBox();
-		comboBoxDeadlineDay.setModel(new DefaultComboBoxModel(new String[] {
-				"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12",
-				"13", "14", "15", "16", "17", "18", "19", "20", "21", "22",
-				"23", "24", "25", "26", "27", "28", "29", "30", "31" }));
+		comboBoxDeadlineDay = new JComboBox<Integer>();
+		comboBoxDeadlineDay.setModel(new DefaultComboBoxModel<Integer>(new Integer[] {
+				1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12,
+				13, 14, 15, 16, 17, 18, 19, 20, 21, 22,
+				23, 24, 25, 26, 27, 28, 29, 30, 31 }));
 		comboBoxDeadlineDay.setBounds(127, 58, 44, 20);
 		panelJob.add(comboBoxDeadlineDay);
 
-		JComboBox comboBoxDeadlineMonth = new JComboBox();
+		comboBoxDeadlineMonth = new JComboBox<Integer>();
 		comboBoxDeadlineMonth
-				.setModel(new DefaultComboBoxModel(new String[] { "1", "2",
-						"3", "4", "5", "6", "7", "8", "9", "10", "11", "12" }));
+				.setModel(new DefaultComboBoxModel<Integer>(new Integer[] { 1, 2,
+						3, 4, 5, 6, 7, 8, 9, 10, 11, 12 }));
 		comboBoxDeadlineMonth.setBounds(181, 58, 44, 20);
 		panelJob.add(comboBoxDeadlineMonth);
 
-		JComboBox comboBoxDeadlineYear = new JComboBox();
-		comboBoxDeadlineYear.setModel(new DefaultComboBoxModel(new String[] {
-				"2013", "2014", "2015", "2016", "2017", "3020" }));
+		comboBoxDeadlineYear = new JComboBox<Integer>();
+		comboBoxDeadlineYear.setModel(new DefaultComboBoxModel<Integer>(new Integer[] {
+				2013, 2014, 2015, 2016, 2017, 3020 }));
 		comboBoxDeadlineYear.setBounds(235, 58, 60, 20);
 		panelJob.add(comboBoxDeadlineYear);
 
@@ -880,8 +882,16 @@ public class PressAgencyFrame extends JFrame {
 
 	private Job readJobFields() {
 		Job readJob = new Job();
-//		XMLGregorianCalendar deadline = new XMLGregorianCalendar();
-//		readJob.setDeadline()
+		try{
+			
+			readJob.setDeadline(DatatypeFactory.newInstance().newXMLGregorianCalendar(
+					comboBoxDeadlineYear.getItemAt(comboBoxDeadlineYear.getSelectedIndex()), 
+					comboBoxDeadlineMonth.getItemAt(comboBoxDeadlineMonth.getSelectedIndex()), 
+					comboBoxDeadlineDay.getItemAt(comboBoxDeadlineDay.getSelectedIndex()), 0, 0, 0, 0, 0));
+			
+		} catch(DatatypeConfigurationException ex){}
+		
+		
 		readJob.setDescription(dtrpnDescriptionJob.getText());
 		readJob.setJobName(textFieldJobName.getText());
 		readJob.setPayment(BigInteger.valueOf(Long.parseLong(textFieldPaymentJob.getText())));
