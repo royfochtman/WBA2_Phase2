@@ -1,5 +1,8 @@
 package main.java.com.photobay.webservice;
 
+import java.net.URI;
+import java.net.URISyntaxException;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -42,7 +45,15 @@ public class PhotographersService {
 	{
 		if(PhotoBayRessourceManager.postPhotographer(photographer))
 		{
-			return Response.ok().build();
+			try
+			{
+				URI ref = new URI(photographer.getRef());
+				return Response.ok().location(ref).build();
+			}
+			catch(URISyntaxException ex)
+			{
+				return Response.ok().build();
+			}
 		}
 		else return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
 	}

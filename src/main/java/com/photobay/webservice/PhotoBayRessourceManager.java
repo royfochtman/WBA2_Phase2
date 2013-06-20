@@ -65,32 +65,30 @@ public class PhotoBayRessourceManager {
 		try
 		{
 			int id = IdGenerator.generateID("photographers");
-			File dir = new File("./photographers/" + id);
-			File file = new File(dir + "/photographer.xml");
-			if(dir.mkdir() && file.createNewFile())
+			String pathMain = "./photographers/" + id;
+			String pathPhotos = pathMain + "/photos";
+			String pathPhotoSells = pathMain + "/photoSells";
+			File file = new File(pathMain + "/photographer.xml");
+		
+			if(new File("./photographers/" + id).mkdir() && file.createNewFile())
 			{
 				/*creates the folder for the photos*/
-				File subDir = new File("./photographers/" + id + "/photos");
-				subDir.mkdir();
+				if(new File(pathPhotos).mkdir())
 				/* creates a new XML File for the photos, but empty */
-				File photosXML = new File(subDir + "/photos.xml");
-				photosXML.createNewFile();
+					new File(pathPhotos + "/photos.xml").createNewFile();
 				
 				/* creates a new XML File for the PhotoSells*/
-				File photoSellsDir = new File(dir + "/photoSells");
-				photoSellsDir.mkdir();
-				File photoSellsXML = new File(photoSellsDir + "/photoSells.xml");
-				photoSellsXML.createNewFile();
-				
-				
+				if(new File(pathPhotoSells).mkdir())
+					new File(pathPhotoSells + "/photoSells.xml").createNewFile();	
+								
 				JAXBContext context = JAXBContext.newInstance(Photographer.class);
 			    Marshaller m = context.createMarshaller();
 			    m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 			    
 			    photographer.setID(id);
-			    photographer.setRef(dir.toString());
-			    photographer.setPhotosRef(subDir.toString());
-			    photographer.setPhotoSellsRef(photoSellsDir.toString());
+			    photographer.setRef(pathMain);
+			    photographer.setPhotosRef(pathPhotos);
+			    photographer.setPhotoSellsRef(pathPhotoSells);
 			    
 			    m.marshal(photographer, file);
 			    putPhotographersList(photographer);
@@ -154,30 +152,29 @@ public class PhotoBayRessourceManager {
 		try
 		{
 			int id = IdGenerator.generateID("pressAgencies");
-			File dir = new File("./pressAgencies/" + id);
-			File file = new File(dir + "/PressAgency.xml");
-			if(dir.mkdir() && file.createNewFile())
+			String pathMain = "./pressAgencies/" + id;
+			String pathPhotos = pathMain + "/photos";
+			String pathJobs = pathMain + "/jobs";
+			File file = new File(pathMain + "/PressAgency.xml");
+			
+			if(new File(pathMain).mkdir() && file.createNewFile())
 			{
 				/* creates a new XML File for the photos */
-				File photosDir = new File("./pressAgencies/" + id + "/photos");
-				photosDir.mkdir();
-				File photosXML = new File(photosDir + "/photos.xml");
-				photosXML.createNewFile();
+				if(new File(pathPhotos).mkdir())
+					new File(pathPhotos + "/photos.xml").createNewFile();
 				
 				/* creates a new XML File for Jobs */
-				File jobsDir = new File(dir + "/jobs");
-				jobsDir.mkdir();
-				File jobsXML = new File(jobsDir + "/jobs.xml");
-				jobsXML.createNewFile();
+				if(new File(pathJobs).mkdir())
+					new File(pathJobs + "/jobs.xml").createNewFile();
 				
 				JAXBContext context = JAXBContext.newInstance(PressAgency.class);
 			    Marshaller m = context.createMarshaller();
 			    m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 			    pressAgency.setID(id);
 			    /* Referenz zu sich selbst */
-			    pressAgency.setRef(dir.toString());
-			    pressAgency.setJobsRef(jobsDir.toString());
-			    pressAgency.setPhotosRef(photosDir.toString());
+			    pressAgency.setRef(pathMain);
+			    pressAgency.setJobsRef(pathJobs);
+			    pressAgency.setPhotosRef(pathPhotos);
 			    
 			    m.marshal(pressAgency, file);
 			    return true;
@@ -221,6 +218,7 @@ public class PhotoBayRessourceManager {
 			try
 			{
 				int id = IdGenerator.generateID("photoSells/" + photoSellID + "/bids");
+				String pathMain = "./photoSells/" + photoSellID + "/bids/" + id ;
 				File dir = new File("./photoSells/" + photoSellID + "/bids/" + id );
 				File file = new File(dir + "/Bid.xml");
 				if(dir.mkdir() && file.createNewFile())

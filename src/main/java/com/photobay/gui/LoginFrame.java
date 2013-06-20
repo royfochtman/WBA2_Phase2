@@ -11,10 +11,14 @@ import java.awt.event.ActionEvent;
 import javax.swing.SwingConstants;
 import javax.swing.JTextField;
 import java.awt.Font;
+import java.util.AbstractList;
+import java.util.Collection;
+
 import javax.swing.JOptionPane;
 import javax.swing.JSeparator;
 import javax.swing.JPasswordField;
 
+import org.jivesoftware.smack.Roster;
 import org.jivesoftware.smack.XMPPException;
 
 import main.java.com.photobay.xmppClient.XmppConnectionHandler;
@@ -97,20 +101,6 @@ public class LoginFrame extends JFrame {
 		}
 	}
 	
-	private Boolean register(XmppConnectionHandler cn)
-	{
-		try
-		{
-			return cn.register(txtUsername.getText(), password);
-		}
-		catch(XMPPException ex)
-		{
-			JOptionPane.showMessageDialog(LoginFrame.this, "Username is already in use!\nError message: " + ex.getMessage(), 
-					"Registration Error", JOptionPane.ERROR_MESSAGE);
-			return false;
-		}
-	}
-	
 	/**
 	 * Create the frame.
 	 */
@@ -134,11 +124,13 @@ public class LoginFrame extends JFrame {
 				{
 					if(login(cn))
 					{
+
 						JOptionPane.showMessageDialog(LoginFrame.this, "Anmeldung erfolgreich."
 								, "Anmeldung erfolgreich", JOptionPane.INFORMATION_MESSAGE);
 					}
 				}
-				JOptionPane.showMessageDialog(LoginFrame.this, "Keine Verbindung zum Server!"
+				else
+					JOptionPane.showMessageDialog(LoginFrame.this, "Keine Verbindung zum Server!"
 						, "Keine Verbindung", JOptionPane.ERROR_MESSAGE);
 			}
 		});
@@ -212,20 +204,10 @@ public class LoginFrame extends JFrame {
 					XmppConnectionHandler cn = connect();
 					if(cn.isConnected())
 					{
-						if(register(cn))
-						{
-							JOptionPane.showMessageDialog(LoginFrame.this, "Registration successful!", "Registration successful!", 
-									JOptionPane.INFORMATION_MESSAGE);
-							if(login(cn))
-							{
-								RegisterFrame frame = new RegisterFrame();
-								frame.cnHandler = cn;
-								frame.username = txtUsername.getText();
-								frame.setVisible(true);
-								LoginFrame.this.setVisible(false);
-								LoginFrame.this.dispose();
-							}
-						}
+						RegisterFrame frame = new RegisterFrame(cn, txtUsername.getText(), getPassword());
+						frame.setVisible(true);
+						LoginFrame.this.setVisible(false);
+						LoginFrame.this.dispose();
 					}
 				}
 				else

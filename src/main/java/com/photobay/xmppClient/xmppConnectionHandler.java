@@ -1,8 +1,10 @@
 package main.java.com.photobay.xmppClient;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import main.java.com.photobay.jaxbfiles.PayloadMessage;
 
@@ -81,11 +83,11 @@ public class XmppConnectionHandler {
 	 * @return
 	 * @throws XMPPException 
 	 */
-	public boolean register(String username, String password) throws XMPPException
+	public boolean register(String username, String password, Map<String, String> attributes) throws XMPPException
 	{
 		try
 		{
-			accMan.createAccount(username, password);
+			accMan.createAccount(username, password, attributes);
 			return true;
 		}
 		catch(XMPPException ex){
@@ -307,5 +309,15 @@ public class XmppConnectionHandler {
 	public String getHost()
 	{
 		return xmppConn.getHost();
+	}
+	
+	public String getAttribute(String attribute)
+	{
+		return accMan.getAccountAttribute(attribute);
+	}
+	
+	public Collection<String> getAttributes()
+	{
+		return accMan.getAccountAttributes();
 	}
 }

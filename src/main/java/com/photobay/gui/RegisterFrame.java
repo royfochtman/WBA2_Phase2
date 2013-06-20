@@ -15,6 +15,8 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.border.LineBorder;
 
+import org.jivesoftware.smack.XMPPException;
+
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.ClientResponse.Status;
@@ -26,6 +28,9 @@ import main.java.com.photobay.xmppClient.XmppConnectionHandler;
 import java.awt.Color;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.util.AbstractMap;
+import java.util.HashMap;
+import java.util.Map;
 
 import main.java.com.photobay.gui.WebserviceConfig;
 
@@ -61,9 +66,12 @@ public class RegisterFrame extends JFrame {
 	private JComboBox<String> cbCountry;
 	private JComboBox<Integer> cbYearOfEstablishment;
 	private int postalCode = -1;
-	public String username = null;
+	private String username = null;
 	//public String password = null;
-	public XmppConnectionHandler cnHandler = null;
+	private XmppConnectionHandler cnHandler = null;
+	private String password = null;
+	private final String PHOTOGRAPHER_ROLE = "Photographer";
+	private final String PRESSAGENCY_ROLE = "PressAgency";
 
 	/**
 	 * Launch the application.
@@ -80,6 +88,36 @@ public class RegisterFrame extends JFrame {
 //			}
 //		});
 //	}
+	
+	private Boolean register(XmppConnectionHandler cn, String ref)
+	{
+		try
+		{
+			Map<String, String> attributes = new HashMap<String, String>();
+			attributes.put("name", ref);
+			return cn.register(username, password, attributes);
+		}
+		catch(XMPPException ex)
+		{
+			JOptionPane.showMessageDialog(RegisterFrame.this, "Username is already in use!\nError message: " + ex.getMessage(), 
+					"Registration Error", JOptionPane.ERROR_MESSAGE);
+			return false;
+		}
+	}
+	
+	private Boolean login(XmppConnectionHandler cn)
+	{
+		try
+		{
+			return cn.login(username, password);
+		}
+		catch(XMPPException ex)
+		{
+			JOptionPane.showMessageDialog(RegisterFrame.this, "Login failed!\n" + 
+					"Error message:" + ex.getMessage(), "Login failed", JOptionPane.ERROR_MESSAGE);
+			return false;
+		}
+	}
 
 	private Boolean validateData()
 	{
@@ -126,8 +164,11 @@ public class RegisterFrame extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public RegisterFrame() {
+	public RegisterFrame(XmppConnectionHandler cn, String userName, String password) {
+		this.cnHandler = cn;
+		this.username = userName;
 		setResizable(false);
+		this.password = password;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setTitle("Register");
 		setBounds(100, 100, 450, 635);
@@ -239,10 +280,12 @@ public class RegisterFrame extends JFrame {
 		btnOk.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				ClientResponse response = null;
+				String role = null;
 				if(validateData())
 				{
 					if(rdbtnPhotographer.isSelected())
 					{
+						role = PHOTOGRAPHER_ROLE;
 						SexEnum sex = SexEnum.M;
 						if(rdbtnMale.isSelected())
 							sex = SexEnum.M;
@@ -264,6 +307,7 @@ public class RegisterFrame extends JFrame {
 					}
 					else if(rdbtnPressAgeny.isSelected())
 					{
+						role = PRESSAGENCY_ROLE;
 						PressAgency press = new PressAgency(username, txtName.getText(), txtMainLocation.getText(), 
 								cbYearOfEstablishment.getItemAt(cbYearOfEstablishment.getSelectedIndex()), txtStreet.getText(), 
 								txtHouseNumber.getText(), postalCode, txtCity.getText(),
@@ -279,8 +323,16 @@ public class RegisterFrame extends JFrame {
 					
 					if(response != null && response.getClientResponseStatus() == Status.OK)
 					{
-						JOptionPane.showMessageDialog(RegisterFrame.this, "Daten wurden gespeichert"
-								, "Erfolgreich gespeichert", JOptionPane.INFORMATION_MESSAGE);
+						if(register(cnHandler, response.getLocation().getPath().replaceFirst("/", "")))
+						{
+							JOptionPane.showMessageDialog(RegisterFrame.this, "Registration successful!", "Registration successful!", 
+									JOptionPane.INFORMATION_MESSAGE);
+							if(login(cnHandler))
+							{
+								JOptionPane.showMessageDialog(RegisterFrame.this, cnHandler.getAttribute("name"), "Login successful", 
+										JOptionPane.INFORMATION_MESSAGE);
+							}
+						}
 					}
 					else
 						JOptionPane.showMessageDialog(RegisterFrame.this, response.getClientResponseStatus()

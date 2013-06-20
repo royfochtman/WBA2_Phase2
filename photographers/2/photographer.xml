@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<photographer xmlns="http://www.example.org/photoBay" ID="2" registrationDate="2001-01-01">
-    <firstname>pho:firstname</firstname>
-    <lastname>pho:lastname</lastname>
-    <birthdate>2001-01-01</birthdate>
+<photographer xmlns="http://www.example.org/photoBay" ref="./photographers/2" ID="2" photosRef="./photographers/2/photos" photoSellsRef="./photographers/2/photoSells">
+    <firstname>few</firstname>
+    <lastname>wadw</lastname>
+    <birthdate>1990-01-01Z</birthdate>
     <sex>m</sex>
-    <equipment>pho:equipment</equipment>
+    <equipment>f</equipment>
     <generalPersonalData>
         <address>
-            <street>pho:street</street>
-            <houseNumber>pho:houseNumber</houseNumber>
-            <postalCode>0</postalCode>
-            <city>pho:city</city>
-            <country>pho:country</country>
+            <street>ewfe</street>
+            <houseNumber>51</houseNumber>
+            <postalCode>65</postalCode>
+            <city>ewfe</city>
+            <country>Germany</country>
         </address>
-        <email>pho:email</email>
-        <phone>pho:phone</phone>
-        <description>pho:description</description>
-        <website>http://tempuri.org</website>
-        <password>pho:password</password>
+        <username>user1</username>
+        <email>ewfew</email>
+        <phone></phone>
+        <description></description>
+        <website></website>
     </generalPersonalData>
 </photographer>
