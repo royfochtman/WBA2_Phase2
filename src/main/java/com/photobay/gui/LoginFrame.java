@@ -135,6 +135,7 @@ public class LoginFrame extends JFrame {
 									, "Login failed", JOptionPane.ERROR_MESSAGE);
 						Photographer pho = null;
 						PressAgency press = null;
+						ref = ref.replaceFirst(".", "");
 						ClientResponse res = Client.create().resource(WebserviceConfig.WS_ADDRESS).path(ref).get(ClientResponse.class);
 						if(ref.contains("photographers"))
 						{

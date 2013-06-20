@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<pressAgency xmlns="http://www.example.org/photoBay" ref="./pressAgencies/1" ID="1" photosRef="./pressAgencies/1/photos" jobsRef="./pressAgencies/1/jobs">
+    <name>wfdw</name>
+    <mainLocation>efef</mainLocation>
+    <yearOfEstablishment>1990</yearOfEstablishment>
+    <generalPersonalData>
+        <address>
+            <street>efwe</street>
+            <houseNumber>626</houseNumber>
+            <postalCode>951</postalCode>
+            <city>efwe</city>
+            <country>Germany</country>
+        </address>
+        <username>user1</username>
+        <email>edfwe</email>
+        <phone></phone>
+        <description></description>
+        <website></website>
+    </generalPersonalData>
+</pressAgency>
