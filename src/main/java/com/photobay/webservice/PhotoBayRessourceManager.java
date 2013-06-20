@@ -177,6 +177,7 @@ public class PhotoBayRessourceManager {
 			    pressAgency.setPhotosRef(pathPhotos);
 			    
 			    m.marshal(pressAgency, file);
+			    putPressAgenciesList(pressAgency);
 			    return true;
 			}
 			return false;
@@ -219,20 +220,20 @@ public class PhotoBayRessourceManager {
 			{
 				int id = IdGenerator.generateID("photoSells/" + photoSellID + "/bids");
 				String pathMain = "./photoSells/" + photoSellID + "/bids/" + id ;
-				File dir = new File("./photoSells/" + photoSellID + "/bids/" + id );
-				File file = new File(dir + "/Bid.xml");
-				if(dir.mkdir() && file.createNewFile())
+				File file = new File(pathMain + "/Bid.xml");
+				if(new File(pathMain).mkdir() && file.createNewFile())
 				{
 					JAXBContext context = JAXBContext.newInstance(Bid.class);
 				    Marshaller m = context.createMarshaller();
 				    m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 				    
 				    bid.setID(id);
-				    bid.setRef(dir.toString());
+				    bid.setRef(pathMain);
 				    bid.setPhotoSellRef("./photoSells/" + photoSellID);
 				    bid.setPressAgencyRef(pressAgencyRef);
 				    
 				    m.marshal(bid, file);
+				    putBidsList(bid, "./photoSells/" + photoSellID);
 				    return true;
 				}
 				return false;
@@ -275,21 +276,22 @@ public class PhotoBayRessourceManager {
 			try
 			{
 				int id = IdGenerator.generateID("jobs");
-				File dir = new File("./jobs/" + id);
-				File file = new File(dir + "/job.xml");
-				if(dir.mkdir() && file.createNewFile())
+				String pathMain = "./jobs/" + id;
+				String pathJobApplication = pathMain + "/jobApplications";
+				File file = new File(pathMain + "/job.xml");
+				if(new File(pathMain).mkdir() && file.createNewFile())
 				{
-					dir = new File("./jobs/" + id + "/jobApplications");
-					dir.mkdir();
+					new File(pathJobApplication).mkdir();
 					JAXBContext context = JAXBContext.newInstance(Job.class);
 				    Marshaller m = context.createMarshaller();
 				    m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 				   
 				    job.setID(id);
-				    job.setRef(dir.toString());
+				    job.setRef(pathMain);
 				    job.setPressAgencyRef(pressAgencyRef);
 				    
 				    m.marshal(job, file);
+				    putJobsList(job);
 				    return true;
 				}
 				return false;
@@ -332,16 +334,16 @@ public class PhotoBayRessourceManager {
 		try
 		{
 			int id = IdGenerator.generateID("jobs/" + jobID + "/jobApplications");
-			File dir = new File("./jobs/" + jobID + "/jobApplications/" + id);
-			File file = new File(dir + "/jobApplication.xml");
-			if(dir.mkdir() && file.createNewFile())
+			String pathMain = "./jobs/" + jobID + "/jobApplications/" + id;
+			File file = new File(pathMain + "/jobApplication.xml");
+			if(new File(pathMain).mkdir() && file.createNewFile())
 			{
 				JAXBContext context = JAXBContext.newInstance(JobApplication.class);
 			    Marshaller m = context.createMarshaller();
 			    m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 			    
 			    jobApplication.setID(id);
-			    jobApplication.setRef(dir.toString());
+			    jobApplication.setRef(pathMain);
 			    jobApplication.setJobRef("./jobs/" + jobID);
 			    jobApplication.setPhotographerRef(photographerRef);
 			    
@@ -389,19 +391,19 @@ public class PhotoBayRessourceManager {
 		try
 		{
 			int id = IdGenerator.generateID("photoSells");
-			File dir = new File("./photoSells/" + id);
-			File file = new File(dir + "/photoSell.xml");
-			if(dir.mkdir() && file.createNewFile())
+			String pathMain = "./photoSells/" + id;
+			String pathBids = pathMain + "/bids";
+			File file = new File(pathMain + "/photoSell.xml");
+			if(new File(pathMain).mkdir() && file.createNewFile())
 			{
-				dir = new File("./photoSells/" + id + "/bids");
-				dir.mkdir();
+				new File(pathBids).mkdir();
 				JAXBContext context = JAXBContext.newInstance(PhotoSell.class);
 			    Marshaller m = context.createMarshaller();
 			    m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 			    
 			    photoSell.setID(id);
-			    photoSell.setRef(dir.toString());
-			    photoSell.setBidsRef(dir.toString() + "/bids");
+			    photoSell.setRef(pathMain);
+			    photoSell.setBidsRef(pathBids);
 			    photoSell.setPhotographerRef(photographerRef);
 			    
 			    m.marshal(photoSell, file);
