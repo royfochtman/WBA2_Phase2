@@ -10,4 +10,9 @@
         <lastName>wadw</lastName>
         <uri>./photographers/2</uri>
     </photographerRef>
+    <photographerRef>
+        <firstName>dvs</firstName>
+        <lastName>rbrf</lastName>
+        <uri>./photographers/3</uri>
+    </photographerRef>
 </photographers>
