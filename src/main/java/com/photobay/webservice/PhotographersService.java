@@ -45,15 +45,7 @@ public class PhotographersService {
 	{
 		if(PhotoBayRessourceManager.postPhotographer(photographer))
 		{
-			try
-			{
-				URI ref = new URI(photographer.getRef());
-				return Response.ok().location(ref).build();
-			}
-			catch(URISyntaxException ex)
-			{
-				return Response.ok().build();
-			}
+				return Response.ok(photographer).build();
 		}
 		else return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
 	}

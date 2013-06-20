@@ -280,12 +280,11 @@ public class RegisterFrame extends JFrame {
 		btnOk.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				ClientResponse response = null;
-				String role = null;
+				String ref = null;
 				if(validateData())
 				{
 					if(rdbtnPhotographer.isSelected())
 					{
-						role = PHOTOGRAPHER_ROLE;
 						SexEnum sex = SexEnum.M;
 						if(rdbtnMale.isSelected())
 							sex = SexEnum.M;
@@ -307,7 +306,6 @@ public class RegisterFrame extends JFrame {
 					}
 					else if(rdbtnPressAgeny.isSelected())
 					{
-						role = PRESSAGENCY_ROLE;
 						PressAgency press = new PressAgency(username, txtName.getText(), txtMainLocation.getText(), 
 								cbYearOfEstablishment.getItemAt(cbYearOfEstablishment.getSelectedIndex()), txtStreet.getText(), 
 								txtHouseNumber.getText(), postalCode, txtCity.getText(),
@@ -319,24 +317,27 @@ public class RegisterFrame extends JFrame {
 						press.getGeneralPersonalData().setDescription(txtDescription.getText());
 						
 						response = Client.create().resource(WebserviceConfig.WS_ADDRESS).path("/pressAgencies").entity(press).post(ClientResponse.class, press);
-					}
-					
-					if(response != null && response.getClientResponseStatus() == Status.OK)
-					{
-						if(register(cnHandler, response.getLocation().getPath().replaceFirst("/", "")))
+						if(response != null && response.getClientResponseStatus() == Status.OK)
 						{
-							JOptionPane.showMessageDialog(RegisterFrame.this, "Registration successful!", "Registration successful!", 
-									JOptionPane.INFORMATION_MESSAGE);
-							if(login(cnHandler))
+							press = response.getEntity(PressAgency.class);
+							if(register(cnHandler, press.getRef()))
 							{
-								JOptionPane.showMessageDialog(RegisterFrame.this, cnHandler.getAttribute("name"), "Login successful", 
+								JOptionPane.showMessageDialog(RegisterFrame.this, "Registration successful!", "Registration successful!", 
 										JOptionPane.INFORMATION_MESSAGE);
+								if(login(cnHandler))
+								{
+									PressAgencyFrame frame = new PressAgencyFrame(press);
+									frame.setVisible(true);
+								}
 							}
+							
 						}
+						else
+							JOptionPane.showMessageDialog(RegisterFrame.this, response.getClientResponseStatus()
+									, "Fehler", JOptionPane.INFORMATION_MESSAGE);
 					}
-					else
-						JOptionPane.showMessageDialog(RegisterFrame.this, response.getClientResponseStatus()
-								, "Fehler", JOptionPane.INFORMATION_MESSAGE);
+					RegisterFrame.this.setVisible(false);
+					RegisterFrame.this.dispose();
 				}
 			}
 		});

@@ -16,7 +16,7 @@
 			<xs:element name="deadline" type="xs:date"></xs:element>
 			<xs:element name="description" type="xs:string"></xs:element>
 			<xs:element name="payment" type="xs:positiveInteger"></xs:element>
-			<xs:element name="topics" type="job:topicType"></xs:element>
+			<!-- <xs:element name="topics" type="job:topicType"></xs:element> -->
 			<xs:element name="status">
 				<xs:simpleType>
 					<xs:restriction base="xs:string">

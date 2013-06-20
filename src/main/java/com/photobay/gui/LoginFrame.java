@@ -21,6 +21,11 @@ import javax.swing.JPasswordField;
 import org.jivesoftware.smack.Roster;
 import org.jivesoftware.smack.XMPPException;
 
+import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.ClientResponse;
+
+import main.java.com.photobay.jaxbfiles.Photographer;
+import main.java.com.photobay.jaxbfiles.PressAgency;
 import main.java.com.photobay.xmppClient.XmppConnectionHandler;
 
 
@@ -124,7 +129,24 @@ public class LoginFrame extends JFrame {
 				{
 					if(login(cn))
 					{
-
+						String ref = cn.getAttribute("name");
+						if(ref.isEmpty())
+							JOptionPane.showMessageDialog(LoginFrame.this, "Login failed. Can't get attribute name!"
+									, "Login failed", JOptionPane.ERROR_MESSAGE);
+						Photographer pho = null;
+						PressAgency press = null;
+						ClientResponse res = Client.create().resource(WebserviceConfig.WS_ADDRESS).path(ref).get(ClientResponse.class);
+						if(ref.contains("photographers"))
+						{
+							pho = res.getEntity(Photographer.class);
+						}
+						else if(ref.contains("pressAgencies"))
+						{
+							press = res.getEntity(PressAgency.class);
+							PressAgencyFrame frame = new PressAgencyFrame(press);
+							frame.setVisible(true);
+						}
+						
 						JOptionPane.showMessageDialog(LoginFrame.this, "Anmeldung erfolgreich."
 								, "Anmeldung erfolgreich", JOptionPane.INFORMATION_MESSAGE);
 					}
