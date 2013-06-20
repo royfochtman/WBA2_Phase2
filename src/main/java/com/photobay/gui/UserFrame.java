@@ -10,6 +10,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 import javax.swing.JToggleButton;
 import javax.swing.JTabbedPane;
 import javax.swing.JLabel;
@@ -77,6 +78,12 @@ public class UserFrame extends JFrame {
 	private Photographer photographer;
 	private WebResource webResource;
 	private JComboBox comboBoxStatusJob;
+	private JEditorPane dtrpnDescriptionJob;
+	private JComboBox comboBoxDeadlineDay;
+	private JComboBox comboBoxDeadlineMonth;
+	private JComboBox comboBoxDeadlineYear;
+	private JTextField textFieldTopics;
+	private JTextField textFieldPhotoPath;
 
 	/**
 	 * Launch the application.
@@ -380,21 +387,41 @@ public class UserFrame extends JFrame {
 			panelMyJobs.add(panelJob);
 			panelJob.setLayout(null);
 
+			//TODO Post new job's resource.
 			JButton btnCreateJob = new JButton("Create");
 			btnCreateJob.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent arg0) {
-				}
+				public void actionPerformed(ActionEvent event) {
+					//fill job data
+					readJobFields();
+					//valide Data
+					if(validateJobData()){
+						//Data in job schreiben.
+						ClientResponse newJobResponse = webResource.path("/jobs").entity(job).post(ClientResponse.class, job);
+	//					ClientResponse jobResponse = webResource.path(jobRef).get(ClientResponse.class);
+	//					job = jobResponse.getEntity(Job.class);
+	//					response = Client.create().resource(WebserviceConfig.WS_ADDRESS).path("/photographers").entity(pho).post(ClientResponse.class, pho);
+						} else
+							JOptionPane.showMessageDialog(UserFrame.this, "Incomplete data. Please fill out all fields.", "Error", 
+									JOptionPane.ERROR_MESSAGE);
+					}
 			});
 			btnCreateJob.setBounds(368, 326, 89, 23);
 			panelJob.add(btnCreateJob);
 
+			//TODO Put Data to the job's resource.
 			JButton btnUpdateJob = new JButton("Update");
+			btnUpdateJob.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent event) {
+					/**/
+				}
+			});
 			btnUpdateJob.setBounds(269, 326, 89, 23);
 			panelJob.add(btnUpdateJob);
 
+			//TODO Delete job's resource.
 			JButton btnDeleteJob = new JButton("Delete");
 			btnDeleteJob.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent arg0) {
+				public void actionPerformed(ActionEvent event) {
 				}
 			});
 			btnDeleteJob.setBounds(467, 326, 89, 23);
@@ -478,6 +505,16 @@ public class UserFrame extends JFrame {
 							"3020" }));
 			comboBoxDeadlineYear.setBounds(235, 58, 60, 20);
 			panelJob.add(comboBoxDeadlineYear);
+			
+			JLabel lblTopics = new JLabel("Topics:");
+			lblTopics.setFont(new Font("Tahoma", Font.BOLD, 11));
+			lblTopics.setBounds(322, 11, 60, 14);
+			panelJob.add(lblTopics);
+			
+			textFieldTopics = new JTextField();
+			textFieldTopics.setColumns(10);
+			textFieldTopics.setBounds(388, 8, 168, 20);
+			panelJob.add(textFieldTopics);
 
 			/**
 			 * Panel for the photos.
@@ -558,21 +595,56 @@ public class UserFrame extends JFrame {
 			editorPaneDescriptionPhoto.setBounds(364, 92, 193, 218);
 			panelPhotoContainer.add(editorPaneDescriptionPhoto);
 
+			//TODO Delete photo resource
 			JButton btnDeletePhoto = new JButton("Delete");
+			btnDeletePhoto.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent event) {
+					//Read URI from Photo
+					
+					// send delete request with the URI from the photo
+				}
+			});
 			btnDeletePhoto.setBounds(463, 326, 89, 23);
 			panelPhotoContainer.add(btnDeletePhoto);
 
+			//TODO POST new photo resource
 			JButton btnCreatePhoto = new JButton("Create");
+			btnCreatePhoto.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent event) {
+					
+					//Read data from the text fields
+					
+					//valide data
+					
+					//send
+					
+				}
+			});
 			btnCreatePhoto.setBounds(364, 326, 89, 23);
 			panelPhotoContainer.add(btnCreatePhoto);
 
+			//TODO Put  photo resource
 			JButton btnUpdatePhoto = new JButton("Update");
+			btnUpdatePhoto.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent event) {
+					//Read data from the text fields
+					
+					//valide data
+					
+					//send
+				}
+			});
 			btnUpdatePhoto.setBounds(265, 326, 89, 23);
 			panelPhotoContainer.add(btnUpdatePhoto);
 
 			JButton btnAddPhoto = new JButton("Add Photo");
 			btnAddPhoto.setBounds(265, 292, 89, 23);
 			panelPhotoContainer.add(btnAddPhoto);
+			
+			textFieldPhotoPath = new JTextField();
+			textFieldPhotoPath.setBounds(152, 290, 89, 20);
+			panelPhotoContainer.add(textFieldPhotoPath);
+			textFieldPhotoPath.setColumns(10);
 
 			JPanel panelMySubscriptions = new JPanel();
 			panelMySubscriptions.setToolTipText("");
@@ -799,6 +871,7 @@ public class UserFrame extends JFrame {
 		textFieldUrgencyJob.setText(job.getUrgency());
 
 		textFieldPaymentJob.setText(String.valueOf(job.getPayment()));
+		//Day,Month,Yeah fehlt!!!!!
 //		new
 //		assigned
 //		closed
@@ -808,5 +881,33 @@ public class UserFrame extends JFrame {
 			comboBoxStatusJob.setSelectedIndex(1);
 		else comboBoxStatusJob.setSelectedIndex(2);
 		
+		dtrpnDescriptionJob.setText(job.getDescription());
+		
+	}
+	
+	private Boolean validateJobData()
+	{
+		Boolean valid = false;
+		
+			if( !textFieldJobName.getText().isEmpty() 
+					&& !textFieldUrgencyJob.getText().isEmpty() 
+					&& !textFieldPaymentJob.getText().isEmpty()
+					&& dtrpnDescriptionJob.getText().isEmpty())
+				valid = true;
+		
+		return valid;
+	}
+	
+	private Job readJobFields(){
+		Job readJob = new Job();
+		//readJob.setDeadline(null);
+		readJob.setDescription(dtrpnDescriptionJob.getText());
+		readJob.setJobName(textFieldJobName.getText());
+		//readJob.setPayment((int)Integer.parseInt(textFieldPaymentJob.getText());
+		readJob.setStatus(comboBoxStatusJob.getSelectedItem().toString());
+		//Topic type!!!
+		//readJob.setTopics(textFieldTopics.getText());
+		readJob.setUrgency(textFieldUrgencyJob.getText());
+		return readJob;
 	}
 }
