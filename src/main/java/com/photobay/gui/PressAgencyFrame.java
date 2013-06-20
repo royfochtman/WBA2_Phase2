@@ -95,7 +95,9 @@ public class PressAgencyFrame extends JFrame {
 	private JComboBox comboBoxDeadlineMonth;
 	private JComboBox comboBoxDeadlineYear;
 	private JTextField textFieldPhotoPath;
-
+	private int jobIndex;
+	
+	
 	/**
 	 * Launch the application.
 	 */
@@ -124,15 +126,16 @@ public class PressAgencyFrame extends JFrame {
 		 * is logged in.
 		 */
 
-		// pressAgency = (PressAgency) userObject;
-		this.pressAgency = pressAgency;
+		if(pressAgency != null)
+		{
+			this.pressAgency = pressAgency;
+		}
+		//else 
 
 		setTitle("Logged in as: "
 				+ pressAgency.getGeneralPersonalData().getUsername() + ", ID: "
 				+ pressAgency.getID());
 
-		// PressAgency pressAgency =
-		// PhotoBayRessourceManager.getPressAgency(id);
 		JTabbedPane pressAgencyTabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		pressAgencyTabbedPane.setBounds(10, 11, 701, 410);
 		contentPane.add(pressAgencyTabbedPane);
@@ -331,6 +334,38 @@ public class PressAgencyFrame extends JFrame {
 				// Als Private globale variable.
 				listJobs = new JList(jobsListValues);
 				
+				
+				//////////////
+				listJobs.addListSelectionListener(new ListSelectionListener() {
+					public void valueChanged(ListSelectionEvent event) {
+						if (!event.getValueIsAdjusting()) {
+
+							/**
+							 * Index from the Element, which has been selected by the
+							 * user.
+							 */
+							JList source = (JList) event.getSource();
+							jobIndex = source.getSelectedIndex();
+
+							/**
+							 * String with the URI of the job, which is going to be
+							 * requested.
+							 */
+							String jobRef = jobs.getJobRef().get(jobIndex).getUri();
+
+							ClientResponse jobResponse = webResource.path(jobRef).get(
+									ClientResponse.class);
+							job = jobResponse.getEntity(Job.class);
+
+							/**
+							 * Update data from the selected job.
+							 */
+
+							updateJob(job);
+						}
+					}
+				});
+				
 			}
 		});
 		
@@ -386,35 +421,7 @@ public class PressAgencyFrame extends JFrame {
 			}
 		});
 		
-		listJobs.addListSelectionListener(new ListSelectionListener() {
-			public void valueChanged(ListSelectionEvent event) {
-				if (!event.getValueIsAdjusting()) {
-
-					/**
-					 * Index from the Element, which has been selected by the
-					 * user.
-					 */
-					JList source = (JList) event.getSource();
-					int index = source.getSelectedIndex();
-
-					/**
-					 * String with the URI of the job, which is going to be
-					 * requested.
-					 */
-					String jobRef = jobs.getJobRef().get(index).getUri();
-
-					ClientResponse jobResponse = webResource.path(jobRef).get(
-							ClientResponse.class);
-					job = jobResponse.getEntity(Job.class);
-
-					/**
-					 * Update data from the selected job.
-					 */
-
-					updateJob(job);
-				}
-			}
-		});
+		
 		
 		btnUpdateJob.setBounds(269, 326, 89, 23);
 		panelJob.add(btnUpdateJob);
@@ -423,6 +430,15 @@ public class PressAgencyFrame extends JFrame {
 		JButton btnDeleteJob = new JButton("Delete");
 		btnDeleteJob.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
+				//Welcher Element ist selektiert?
+				//Index holen, URI holen, delete schicken.
+				
+				String jobURI = jobs.getJobRef().get(jobIndex).getUri();
+				
+				Job deleteJobResponse = webResource.path(jobURI)
+						.entity(job).delete(Job.class);
+				
+				
 			}
 		});
 		btnDeleteJob.setBounds(467, 326, 89, 23);
