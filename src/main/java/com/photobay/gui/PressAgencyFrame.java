@@ -98,7 +98,10 @@ public class PressAgencyFrame extends JFrame {
 	private JComboBox<Integer> comboBoxDeadlineYear;
 	private JTextField textFieldPhotoPath;
 	private int jobIndex;
-	private JList listPhotos;
+	private JList<String> listPhotos;
+	private JList<String> subscriptionsList;
+	private JList<String> listPhotographers;
+	private JList<String> listPhotoSells;
 	
 	/**
 	 * Launch the application.
@@ -397,12 +400,6 @@ public class PressAgencyFrame extends JFrame {
 					// Data in job schreiben.
 					ClientResponse newJobResponse = webResource.path("/jobs")
 							.entity(job).post(ClientResponse.class, job);
-					// ClientResponse jobResponse =
-					// webResource.path(jobRef).get(ClientResponse.class);
-					// job = jobResponse.getEntity(Job.class);
-					// response =
-					// Client.create().resource(WebserviceConfig.WS_ADDRESS).path("/photographers").entity(pho).post(ClientResponse.class,
-					// pho);
 				} else
 					JOptionPane.showMessageDialog(PressAgencyFrame.this,
 							"Incomplete data. Please fill out all fields.",
@@ -542,8 +539,12 @@ public class PressAgencyFrame extends JFrame {
 		panelMyPhotos.add(scrollPanePhotos);
 
 		/* Hier Liste hinzufügen! */
-		JList listPhotos = new JList();
-		listPhotos.setModel(new AbstractListModel() {
+		listPhotos = new JList<String>();
+		listPhotos.setModel(new AbstractListModel<String>() {
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
 			String[] values = new String[] { "Photo1", "Photo2", "Photo3",
 					"EineKuh" };
 
@@ -551,7 +552,7 @@ public class PressAgencyFrame extends JFrame {
 				return values.length;
 			}
 
-			public Object getElementAt(int index) {
+			public String getElementAt(int index) {
 				return values[index];
 			}
 		});
@@ -660,19 +661,23 @@ public class PressAgencyFrame extends JFrame {
 		scrollPane.setBounds(10, 11, 109, 360);
 		panelMySubscriptions.add(scrollPane);
 
-		JList list = new JList();
-		list.setModel(new AbstractListModel() {
+		subscriptionsList = new JList<String>();
+		subscriptionsList.setModel(new AbstractListModel<String>() {
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
 			String[] values = new String[] { "sub1", "sub2", "sub3" };
 
 			public int getSize() {
 				return values.length;
 			}
 
-			public Object getElementAt(int index) {
+			public String getElementAt(int index) {
 				return values[index];
 			}
 		});
-		scrollPane.setViewportView(list);
+		scrollPane.setViewportView(subscriptionsList);
 
 		JPanel panelSearch = new JPanel();
 		pressAgencyTabbedPane.addTab("Search", null, panelSearch, null);
@@ -682,15 +687,19 @@ public class PressAgencyFrame extends JFrame {
 		scrollPanePhotographers.setBounds(10, 36, 90, 335);
 		panelSearch.add(scrollPanePhotographers);
 
-		JList listPhotographers = new JList();
-		listPhotographers.setModel(new AbstractListModel() {
+		listPhotographers = new JList<String>();
+		listPhotographers.setModel(new AbstractListModel<String>() {
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
 			String[] values = new String[] { "photographerA", "photographerB" };
 
 			public int getSize() {
 				return values.length;
 			}
 
-			public Object getElementAt(int index) {
+			public String getElementAt(int index) {
 				return values[index];
 			}
 		});
@@ -721,15 +730,19 @@ public class PressAgencyFrame extends JFrame {
 		scrollPanePhotoSells.setBounds(10, 11, 97, 291);
 		panelBids.add(scrollPanePhotoSells);
 
-		JList listPhotoSells = new JList();
-		listPhotoSells.setModel(new AbstractListModel() {
+		listPhotoSells = new JList<String>();
+		listPhotoSells.setModel(new AbstractListModel<String>() {
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
 			String[] values = new String[] { "PhotoSell1", "PhotoSell2" };
 
 			public int getSize() {
 				return values.length;
 			}
 
-			public Object getElementAt(int index) {
+			public String getElementAt(int index) {
 				return values[index];
 			}
 		});
