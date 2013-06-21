@@ -14,6 +14,8 @@ import main.java.com.photobay.jaxbfiles.Jobs;
 import main.java.com.photobay.jaxbfiles.Jobs.JobRef;
 import main.java.com.photobay.jaxbfiles.Photo;
 import main.java.com.photobay.jaxbfiles.PhotoSell;
+import main.java.com.photobay.jaxbfiles.PhotoSells;
+import main.java.com.photobay.jaxbfiles.PhotoSells.PhotoSellRef;
 import main.java.com.photobay.jaxbfiles.Photographer;
 import main.java.com.photobay.jaxbfiles.Photographers;
 import main.java.com.photobay.jaxbfiles.Photographers.PhotographerRef;
@@ -476,7 +478,10 @@ public class PhotoBayRessourceManager {
 			File photographersListFile = new File("./photographers/photographers.xml");
 		    Photographers photographersList;
 		    if(photographersListFile.createNewFile())
+		    {
 		    	photographersList = new Photographers();
+		    	photographersList.setRef("./photographers");
+		    }
 		    else
 		    	photographersList = getPhotographersList();
 		    
@@ -531,7 +536,10 @@ public class PhotoBayRessourceManager {
 			File pressAgenciesListFile = new File("./pressAgencies/pressAgencies.xml");
 		    PressAgencies pressAgenciesList;
 		    if(pressAgenciesListFile.createNewFile())
+		    {
 		    	pressAgenciesList = new PressAgencies();
+		    	pressAgenciesList.setRef("./pressAgencies");
+		    }
 		    else
 		    	pressAgenciesList = getPressAgenciesList();
 		    
@@ -582,7 +590,10 @@ public class PhotoBayRessourceManager {
 			File bidsListFile = new File(photoSellRef + "/bids/bids.xml");
 		    Bids bidsList;
 		    if(bidsListFile.createNewFile())
+		    {
 		    	bidsList = new Bids();
+		    	bidsList.setRef(photoSellRef + "/bids");
+		    }
 		    else
 		    	bidsList = getBidsList(photoSellRef);
 		    
@@ -633,7 +644,10 @@ public class PhotoBayRessourceManager {
 			File jobsListFile = new File("./jobs/jobs.xml");
 		    Jobs jobsList;
 		    if(jobsListFile.createNewFile())
+		    {
 		    	jobsList = new Jobs();
+		    	jobsList.setRef("./jobs");
+		    }
 		    else
 		    	jobsList = getJobsList();
 		    
@@ -701,7 +715,10 @@ public class PhotoBayRessourceManager {
 			File photosListFile = new File(photo.getOwnerRef() + "/photos/photos.xml");
 		    Photos photosList;
 		    if(photosListFile.createNewFile())
+		    {
 		    	photosList = new Photos();
+		    	photosList.setRef(photo.getOwnerRef() + "/photos");
+		    }
 		    else
 		    	photosList = getPhotosList(photo.getOwnerRef());
 		    
@@ -739,6 +756,43 @@ public class PhotoBayRessourceManager {
 		{
 			return null;
 		}
+	}
+	
+	public static Boolean putPhotoSellList(PhotoSell photoSell){
+		try
+		{
+			File photoSellsListFile = new File("./photoSells/photoSells.xml");
+		    PhotoSells photoSellsList;
+		    if(photoSellsListFile.createNewFile())
+		    {
+		    	photoSellsList = new PhotoSells();
+		    	photoSellsList.setRef("./photoSells");
+		    }
+		    else
+		    	photoSellsList = getPhotoSellsList();
+		    
+		    if(photoSellsList != null)
+		    {
+		    	PhotoSellRef photoSellRef = new PhotoSellRef();
+		    	photoSellRef.setPhotoSellName(photoSell.getName());
+		    	photoSellRef.setUri(photoSell.getRef());
+		    	photoSellsList.getPhotoSellRef().add(photoSellRef);
+		    }
+			JAXBContext context = JAXBContext.newInstance(Jobs.class);
+			Marshaller m = context.createMarshaller();
+		    m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+		    m.marshal(photoSellsList, photoSellsListFile);
+		    return true;
+		}
+		catch(Exception ex)
+		{
+			return false;
+		}
+	}
+
+	private static PhotoSells getPhotoSellsList() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 }
