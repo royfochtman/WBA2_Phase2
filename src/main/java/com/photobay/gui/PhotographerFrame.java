@@ -14,7 +14,7 @@ import javax.swing.AbstractListModel;
 import javax.swing.border.LineBorder;
 import java.awt.Color;
 import javax.swing.JTextField;
-import javax.swing.JEditorPane;
+import javax.swing.JTextArea;
 import main.java.com.photobay.jaxbfiles.Job;
 import main.java.com.photobay.jaxbfiles.Jobs;
 import main.java.com.photobay.jaxbfiles.Photographer;
@@ -24,6 +24,8 @@ import main.java.com.photobay.webservice.PhotoBayRessourceManager;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.io.File;
+import java.io.FileFilter;
+
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.ListSelectionEvent;
 import com.sun.jersey.api.client.Client;
@@ -31,26 +33,39 @@ import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+
+import javax.swing.ButtonGroup;
+import javax.swing.JFileChooser;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.JTextArea;
+import javax.swing.ListSelectionModel;
+import javax.swing.SwingConstants;
+import javax.swing.JRadioButton;
 
 public class PhotographerFrame extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 
 	private JPanel contentPane;
-	private JPanel panelBids;
+	private JPanel panelJobs;
 	private JTextField txtPhotoSellName;
-	private JTextField textFieldTitelPhoto;
-	private JTextField textFieldEnterValueBid;
-	private JList<String> listJobs;
+	private JTextField txtTitelPhoto;
 	private Job job;
 	private Jobs jobs;
 	private Photographer photographer;
 	private WebResource webResource;
-	private JTextField textFieldPhotoPath;
+	private JTextField txtPhotoPath;
 	private int jobIndex;
+	private JRadioButton rdbtnCreateANew;
+	private JRadioButton rdbtnShowExistingPhoto;
+	private JScrollPane scrollMyPhotoSells;
+	private JButton btnChooseImg;
+	private JLabel lblImagePath;
+	private JButton btnUpdatePhotoSell;
+	private JButton btnCreatePhotoSell;
+	private JButton btnDeletePhotoSell;
+	private JList<String> listMyPhotoSells;
 	
 	/**
 	 * Launch the application.
@@ -107,39 +122,6 @@ public class PhotographerFrame extends JFrame {
 				for (int i = 0; i > jobs.getJobRef().size(); i++) {
 					jobsListValues[i] = jobs.getJobRef().get(i).getJobName();
 				}
-
-				// Als Private globale variable.
-				listJobs = new JList<String>(jobsListValues);
-				
-				listJobs.addListSelectionListener(new ListSelectionListener() {
-					public void valueChanged(ListSelectionEvent event) {
-						if (!event.getValueIsAdjusting()) {
-
-							/**
-							 * Index from the Element, which has been selected by the
-							 * user.
-							 */
-							JList source = (JList) event.getSource();
-							jobIndex = source.getSelectedIndex();
-
-							/**
-							 * String with the URI of the job, which is going to be
-							 * requested.
-							 */
-							String jobRef = jobs.getJobRef().get(jobIndex).getUri();
-
-							ClientResponse jobResponse = webResource.path(jobRef).get(
-									ClientResponse.class);
-							job = jobResponse.getEntity(Job.class);
-
-							/**
-							 * Update data from the selected job.
-							 */
-
-							//updateJob(job);
-						}
-					}
-				});
 				
 			}
 		});
@@ -279,28 +261,48 @@ public class PhotographerFrame extends JFrame {
 		pressAgencyTabbedPane.addTab("My Photo Sells", null, panelMyPhotoSells, null);
 		panelMyPhotoSells.setLayout(null);
 
-		JScrollPane scrollMyPhotoSells = new JScrollPane();
-		scrollMyPhotoSells.setBounds(10, 11, 100, 360);
+		scrollMyPhotoSells = new JScrollPane();
+		scrollMyPhotoSells.setEnabled(false);
+		scrollMyPhotoSells.setBounds(10, 37, 100, 334);
 		panelMyPhotoSells.add(scrollMyPhotoSells);
+		
+		listMyPhotoSells = new JList<String>();
+		listMyPhotoSells.setModel(new AbstractListModel<String>() {
+			String[] values = new String[] { "sub1", "sub2", "sub3" };
 
-		scrollMyPhotoSells.setViewportView(listJobs);
+			public int getSize() {
+				return values.length;
+			}
+
+			public String getElementAt(int index) {
+				return values[index];
+			}
+		});
+		scrollMyPhotoSells.setViewportView(listMyPhotoSells);
 
 		JPanel panelMyPhotoSell = new JPanel();
 		panelMyPhotoSell.setBorder(new LineBorder(new Color(0, 0, 0)));
-		panelMyPhotoSell.setBounds(120, 11, 566, 360);
+		panelMyPhotoSell.setBounds(120, 37, 566, 334);
 		panelMyPhotoSells.add(panelMyPhotoSell);
 		panelMyPhotoSell.setLayout(null);
+		
+		ImagePanel panelPhotoSellImg = new ImagePanel();
+		panelPhotoSellImg.setLocation(312, 108);
+		panelPhotoSellImg.setSize(244, 182);
+		panelPhotoSellImg.setBorder(new LineBorder(new Color(0, 0, 0)));
+		panelMyPhotoSell.add(panelPhotoSellImg);
 
 		// TODO Post new job's resource.
-		JButton btnCreatePhotoSell = new JButton("Create");
+		btnCreatePhotoSell = new JButton("Create");
 		btnCreatePhotoSell.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
 			}
 		});
-		btnCreatePhotoSell.setBounds(368, 326, 89, 23);
+		btnCreatePhotoSell.setBounds(467, 301, 89, 23);
 		panelMyPhotoSell.add(btnCreatePhotoSell);
 
-		JButton btnUpdatePhotoSell = new JButton("Update");
+		btnUpdatePhotoSell = new JButton("Update");
+		btnUpdatePhotoSell.setVisible(false);
 		btnUpdatePhotoSell.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
 
@@ -309,10 +311,11 @@ public class PhotographerFrame extends JFrame {
 		
 		
 		
-		btnUpdatePhotoSell.setBounds(269, 326, 89, 23);
+		btnUpdatePhotoSell.setBounds(368, 301, 89, 23);
 		panelMyPhotoSell.add(btnUpdatePhotoSell);
 		
-		JButton btnDeletePhotoSell = new JButton("Delete");
+		btnDeletePhotoSell = new JButton("Delete");
+		btnDeletePhotoSell.setVisible(false);
 		btnDeletePhotoSell.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
 				String jobURI = jobs.getJobRef().get(jobIndex).getUri();
@@ -323,7 +326,7 @@ public class PhotographerFrame extends JFrame {
 				
 			}
 		});
-		btnDeletePhotoSell.setBounds(467, 326, 89, 23);
+		btnDeletePhotoSell.setBounds(467, 301, 89, 23);
 		panelMyPhotoSell.add(btnDeletePhotoSell);
 
 		JLabel lblPhotoSellName = new JLabel("Photo Sell Name:");
@@ -351,9 +354,9 @@ public class PhotographerFrame extends JFrame {
 		panelMyPhotoSell.add(txtPhotoSellName);
 		txtPhotoSellName.setColumns(10);
 
-		JEditorPane txtDescription = new JEditorPane();
+		JTextArea txtDescription = new JTextArea();
 		txtDescription.setText("description");
-		txtDescription.setBounds(10, 108, 285, 207);
+		txtDescription.setBounds(10, 108, 285, 182);
 		panelMyPhotoSell.add(txtDescription);
 		
 		JSpinner spinPrice = new JSpinner();
@@ -364,13 +367,105 @@ public class PhotographerFrame extends JFrame {
 		JLabel lblPhotoSellStatus = new JLabel("New");
 		lblPhotoSellStatus.setBounds(127, 58, 46, 14);
 		panelMyPhotoSell.add(lblPhotoSellStatus);
+		
+		JLabel lblHighestBid = new JLabel("Highest Bid:");
+		lblHighestBid.setFont(new Font("Tahoma", Font.BOLD, 11));
+		lblHighestBid.setBounds(312, 8, 74, 14);
+		panelMyPhotoSell.add(lblHighestBid);
+		
+		JLabel lblNewLabel = new JLabel("HighestBidValue");
+		lblNewLabel.setBounds(396, 8, 160, 14);
+		panelMyPhotoSell.add(lblNewLabel);
+		
+		JLabel lblBidFrom = new JLabel("Bid From:");
+		lblBidFrom.setFont(new Font("Tahoma", Font.BOLD, 11));
+		lblBidFrom.setBounds(312, 33, 74, 14);
+		panelMyPhotoSell.add(lblBidFrom);
+		
+		JLabel lblNewLabel_1 = new JLabel("BidFromUsername");
+		lblNewLabel_1.setBounds(396, 33, 160, 14);
+		panelMyPhotoSell.add(lblNewLabel_1);
+		
+		JLabel lblNewLabel_2 = new JLabel("PressAgencyName");
+		lblNewLabel_2.setBounds(396, 58, 160, 14);
+		panelMyPhotoSell.add(lblNewLabel_2);
+		
+		JButton btnNewButton = new JButton("Accept Bid");
+		btnNewButton.setBounds(396, 79, 89, 23);
+		panelMyPhotoSell.add(btnNewButton);
+		
+		lblImagePath = new JLabel("");
+		lblImagePath.setBounds(127, 305, 168, 14);
+		panelMyPhotoSell.add(lblImagePath);
+		
+		btnChooseImg = new JButton("Choose Img:");
+		btnChooseImg.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				JFileChooser fileChooserImg = new JFileChooser();
+				fileChooserImg.setDialogTitle("Choose your Image");
+				fileChooserImg.setDialogType(JFileChooser.OPEN_DIALOG);
+				fileChooserImg.setFileSelectionMode(JFileChooser.FILES_ONLY);
+				fileChooserImg.setFileFilter(new javax.swing.filechooser.FileFilter() {
+					
+					@Override
+					public String getDescription() {
+						return "Images(*.jpg; *.jpeg; *.png)";
+					}
+					
+					@Override
+					public boolean accept(File file) {
+						String filename = file.getName().toLowerCase();
+						return filename.endsWith(".jpg") || filename.endsWith(".jpeg") || filename.endsWith("png") || file.isDirectory();
+					}
+				});
+				fileChooserImg.setVisible(true);
+				int result = fileChooserImg.showOpenDialog(null);
+			}
+		});
+		btnChooseImg.setBounds(10, 301, 107, 23);
+		panelMyPhotoSell.add(btnChooseImg);
+		
+		rdbtnCreateANew = new JRadioButton("Create a new Photo Sell");
+		rdbtnCreateANew.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				scrollMyPhotoSells.setEnabled(false);
+				listMyPhotoSells.setEnabled(false);
+				btnChooseImg.setVisible(true);
+				lblImagePath.setVisible(true);
+				btnUpdatePhotoSell.setVisible(false);
+				btnDeletePhotoSell.setVisible(false);
+			}
+		});
+		rdbtnCreateANew.setSelected(true);
+		rdbtnCreateANew.setBounds(10, 7, 141, 23);
+		panelMyPhotoSells.add(rdbtnCreateANew);
+		
+		rdbtnShowExistingPhoto = new JRadioButton("Manage existing Photo Sells");
+		rdbtnShowExistingPhoto.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				scrollMyPhotoSells.setEnabled(true);
+				listMyPhotoSells.setEnabled(true);
+				btnChooseImg.setVisible(false);
+				lblImagePath.setVisible(false);
+				btnUpdatePhotoSell.setVisible(true);
+				btnDeletePhotoSell.setVisible(true);
+			}
+		});
+		rdbtnShowExistingPhoto.setBounds(153, 7, 170, 23);
+		panelMyPhotoSells.add(rdbtnShowExistingPhoto);
+		
+		ButtonGroup group = new ButtonGroup();
+		group.add(rdbtnCreateANew);
+		group.add(rdbtnShowExistingPhoto);
 
 		/**
 		 * Panel for the photos.
 		 */
 
 		JPanel panelMyPhotos = new JPanel();
+		panelMyPhotos.setVisible(false);
 		pressAgencyTabbedPane.addTab("My Photos", null, panelMyPhotos, null);
+		pressAgencyTabbedPane.setEnabledAt(2, false);
 		panelMyPhotos.setLayout(null);
 
 		/**
@@ -415,8 +510,7 @@ public class PhotographerFrame extends JFrame {
 		 * Load an Image
 		 */
 
-		File file = new File("C:/Users/Roy/Desktop/flower.png");
-		ImagePanel imgPanel = new ImagePanel(file);
+		ImagePanel imgPanel = new ImagePanel();
 		imgPanel.setLocation(0, 0);
 		imgPanel.setSize(344, 264);
 		imgPanel.setBorder(new LineBorder(new Color(0, 0, 0)));
@@ -427,19 +521,19 @@ public class PhotographerFrame extends JFrame {
 		lblTitelPhoto.setBounds(364, 11, 46, 14);
 		panelPhotoContainer.add(lblTitelPhoto);
 
-		textFieldTitelPhoto = new JTextField();
-		textFieldTitelPhoto.setBounds(364, 36, 193, 20);
-		panelPhotoContainer.add(textFieldTitelPhoto);
-		textFieldTitelPhoto.setColumns(10);
+		txtTitelPhoto = new JTextField();
+		txtTitelPhoto.setBounds(364, 36, 193, 20);
+		panelPhotoContainer.add(txtTitelPhoto);
+		txtTitelPhoto.setColumns(10);
 
 		JLabel lblDescriptionPhoto = new JLabel("Description");
 		lblDescriptionPhoto.setFont(new Font("Tahoma", Font.BOLD, 11));
 		lblDescriptionPhoto.setBounds(364, 67, 74, 14);
 		panelPhotoContainer.add(lblDescriptionPhoto);
 
-		JEditorPane editorPaneDescriptionPhoto = new JEditorPane();
-		editorPaneDescriptionPhoto.setBounds(364, 92, 193, 218);
-		panelPhotoContainer.add(editorPaneDescriptionPhoto);
+		JTextArea txtDescriptionPhoto = new JTextArea();
+		txtDescriptionPhoto.setBounds(364, 92, 193, 218);
+		panelPhotoContainer.add(txtDescriptionPhoto);
 
 		// TODO Delete photo resource
 		JButton btnDeletePhoto = new JButton("Delete");
@@ -487,9 +581,9 @@ public class PhotographerFrame extends JFrame {
 		btnAddPhoto.setBounds(265, 292, 89, 23);
 		panelPhotoContainer.add(btnAddPhoto);
 
-		textFieldPhotoPath = new JTextField();
-		textFieldPhotoPath.setBounds(152, 290, 89, 20);
-		panelPhotoContainer.add(textFieldPhotoPath);
+		txtPhotoPath = new JTextField();
+		txtPhotoPath.setBounds(152, 290, 89, 20);
+		panelPhotoContainer.add(txtPhotoPath);
 		//textFieldPhotoPath.setColumns(Color(0, 0, 0)));
 		
 		JPanel panelMySubscriptions = new JPanel();
@@ -502,8 +596,8 @@ public class PhotographerFrame extends JFrame {
 		scrollPane.setBounds(10, 11, 109, 360);
 		panelMySubscriptions.add(scrollPane);
 
-		JList list = new JList();
-		list.setModel(new AbstractListModel() {
+		JList listSubscriptions = new JList();
+		listSubscriptions.setModel(new AbstractListModel() {
 			String[] values = new String[] { "sub1", "sub2", "sub3" };
 
 			public int getSize() {
@@ -514,154 +608,150 @@ public class PhotographerFrame extends JFrame {
 				return values[index];
 			}
 		});
-		scrollPane.setViewportView(list);
+		scrollPane.setViewportView(listSubscriptions);
 
 		JPanel panelSearch = new JPanel();
-		pressAgencyTabbedPane.addTab("Search", null, panelSearch, null);
+		pressAgencyTabbedPane.addTab("Search Jobs", null, panelSearch, null);
 		panelSearch.setLayout(null);
 
 		JScrollPane scrollPanePhotographers = new JScrollPane();
 		scrollPanePhotographers.setBounds(10, 36, 90, 335);
 		panelSearch.add(scrollPanePhotographers);
 		
-		JList listPhotographers = new JList();
-		listPhotographers.setModel(new AbstractListModel() {
-			String[] values = new String[] { "photographerA", "photographerB" };
-
+		JList listPessAgencies = new JList();
+		listPessAgencies.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		listPessAgencies.setModel(new AbstractListModel() {
+			String[] values = new String[] {};
 			public int getSize() {
 				return values.length;
 			}
-
 			public Object getElementAt(int index) {
 				return values[index];
 			}
 		});
-		scrollPanePhotographers.setViewportView(listPhotographers);
+		scrollPanePhotographers.setViewportView(listPessAgencies);
 		
-		JPanel panelPhotographer = new JPanel();
-		panelPhotographer.setBorder(new LineBorder(new Color(0, 0, 0)));
-		panelPhotographer.setBounds(110, 11, 576, 360);
-		panelSearch.add(panelPhotographer);
-		panelPhotographer.setLayout(null);
+		JPanel panelPressAgency = new JPanel();
+		panelPressAgency.setBorder(new LineBorder(new Color(0, 0, 0)));
+		panelPressAgency.setBounds(110, 11, 576, 360);
+		panelSearch.add(panelPressAgency);
+		panelPressAgency.setLayout(null);
 
-		JLabel lblFirstnameLastname = new JLabel("Firstname Lastname");
-		lblFirstnameLastname.setFont(new Font("Tahoma", Font.BOLD, 11));
-		lblFirstnameLastname.setBounds(10, 11, 201, 14);
-		panelPhotographer.add(lblFirstnameLastname);
+		JLabel lblPressAgencyName = new JLabel("PressAgency Name");
+		lblPressAgencyName.setFont(new Font("Tahoma", Font.BOLD, 11));
+		lblPressAgencyName.setBounds(10, 11, 201, 14);
+		panelPressAgency.add(lblPressAgencyName);
 
-		JButton btnSubscribeToPhotographer = new JButton("Subscribe");
-		btnSubscribeToPhotographer.setBounds(210, 7, 100, 23);
-		panelPhotographer.add(btnSubscribeToPhotographer);
+		JButton btnSubscribeToPressAgency = new JButton("Subscribe");
+		btnSubscribeToPressAgency.setBounds(210, 7, 100, 23);
+		panelPressAgency.add(btnSubscribeToPressAgency);
 		
-		panelBids = new JPanel();
-		panelBids.setBorder(new LineBorder(new Color(0, 0, 0)));
-		panelBids.setBounds(10, 36, 556, 313);
-		panelPhotographer.add(panelBids);
-		panelBids.setLayout(null);
+		panelJobs = new JPanel();
+		panelJobs.setBorder(new LineBorder(new Color(0, 0, 0)));
+		panelJobs.setBounds(10, 36, 556, 313);
+		panelPressAgency.add(panelJobs);
+		panelJobs.setLayout(null);
 		
 		JScrollPane scrollPanePhotoSells = new JScrollPane();
 		scrollPanePhotoSells.setBounds(10, 11, 97, 291);
-		panelBids.add(scrollPanePhotoSells);
+		panelJobs.add(scrollPanePhotoSells);
 		
-		JList listPhotoSells = new JList();
-		listPhotoSells.setModel(new AbstractListModel() {
-			String[] values = new String[] { "PhotoSell1", "PhotoSell2" };
-
+		JList listJobs = new JList();
+		listJobs.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		listJobs.setModel(new AbstractListModel() {
+			String[] values = new String[] {};
 			public int getSize() {
 				return values.length;
 			}
-
 			public Object getElementAt(int index) {
 				return values[index];
 			}
 		});
-		scrollPanePhotoSells.setViewportView(listPhotoSells);
+		scrollPanePhotoSells.setViewportView(listJobs);
 		
-		JLabel lblNamePhotoSell = new JLabel("Name");
-		lblNamePhotoSell.setFont(new Font("Tahoma", Font.BOLD, 11));
-		lblNamePhotoSell.setBounds(117, 13, 67, 14);
-		panelBids.add(lblNamePhotoSell);
+		JLabel lblJobName = new JLabel("Job Name:");
+		lblJobName.setFont(new Font("Tahoma", Font.BOLD, 11));
+		lblJobName.setBounds(117, 13, 67, 14);
+		panelJobs.add(lblJobName);
 
-		JLabel lblBeginningPricePhotoSell = new JLabel("Beginning Price");
-		lblBeginningPricePhotoSell.setFont(new Font("Tahoma", Font.BOLD, 11));
-		lblBeginningPricePhotoSell.setBounds(117, 38, 97, 14);
-		panelBids.add(lblBeginningPricePhotoSell);
+		JLabel lblUrgency = new JLabel("Urgency:");
+		lblUrgency.setFont(new Font("Tahoma", Font.BOLD, 11));
+		lblUrgency.setBounds(117, 38, 97, 14);
+		panelJobs.add(lblUrgency);
 
-		JLabel lblDescriptionPhotoSell = new JLabel("Description");
-		lblDescriptionPhotoSell.setFont(new Font("Tahoma", Font.BOLD, 11));
-		lblDescriptionPhotoSell.setBounds(117, 63, 97, 14);
-		panelBids.add(lblDescriptionPhotoSell);
+		JLabel lblJobDescriptionSell = new JLabel("Job Description:");
+		lblJobDescriptionSell.setFont(new Font("Tahoma", Font.BOLD, 11));
+		lblJobDescriptionSell.setBounds(117, 63, 97, 14);
+		panelJobs.add(lblJobDescriptionSell);
 
-		JLabel lblStatusPhotoSell = new JLabel("Status");
-		lblStatusPhotoSell.setFont(new Font("Tahoma", Font.BOLD, 11));
-		lblStatusPhotoSell.setBounds(342, 38, 46, 14);
-		panelBids.add(lblStatusPhotoSell);
-
-		JPanel panelPhotoSell = new JPanel();
-		panelPhotoSell.setBorder(new LineBorder(new Color(0, 0, 0)));
-		panelPhotoSell.setBounds(117, 88, 197, 214);
-		panelPhotoSell.setLayout(null);
-		panelBids.add(panelPhotoSell);
+		JLabel lblJobStatus = new JLabel("Job Status:");
+		lblJobStatus.setFont(new Font("Tahoma", Font.BOLD, 11));
+		lblJobStatus.setBounds(347, 13, 78, 14);
+		panelJobs.add(lblJobStatus);
 
 		/**
 		 * Load PhotoSell Image
 		 */
 
 		File filePhotoSell = new File("C:/Users/Roy/Desktop/flower.png");
-		ImagePanel imgPanelPhotoSell = new ImagePanel(filePhotoSell);
-		imgPanelPhotoSell.setLocation(0, 0);
-		imgPanelPhotoSell.setSize(197, 214);
-		imgPanelPhotoSell.setBorder(new LineBorder(new Color(0, 0, 0)));
-		panelPhotoSell.setLayout(null);
-		panelPhotoSell.add(imgPanelPhotoSell);
 
-		JLabel lblEnterValueBid = new JLabel("Enter value");
-		lblEnterValueBid.setFont(new Font("Tahoma", Font.BOLD, 11));
-		lblEnterValueBid.setBounds(342, 176, 90, 14);
-		panelBids.add(lblEnterValueBid);
+		JButton btnApplyJob = new JButton("Apply");
+		btnApplyJob.setBounds(457, 279, 89, 23);
+		panelJobs.add(btnApplyJob);
 
-		textFieldEnterValueBid = new JTextField();
-		textFieldEnterValueBid.setBounds(342, 201, 86, 20);
-		panelBids.add(textFieldEnterValueBid);
-		textFieldEnterValueBid.setColumns(10);
+		JLabel lblJobNamelValue = new JLabel("Name");
+		lblJobNamelValue.setBounds(230, 13, 46, 14);
+		panelJobs.add(lblJobNamelValue);
 
-		JButton btnOkBid = new JButton("Ok");
-		btnOkBid.setBounds(342, 232, 89, 23);
-		panelBids.add(btnOkBid);
+		JLabel lblUrgencyValue = new JLabel("Urgency");
+		lblUrgencyValue.setBounds(230, 38, 46, 14);
+		panelJobs.add(lblUrgencyValue);
 
-		JLabel lblLastPriceBid = new JLabel("Last Price");
-		lblLastPriceBid.setFont(new Font("Tahoma", Font.BOLD, 11));
-		lblLastPriceBid.setBounds(342, 88, 74, 14);
-		panelBids.add(lblLastPriceBid);
+		JLabel lblJobDesciptionValue = new JLabel("Desciption");
+		lblJobDesciptionValue.setVerticalAlignment(SwingConstants.TOP);
+		lblJobDesciptionValue.setVerticalTextPosition(SwingConstants.TOP);
+		lblJobDesciptionValue.setBounds(230, 63, 316, 88);
+		panelJobs.add(lblJobDesciptionValue);
 
-		JLabel lblLastPriceBidValue = new JLabel("LastPriceValue");
-		lblLastPriceBidValue.setBounds(342, 113, 74, 14);
-		panelBids.add(lblLastPriceBidValue);
-
-		JLabel lblNamePhotoSellValue = new JLabel("Name");
-		lblNamePhotoSellValue.setBounds(167, 13, 46, 14);
-		panelBids.add(lblNamePhotoSellValue);
-
-		JLabel lblBeginningPricePhotoSellValue = new JLabel("BegPrice");
-		lblBeginningPricePhotoSellValue.setBounds(213, 38, 46, 14);
-		panelBids.add(lblBeginningPricePhotoSellValue);
-
-		JLabel lblDesciptionPhotoSellValue = new JLabel("Desciption");
-		lblDesciptionPhotoSellValue.setBounds(197, 63, 349, 14);
-		panelBids.add(lblDesciptionPhotoSellValue);
-
-		JLabel lblStatusPhotoSellValue = new JLabel("Status");
-		lblStatusPhotoSellValue.setBounds(408, 38, 46, 14);
-		panelBids.add(lblStatusPhotoSellValue);
+		JLabel lblJobStatusValue = new JLabel("Status");
+		lblJobStatusValue.setBounds(435, 13, 46, 14);
+		panelJobs.add(lblJobStatusValue);
+		
+		JLabel lblDeadline = new JLabel("Deadline:");
+		lblDeadline.setFont(new Font("Tahoma", Font.BOLD, 11));
+		lblDeadline.setBounds(347, 38, 78, 14);
+		panelJobs.add(lblDeadline);
+		
+		JLabel lblDeadlineValue = new JLabel("Deadline");
+		lblDeadlineValue.setBounds(435, 38, 46, 14);
+		panelJobs.add(lblDeadlineValue);
+		
+		JLabel lblPayment = new JLabel("Payment:");
+		lblPayment.setFont(new Font("Tahoma", Font.BOLD, 11));
+		lblPayment.setBounds(117, 162, 62, 14);
+		panelJobs.add(lblPayment);
+		
+		JLabel lblPaymentValue = new JLabel("Payment");
+		lblPaymentValue.setBounds(230, 162, 46, 14);
+		panelJobs.add(lblPaymentValue);
+		
+		JLabel lblApplicationMessage = new JLabel("Application Message:");
+		lblApplicationMessage.setFont(new Font("Tahoma", Font.BOLD, 11));
+		lblApplicationMessage.setBounds(117, 187, 142, 14);
+		panelJobs.add(lblApplicationMessage);
+		
+		JTextArea txtApplicationMessage = new JTextArea();
+		txtApplicationMessage.setBounds(269, 187, 277, 81);
+		panelJobs.add(txtApplicationMessage);
 
 		JButton btnUnsubscribe = new JButton("Unsubscribe");
 		btnUnsubscribe.setBounds(320, 7, 100, 23);
-		panelPhotographer.add(btnUnsubscribe);
+		panelPressAgency.add(btnUnsubscribe);
 
-		JLabel lblPhotographer = new JLabel("Photographer");
-		lblPhotographer.setFont(new Font("Tahoma", Font.BOLD, 11));
-		lblPhotographer.setBounds(10, 11, 90, 14);
-		panelSearch.add(lblPhotographer);
+		JLabel lblPressAgencies = new JLabel("Press Agencies");
+		lblPressAgencies.setFont(new Font("Tahoma", Font.BOLD, 11));
+		lblPressAgencies.setBounds(10, 11, 90, 14);
+		panelSearch.add(lblPressAgencies);
 
 		/**
 		 * Logout and dispose Frame if btnLogout is pressed.
