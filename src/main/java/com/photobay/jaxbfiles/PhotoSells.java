@@ -2,7 +2,7 @@
 // Diese Datei wurde mit der JavaTM Architecture for XML Binding(JAXB) Reference Implementation, v2.2.6 generiert 
 // Siehe <a href="http://java.sun.com/xml/jaxb">http://java.sun.com/xml/jaxb</a> 
 // Änderungen an dieser Datei gehen bei einer Neukompilierung des Quellschemas verloren. 
-// Generiert: 2013.06.15 um 07:07:00 PM CEST 
+// Generiert: 2013.06.21 um 05:42:39 PM CEST 
 //
 
 
@@ -20,7 +20,7 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>Java-Klasse für anonymouss complex type.
+ * <p>Java-Klasse für anonymous complex type.
  * 
  * <p>Das folgende Schemafragment gibt den erwarteten Content an, der in dieser Klasse enthalten ist.
  * 
@@ -29,7 +29,7 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence maxOccurs="unbounded" minOccurs="0">
- *         &lt;element name="jobRef">
+ *         &lt;element name="photoSellRef">
  *           &lt;complexType>
  *             &lt;complexContent>
  *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
@@ -52,43 +52,43 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-    "jobRef"
+    "photoSellRef"
 })
 @XmlRootElement(name = "photoSells")
 public class PhotoSells {
 
-    protected List<PhotoSells.JobRef> jobRef;
+    protected List<PhotoSells.PhotoSellRef> photoSellRef;
     @XmlAttribute(name = "ref", required = true)
     @XmlSchemaType(name = "anyURI")
     protected String ref;
 
     /**
-     * Gets the value of the jobRef property.
+     * Gets the value of the photoSellRef property.
      * 
      * <p>
      * This accessor method returns a reference to the live list,
      * not a snapshot. Therefore any modification you make to the
      * returned list will be present inside the JAXB object.
-     * This is why there is not a <CODE>set</CODE> method for the jobRef property.
+     * This is why there is not a <CODE>set</CODE> method for the photoSellRef property.
      * 
      * <p>
      * For example, to add a new item, do as follows:
      * <pre>
-     *    getJobRef().add(newItem);
+     *    getPhotoSellRef().add(newItem);
      * </pre>
      * 
      * 
      * <p>
      * Objects of the following type(s) are allowed in the list
-     * {@link PhotoSells.JobRef }
+     * {@link PhotoSells.PhotoSellRef }
      * 
      * 
      */
-    public List<PhotoSells.JobRef> getJobRef() {
-        if (jobRef == null) {
-            jobRef = new ArrayList<PhotoSells.JobRef>();
+    public List<PhotoSells.PhotoSellRef> getPhotoSellRef() {
+        if (photoSellRef == null) {
+            photoSellRef = new ArrayList<PhotoSells.PhotoSellRef>();
         }
-        return this.jobRef;
+        return this.photoSellRef;
     }
 
     /**
@@ -140,7 +140,7 @@ public class PhotoSells {
     @XmlType(name = "", propOrder = {
 
     })
-    public static class JobRef {
+    public static class PhotoSellRef {
 
         @XmlElement(required = true)
         protected String photoSellName;

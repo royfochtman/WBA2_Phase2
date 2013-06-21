@@ -18,14 +18,12 @@ import javax.swing.JTextArea;
 import main.java.com.photobay.jaxbfiles.Job;
 import main.java.com.photobay.jaxbfiles.Jobs;
 import main.java.com.photobay.jaxbfiles.Photographer;
-import main.java.com.photobay.jaxbfiles.Photos;
 import main.java.com.photobay.util.ImagePanel;
 import main.java.com.photobay.webservice.PhotoBayRessourceManager;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.FileFilter;
-
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.ListSelectionEvent;
 import com.sun.jersey.api.client.Client;
@@ -42,6 +40,8 @@ import javax.swing.JTextArea;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 import javax.swing.JRadioButton;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class PhotographerFrame extends JFrame {
 
@@ -51,12 +51,9 @@ public class PhotographerFrame extends JFrame {
 	private JPanel panelJobs;
 	private JTextField txtPhotoSellName;
 	private JTextField txtTitelPhoto;
-	private Job job;
-	private Jobs jobs;
 	private Photographer photographer;
 	private WebResource webResource;
 	private JTextField txtPhotoPath;
-	private int jobIndex;
 	private JRadioButton rdbtnCreateANew;
 	private JRadioButton rdbtnShowExistingPhoto;
 	private JScrollPane scrollMyPhotoSells;
@@ -66,6 +63,7 @@ public class PhotographerFrame extends JFrame {
 	private JButton btnCreatePhotoSell;
 	private JButton btnDeletePhotoSell;
 	private JList<String> listMyPhotoSells;
+	private JLabel lblMyname;
 	
 	/**
 	 * Launch the application.
@@ -109,20 +107,6 @@ public class PhotographerFrame extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent event) {
 				
-				/**
-				 * Get jobs list from the press agency.
-				 */
-
-				ClientResponse jobsResponse = webResource.path("/jobs").get(
-						ClientResponse.class);
-				jobs = jobsResponse.getEntity(Jobs.class);
-
-				String[] jobsListValues = new String[] {};
-
-				for (int i = 0; i > jobs.getJobRef().size(); i++) {
-					jobsListValues[i] = jobs.getJobRef().get(i).getJobName();
-				}
-				
 			}
 		});
 		
@@ -135,17 +119,17 @@ public class PhotographerFrame extends JFrame {
 				lblName.setFont(new Font("Tahoma", Font.BOLD, 11));
 				lblName.setBounds(10, 11, 46, 14);
 				panelMyData.add(lblName);
-				JLabel lblMyname = new JLabel(photographer.getFirstname() +  " " + photographer.getLastname());
-				lblMyname.setBounds(81, 11, 148, 14);
+				lblMyname = new JLabel(photographer.getFirstname() + " " + photographer.getLastname());
+				lblMyname.setBounds(81, 11, 189, 14);
 				panelMyData.add(lblMyname);
 						
 				JLabel lblUsername = new JLabel("Username:");
 				lblUsername.setFont(new Font("Tahoma", Font.BOLD, 11));
-				lblUsername.setBounds(239, 11, 67, 14);
+				lblUsername.setBounds(280, 11, 67, 14);
 				panelMyData.add(lblUsername);
 				JLabel lblMyusername = new JLabel(photographer.getGeneralPersonalData()
 						.getUsername());
-				lblMyusername.setBounds(357, 11, 95, 14);
+				lblMyusername.setBounds(357, 11, 132, 14);
 				panelMyData.add(lblMyusername);
 								
 				JLabel lblBirthdate = new JLabel("Birthdate:");
@@ -160,22 +144,22 @@ public class PhotographerFrame extends JFrame {
 				separator.setBounds(10, 37, 676, 2);
 				panelMyData.add(separator);
 												
-				JLabel lblAddress = new JLabel("Address:");
-				lblAddress.setFont(new Font("Tahoma", Font.BOLD, 11));
-				lblAddress.setBounds(10, 50, 61, 14);
-				panelMyData.add(lblAddress);
-				JLabel lblMyaddress = new JLabel(photographer.getGeneralPersonalData()
+				JLabel lblStreet = new JLabel("Street:");
+				lblStreet.setFont(new Font("Tahoma", Font.BOLD, 11));
+				lblStreet.setBounds(10, 50, 61, 14);
+				panelMyData.add(lblStreet);
+				JLabel lblMyStreet = new JLabel(photographer.getGeneralPersonalData()
 						.getAddress().getStreet());
-				lblMyaddress.setBounds(81, 50, 78, 14);
-				panelMyData.add(lblMyaddress);
+				lblMyStreet.setBounds(81, 50, 189, 14);
+				panelMyData.add(lblMyStreet);
 														
 				JLabel lblHouseNr = new JLabel("House Nr:");
 				lblHouseNr.setFont(new Font("Tahoma", Font.BOLD, 11));
-				lblHouseNr.setBounds(239, 50, 67, 14);
+				lblHouseNr.setBounds(280, 50, 67, 14);
 				panelMyData.add(lblHouseNr);
 				JLabel lblMyhousenr = new JLabel(photographer.getGeneralPersonalData()
 						.getAddress().getHouseNumber());
-				lblMyhousenr.setBounds(357, 50, 67, 14);
+				lblMyhousenr.setBounds(357, 50, 129, 14);
 				panelMyData.add(lblMyhousenr);
 																
 				JLabel lblPostalCode = new JLabel("Postal Code:");
@@ -193,16 +177,16 @@ public class PhotographerFrame extends JFrame {
 				panelMyData.add(lblCity);
 				JLabel lblMycity = new JLabel(photographer.getGeneralPersonalData()
 						.getAddress().getCity());
-				lblMycity.setBounds(81, 75, 78, 14);
+				lblMycity.setBounds(81, 75, 189, 14);
 				panelMyData.add(lblMycity);
 																				
 				JLabel lblCountry = new JLabel("Country:");
 				lblCountry.setFont(new Font("Tahoma", Font.BOLD, 11));
-				lblCountry.setBounds(239, 75, 67, 14);
+				lblCountry.setBounds(280, 75, 67, 14);
 				panelMyData.add(lblCountry);
 				JLabel lblMycountry = new JLabel(photographer.getGeneralPersonalData()
 						.getAddress().getCountry());
-				lblMycountry.setBounds(357, 75, 72, 14);
+				lblMycountry.setBounds(357, 75, 129, 14);
 				panelMyData.add(lblMycountry);
 																						
 				JSeparator separator_1 = new JSeparator();
@@ -215,7 +199,7 @@ public class PhotographerFrame extends JFrame {
 				panelMyData.add(lblEmail);
 				JLabel lblMyemail = new JLabel(photographer.getGeneralPersonalData()
 						.getEmail());
-				lblMyemail.setBounds(81, 114, 126, 14);
+				lblMyemail.setBounds(81, 114, 189, 14);
 				panelMyData.add(lblMyemail);
 				
 				JLabel lblPhoneNr = new JLabel("Phone Nr:");
@@ -224,7 +208,7 @@ public class PhotographerFrame extends JFrame {
 				panelMyData.add(lblPhoneNr);
 				JLabel lblMyphonenr = new JLabel(photographer.getGeneralPersonalData()
 						.getPhone());
-				lblMyphonenr.setBounds(81, 139, 116, 14);
+				lblMyphonenr.setBounds(81, 139, 189, 14);
 				panelMyData.add(lblMyphonenr);
 						
 				JLabel lblWebsite = new JLabel("Website:");
@@ -233,7 +217,7 @@ public class PhotographerFrame extends JFrame {
 				panelMyData.add(lblWebsite);
 				JLabel lblMywebsite = new JLabel(photographer.getGeneralPersonalData()
 						.getWebsite());
-				lblMywebsite.setBounds(81, 164, 156, 14);
+				lblMywebsite.setBounds(81, 164, 189, 14);
 				panelMyData.add(lblMywebsite);
 								
 				JLabel lblDescription = new JLabel("Description:");
@@ -242,21 +226,25 @@ public class PhotographerFrame extends JFrame {
 				panelMyData.add(lblDescription);
 				JLabel lblMydescription = new JLabel(photographer
 						.getGeneralPersonalData().getDescription());
+				lblMydescription.setVerticalAlignment(SwingConstants.TOP);
 				lblMydescription.setBounds(80, 189, 606, 148);
 				panelMyData.add(lblMydescription);
 										
 				JButton btnUpdateData = new JButton("Update Data");
+				btnUpdateData.setEnabled(false);
+				btnUpdateData.setVisible(false);
 				btnUpdateData.setBounds(433, 348, 116, 23);
 				panelMyData.add(btnUpdateData);
 												
 				JLabel lblEquipment = new JLabel("Equipment:");
 				lblEquipment.setFont(new Font("Tahoma", Font.BOLD, 11));
-				lblEquipment.setBounds(239, 114, 67, 14);
+				lblEquipment.setBounds(280, 114, 67, 14);
 				panelMyData.add(lblEquipment);
-												
-				JTextArea txtEquipment = new JTextArea();
-				txtEquipment.setBounds(357, 114, 329, 69);
-				panelMyData.add(txtEquipment);
+				
+				JLabel lblMyEquipment = new JLabel(photographer.getEquipment());
+				lblMyEquipment.setVerticalAlignment(SwingConstants.TOP);
+				lblMyEquipment.setBounds(357, 114, 329, 64);
+				panelMyData.add(lblMyEquipment);
 
 		pressAgencyTabbedPane.addTab("My Photo Sells", null, panelMyPhotoSells, null);
 		panelMyPhotoSells.setLayout(null);
@@ -267,6 +255,7 @@ public class PhotographerFrame extends JFrame {
 		panelMyPhotoSells.add(scrollMyPhotoSells);
 		
 		listMyPhotoSells = new JList<String>();
+		listMyPhotoSells.setEnabled(false);
 		listMyPhotoSells.setModel(new AbstractListModel<String>() {
 			String[] values = new String[] { "sub1", "sub2", "sub3" };
 
@@ -318,12 +307,6 @@ public class PhotographerFrame extends JFrame {
 		btnDeletePhotoSell.setVisible(false);
 		btnDeletePhotoSell.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
-				String jobURI = jobs.getJobRef().get(jobIndex).getUri();
-				
-				Job deleteJobResponse = webResource.path(jobURI)
-						.entity(job).delete(Job.class);
-				
-				
 			}
 		});
 		btnDeletePhotoSell.setBounds(467, 301, 89, 23);
@@ -373,24 +356,25 @@ public class PhotographerFrame extends JFrame {
 		lblHighestBid.setBounds(312, 8, 74, 14);
 		panelMyPhotoSell.add(lblHighestBid);
 		
-		JLabel lblNewLabel = new JLabel("HighestBidValue");
-		lblNewLabel.setBounds(396, 8, 160, 14);
-		panelMyPhotoSell.add(lblNewLabel);
+		JLabel lblHighestBidValue = new JLabel("");
+		lblHighestBidValue.setBounds(396, 8, 160, 14);
+		panelMyPhotoSell.add(lblHighestBidValue);
 		
 		JLabel lblBidFrom = new JLabel("Bid From:");
 		lblBidFrom.setFont(new Font("Tahoma", Font.BOLD, 11));
 		lblBidFrom.setBounds(312, 33, 74, 14);
 		panelMyPhotoSell.add(lblBidFrom);
 		
-		JLabel lblNewLabel_1 = new JLabel("BidFromUsername");
-		lblNewLabel_1.setBounds(396, 33, 160, 14);
-		panelMyPhotoSell.add(lblNewLabel_1);
+		JLabel lblBidFromUsername = new JLabel("");
+		lblBidFromUsername.setBounds(396, 33, 160, 14);
+		panelMyPhotoSell.add(lblBidFromUsername);
 		
-		JLabel lblNewLabel_2 = new JLabel("PressAgencyName");
-		lblNewLabel_2.setBounds(396, 58, 160, 14);
-		panelMyPhotoSell.add(lblNewLabel_2);
+		JLabel lblBidFromPressAgencyName = new JLabel("");
+		lblBidFromPressAgencyName.setBounds(396, 58, 160, 14);
+		panelMyPhotoSell.add(lblBidFromPressAgencyName);
 		
 		JButton btnNewButton = new JButton("Accept Bid");
+		btnNewButton.setEnabled(false);
 		btnNewButton.setBounds(396, 79, 89, 23);
 		panelMyPhotoSell.add(btnNewButton);
 		
@@ -471,24 +455,23 @@ public class PhotographerFrame extends JFrame {
 		/**
 		 * Get press agency's list of photos.
 		 */
-		Photos myPhotos = PhotoBayRessourceManager.getPhotosList(photographer
-				.getRef());
+//		Photos myPhotos = PhotoBayRessourceManager.getPhotosList(photographer
+//				.getRef());
 
 		JScrollPane scrollPanePhotos = new JScrollPane();
 		scrollPanePhotos.setBounds(10, 11, 99, 360);
 		panelMyPhotos.add(scrollPanePhotos);
 
 		/* Hier Liste hinzufügen! */
-		JList listPhotos = new JList();
-		listPhotos.setModel(new AbstractListModel() {
-			String[] values = new String[] { "Photo1", "Photo2", "Photo3",
-					"EineKuh" };
+		JList<String> listPhotos = new JList<String>();
+		listPhotos.setModel(new AbstractListModel<String>() {
+			String[] values = new String[] { };
 
 			public int getSize() {
 				return values.length;
 			}
 
-			public Object getElementAt(int index) {
+			public String getElementAt(int index) {
 				return values[index];
 			}
 		});
@@ -596,15 +579,15 @@ public class PhotographerFrame extends JFrame {
 		scrollPane.setBounds(10, 11, 109, 360);
 		panelMySubscriptions.add(scrollPane);
 
-		JList listSubscriptions = new JList();
-		listSubscriptions.setModel(new AbstractListModel() {
-			String[] values = new String[] { "sub1", "sub2", "sub3" };
+		JList<String> listSubscriptions = new JList<String>();
+		listSubscriptions.setModel(new AbstractListModel<String>() {
+			String[] values = new String[] {};
 
 			public int getSize() {
 				return values.length;
 			}
 
-			public Object getElementAt(int index) {
+			public String getElementAt(int index) {
 				return values[index];
 			}
 		});
@@ -618,14 +601,14 @@ public class PhotographerFrame extends JFrame {
 		scrollPanePhotographers.setBounds(10, 36, 90, 335);
 		panelSearch.add(scrollPanePhotographers);
 		
-		JList listPessAgencies = new JList();
+		JList<String> listPessAgencies = new JList<String>();
 		listPessAgencies.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		listPessAgencies.setModel(new AbstractListModel() {
+		listPessAgencies.setModel(new AbstractListModel<String>() {
 			String[] values = new String[] {};
 			public int getSize() {
 				return values.length;
 			}
-			public Object getElementAt(int index) {
+			public String getElementAt(int index) {
 				return values[index];
 			}
 		});
@@ -656,14 +639,14 @@ public class PhotographerFrame extends JFrame {
 		scrollPanePhotoSells.setBounds(10, 11, 97, 291);
 		panelJobs.add(scrollPanePhotoSells);
 		
-		JList listJobs = new JList();
+		JList<String> listJobs = new JList<String>();
 		listJobs.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		listJobs.setModel(new AbstractListModel() {
+		listJobs.setModel(new AbstractListModel<String>() {
 			String[] values = new String[] {};
 			public int getSize() {
 				return values.length;
 			}
-			public Object getElementAt(int index) {
+			public String getElementAt(int index) {
 				return values[index];
 			}
 		});
@@ -692,9 +675,6 @@ public class PhotographerFrame extends JFrame {
 		/**
 		 * Load PhotoSell Image
 		 */
-
-		File filePhotoSell = new File("C:/Users/Roy/Desktop/flower.png");
-
 		JButton btnApplyJob = new JButton("Apply");
 		btnApplyJob.setBounds(457, 279, 89, 23);
 		panelJobs.add(btnApplyJob);

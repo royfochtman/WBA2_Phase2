@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<photographers xmlns="http://www.example.org/photoBay">
+    <photographerRef>
+        <firstName>David</firstName>
+        <lastName>Wachs</lastName>
+        <uri>./photographers/1</uri>
+    </photographerRef>
+    <photographerRef>
+        <firstName>David</firstName>
+        <lastName>Wachs</lastName>
+        <uri>./photographers/2</uri>
+    </photographerRef>
+</photographers>

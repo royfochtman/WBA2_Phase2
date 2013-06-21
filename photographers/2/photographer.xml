@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<photographer xmlns="http://www.example.org/photoBay" ref="./photographers/2" ID="2" photosRef="./photographers/2/photos" photoSellsRef="./photographers/2/photoSells">
+    <firstname>David</firstname>
+    <lastname>Wachs</lastname>
+    <birthdate>1990-01-01Z</birthdate>
+    <sex>m</sex>
+    <equipment>Canon EOS 600D</equipment>
+    <generalPersonalData>
+        <address>
+            <street>Am Rosengarten</street>
+            <houseNumber>13</houseNumber>
+            <postalCode>50170</postalCode>
+            <city>Kerpen</city>
+            <country>Germany</country>
+        </address>
+        <username>dwachs</username>
+        <email>davidwachs@hotmail.de</email>
+        <phone></phone>
+        <description></description>
+        <website></website>
+    </generalPersonalData>
+</photographer>
