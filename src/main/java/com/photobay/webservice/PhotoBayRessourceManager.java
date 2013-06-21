@@ -606,6 +606,7 @@ public class PhotoBayRessourceManager {
 		    	BidRef bidRef = new BidRef();
 		    	bidRef.setValue(bid.getBidValue());
 		    	bidRef.setUri(bid.getRef());
+		    	bidRef.setPressAgencyRef(bid.getPressAgencyRef());
 		    	bidsList.getBidRef().add(bidRef);
 		    }
 			JAXBContext context = JAXBContext.newInstance(Bids.class);

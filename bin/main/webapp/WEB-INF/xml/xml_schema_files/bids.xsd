@@ -8,6 +8,7 @@
 						<xs:all minOccurs="1">
 							<xs:element name="value" type="xs:positiveInteger"/>
 							<xs:element name="uri" type="xs:anyURI"/>
+							<xs:element name="pressAgencyRef" type="xs:anyURI"/>
 						</xs:all>
 					</xs:complexType>
 				</xs:element>

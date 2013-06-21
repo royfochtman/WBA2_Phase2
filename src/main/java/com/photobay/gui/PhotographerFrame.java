@@ -15,11 +15,17 @@ import javax.swing.border.LineBorder;
 import java.awt.Color;
 import javax.swing.JTextField;
 import javax.swing.JTextArea;
+
+import main.java.com.photobay.jaxbfiles.Bid;
+import main.java.com.photobay.jaxbfiles.Bids;
+import main.java.com.photobay.jaxbfiles.Bids.BidRef;
 import main.java.com.photobay.jaxbfiles.Job;
 import main.java.com.photobay.jaxbfiles.Jobs;
 import main.java.com.photobay.jaxbfiles.PhotoSell;
 import main.java.com.photobay.jaxbfiles.PhotoSells;
+import main.java.com.photobay.jaxbfiles.PhotoSells.PhotoSellRef;
 import main.java.com.photobay.jaxbfiles.Photographer;
+import main.java.com.photobay.jaxbfiles.PressAgency;
 import main.java.com.photobay.util.ImageManipulation;
 import main.java.com.photobay.util.ImagePanel;
 import main.java.com.photobay.webservice.PhotoBayRessourceManager;
@@ -39,6 +45,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import javax.swing.ButtonGroup;
+import javax.swing.DefaultListModel;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JSpinner;
@@ -76,12 +83,36 @@ public class PhotographerFrame extends JFrame {
 	private JTextArea txtDescription;
 	private File photoSellImgFile = null;
 	private ImagePanel panelPhotoSellImg;
+	private PhotoSells photoSells;
+	private JLabel lblHighestBidValue;
+	private JLabel lblBidFromUsername;
+	private JLabel lblBidFromPressAgencyName;
 	
 	private Boolean validatePhotoSell()
 	{
 		if(txtPhotoSellName.getText().isEmpty() || txtDescription.getText().isEmpty() || lblImagePath.getText().isEmpty())
 			return false;
 		return true;
+	}
+	
+	private Boolean updatePhotoSellsList()
+	{ //Client.create().resource(WebserviceConfig.WS_ADDRESS).path(ref).get(ClientResponse.class);
+		try
+		{
+			ClientResponse response = webResource.queryParam("owner", this.photographer.getRef()).path("/photoSells/query").get(ClientResponse.class);
+			if(response != null &&  response.hasEntity() && response.getClientResponseStatus() == Status.OK)
+			{
+				DefaultListModel<String> model = new DefaultListModel<String>();
+				this.photoSells = response.getEntity(PhotoSells.class);
+				for(PhotoSellRef ref : photoSells.getPhotoSellRef())
+				{
+					model.addElement(ref.getPhotoSellName());
+				}
+				listMyPhotoSells.setModel(model);
+			}
+			return true;
+		}
+		catch(Exception ex) { return false; }
 	}
 	
 	/**
@@ -116,22 +147,24 @@ public class PhotographerFrame extends JFrame {
 				+ photographer.getGeneralPersonalData().getUsername() + ", ID: "
 				+ photographer.getID());
 
-		JTabbedPane pressAgencyTabbedPane = new JTabbedPane(JTabbedPane.TOP);
-		pressAgencyTabbedPane.setBounds(10, 11, 701, 410);
-		contentPane.add(pressAgencyTabbedPane);
+		JTabbedPane photographerTabbedPane = new JTabbedPane(JTabbedPane.TOP);
+		photographerTabbedPane.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent p) {
+				JTabbedPane pane = (JTabbedPane)p.getComponent();
+				if(pane.getSelectedIndex() == 1)
+					updatePhotoSellsList();
+			}
+		});
+		photographerTabbedPane.setBounds(10, 11, 701, 410);
+		contentPane.add(photographerTabbedPane);
 
 		JPanel panelMyPhotoSells = new JPanel();
 		/*OnMouseClicked --> get List*/
-		panelMyPhotoSells.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent event) {
-				
-			}
-		});
 		
 				JPanel panelMyData = new JPanel();
 				panelMyData.setToolTipText("");
-				pressAgencyTabbedPane.addTab("My Data", null, panelMyData, null);
+				photographerTabbedPane.addTab("My Data", null, panelMyData, null);
 				panelMyData.setLayout(null);
 				
 				JLabel lblName = new JLabel("Name:");
@@ -265,7 +298,7 @@ public class PhotographerFrame extends JFrame {
 				lblMyEquipment.setBounds(357, 114, 329, 64);
 				panelMyData.add(lblMyEquipment);
 
-		pressAgencyTabbedPane.addTab("My Photo Sells", null, panelMyPhotoSells, null);
+		photographerTabbedPane.addTab("My Photo Sells", null, panelMyPhotoSells, null);
 		panelMyPhotoSells.setLayout(null);
 
 		scrollMyPhotoSells = new JScrollPane();
@@ -274,9 +307,51 @@ public class PhotographerFrame extends JFrame {
 		panelMyPhotoSells.add(scrollMyPhotoSells);
 		
 		listMyPhotoSells = new JList<String>();
+		listMyPhotoSells.addListSelectionListener(new ListSelectionListener() {
+			public void valueChanged(ListSelectionEvent sel) {
+				String val = listMyPhotoSells.getSelectedValue();
+				PhotoSellRef ref = new PhotoSellRef();
+				for(PhotoSellRef refItem : photoSells.getPhotoSellRef())
+				{
+					if(refItem.getPhotoSellName() == val)
+						ref = refItem;
+				}
+				ClientResponse response = webResource.path(ref.getUri().replaceFirst(".", "")).get(ClientResponse.class);
+				if(response != null && response.hasEntity() && response.getClientResponseStatus() == Status.OK)
+				{
+					PhotoSell photoSell = response.getEntity(PhotoSell.class);
+					txtDescription.setText(photoSell.getDescription());
+					txtPhotoSellName.setText(photoSell.getName());
+					lblPhotoSellStatus.setText(photoSell.getStatus());
+					spinPrice.setValue(photoSell.getPrice());
+					panelPhotoSellImg.setImage(ImageManipulation.toFile(photoSell.getPhoto()));
+					response = webResource.path(photoSell.getBidsRef().replaceFirst(".", "")).get(ClientResponse.class);
+					if(response != null && response.hasEntity() && response.getClientResponseStatus() == Status.OK)
+					{
+						Bids bids = response.getEntity(Bids.class);
+						BidRef bid = new BidRef();
+						for(BidRef bidRef : bids.getBidRef())
+						{
+							int compare = bidRef.getValue().compareTo(bid.getValue());
+							if(compare == 1)
+								bid = bidRef;
+						}
+						response = webResource.path(bid.getPressAgencyRef().replaceFirst(".", "")).get(ClientResponse.class);
+						if(response != null && response.hasEntity() && response.getClientResponseStatus() == Status.OK)
+						{
+							PressAgency pressAgency = response.getEntity(PressAgency.class);
+							lblHighestBidValue.setText(bid.getValue().toString());
+							lblBidFromUsername.setText(pressAgency.getGeneralPersonalData().getUsername());
+							lblBidFromPressAgencyName.setText(pressAgency.getName());
+						}
+					}
+				}
+					
+			}
+		});
 		listMyPhotoSells.setEnabled(false);
 		listMyPhotoSells.setModel(new AbstractListModel<String>() {
-			String[] values = new String[] { "sub1", "sub2", "sub3" };
+			String[] values = new String[] {  };
 
 			public int getSize() {
 				return values.length;
@@ -300,42 +375,6 @@ public class PhotographerFrame extends JFrame {
 		panelPhotoSellImg.setBorder(new LineBorder(new Color(0, 0, 0)));
 		panelMyPhotoSell.add(panelPhotoSellImg);
 
-		// TODO Post new job's resource.
-		btnCreatePhotoSell = new JButton("Create");
-		btnCreatePhotoSell.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent event) {
-				if(validatePhotoSell())
-				{
-					PhotoSell photoSell = new PhotoSell();
-					photoSell.setName(txtPhotoSellName.getText());
-					photoSell.setStatus(lblPhotoSellStatus.getText());
-					photoSell.setDescription(txtDescription.getText());
-					photoSell.setPhotographerRef(PhotographerFrame.this.photographer.getRef());
-					photoSell.setPrice(BigInteger.valueOf((long)spinPrice.getValue()));
-					
-					if(photoSellImgFile != null)
-					{
-						String encodedFile = ImageManipulation.encodeImage(photoSellImgFile);
-						if(encodedFile != null && !encodedFile.isEmpty())
-							photoSell.setPhoto(ImageManipulation.decodeImage(encodedFile));
-					}
-					
-					ClientResponse response = webResource.path("/photoSells").entity(photoSell).post(ClientResponse.class, photoSell);
-					if(response != null && response.getClientResponseStatus() == Status.OK)
-					{
-						JOptionPane.showMessageDialog(PhotographerFrame.this, "Photo Sell saved!", "Saved!", 
-								JOptionPane.INFORMATION_MESSAGE);
-					}
-					
-				}
-				else
-					JOptionPane.showMessageDialog(PhotographerFrame.this, "Incomplete data!", "Incomplete data!", 
-							JOptionPane.ERROR_MESSAGE);
-			}
-		});
-		btnCreatePhotoSell.setBounds(467, 301, 89, 23);
-		panelMyPhotoSell.add(btnCreatePhotoSell);
-
 		btnUpdatePhotoSell = new JButton("Update");
 		btnUpdatePhotoSell.setVisible(false);
 		btnUpdatePhotoSell.addActionListener(new ActionListener() {
@@ -353,6 +392,38 @@ public class PhotographerFrame extends JFrame {
 		btnDeletePhotoSell.setVisible(false);
 		btnDeletePhotoSell.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
+				Object[] options = {"Yes","No","Cancel"};
+				int n = JOptionPane.showOptionDialog(PhotographerFrame.this,
+					    "Would you realy like to delete this photo sell?",
+					    "Delete?",
+					    JOptionPane.YES_NO_CANCEL_OPTION,
+					    JOptionPane.QUESTION_MESSAGE,
+					    null, options, options[2]);
+				if(n == 0)
+				{
+					String val = listMyPhotoSells.getSelectedValue();
+					PhotoSellRef ref = new PhotoSellRef();
+					for(PhotoSellRef photoSellRef : photoSells.getPhotoSellRef())
+					{
+						if(photoSellRef.getPhotoSellName() == val)
+						{
+							ref = photoSellRef;
+							break;
+						}
+					}
+					ClientResponse response = webResource.path(ref.getUri().replaceFirst(".", "")).delete(ClientResponse.class);
+					if(response != null && response.hasEntity() && response.getClientResponseStatus() == Status.OK)
+					{
+						JOptionPane.showMessageDialog(PhotographerFrame.this, "Photo Sell deleted!", "Deleted!", 
+								JOptionPane.INFORMATION_MESSAGE);
+						txtDescription.setText("");
+						txtPhotoSellName.setText("");
+						lblImagePath.setText("");
+						spinPrice.setValue(0);
+						panelPhotoSellImg.clearImage();
+						updatePhotoSellsList();
+					}
+				}
 			}
 		});
 		btnDeletePhotoSell.setBounds(467, 301, 89, 23);
@@ -402,7 +473,7 @@ public class PhotographerFrame extends JFrame {
 		lblHighestBid.setBounds(312, 8, 74, 14);
 		panelMyPhotoSell.add(lblHighestBid);
 		
-		JLabel lblHighestBidValue = new JLabel("");
+		lblHighestBidValue = new JLabel("");
 		lblHighestBidValue.setBounds(396, 8, 160, 14);
 		panelMyPhotoSell.add(lblHighestBidValue);
 		
@@ -411,11 +482,11 @@ public class PhotographerFrame extends JFrame {
 		lblBidFrom.setBounds(312, 33, 74, 14);
 		panelMyPhotoSell.add(lblBidFrom);
 		
-		JLabel lblBidFromUsername = new JLabel("");
+		lblBidFromUsername = new JLabel("");
 		lblBidFromUsername.setBounds(396, 33, 160, 14);
 		panelMyPhotoSell.add(lblBidFromUsername);
 		
-		JLabel lblBidFromPressAgencyName = new JLabel("");
+		lblBidFromPressAgencyName = new JLabel("");
 		lblBidFromPressAgencyName.setBounds(396, 58, 160, 14);
 		panelMyPhotoSell.add(lblBidFromPressAgencyName);
 		
@@ -462,6 +533,48 @@ public class PhotographerFrame extends JFrame {
 		btnChooseImg.setBounds(10, 301, 107, 23);
 		panelMyPhotoSell.add(btnChooseImg);
 		
+				// TODO Post new job's resource.
+				btnCreatePhotoSell = new JButton("Create");
+				btnCreatePhotoSell.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent event) {
+						if(validatePhotoSell())
+						{
+							PhotoSell photoSell = new PhotoSell();
+							photoSell.setName(txtPhotoSellName.getText());
+							photoSell.setStatus(lblPhotoSellStatus.getText());
+							photoSell.setDescription(txtDescription.getText());
+							photoSell.setPhotographerRef(PhotographerFrame.this.photographer.getRef());
+							photoSell.setPrice(BigInteger.valueOf((long)spinPrice.getValue()));
+							
+							if(photoSellImgFile != null)
+							{
+								String encodedFile = ImageManipulation.encodeImage(photoSellImgFile);
+								if(encodedFile != null && !encodedFile.isEmpty())
+									photoSell.setPhoto(ImageManipulation.decodeImage(encodedFile));
+							}
+							
+							ClientResponse response = webResource.path("/photoSells").entity(photoSell).post(ClientResponse.class, photoSell);
+							if(response != null && response.getClientResponseStatus() == Status.OK)
+							{
+								JOptionPane.showMessageDialog(PhotographerFrame.this, "Photo Sell saved!", "Saved!", 
+										JOptionPane.INFORMATION_MESSAGE);
+								txtDescription.setText("");
+								txtPhotoSellName.setText("");
+								lblImagePath.setText("");
+								spinPrice.setValue(0);
+								panelPhotoSellImg.clearImage();
+								updatePhotoSellsList();
+							}
+							
+						}
+						else
+							JOptionPane.showMessageDialog(PhotographerFrame.this, "Incomplete data!", "Incomplete data!", 
+									JOptionPane.ERROR_MESSAGE);
+					}
+				});
+				btnCreatePhotoSell.setBounds(467, 301, 89, 23);
+				panelMyPhotoSell.add(btnCreatePhotoSell);
+		
 		rdbtnCreateANew = new JRadioButton("Create a new Photo Sell");
 		rdbtnCreateANew.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -471,6 +584,7 @@ public class PhotographerFrame extends JFrame {
 				lblImagePath.setVisible(true);
 				btnUpdatePhotoSell.setVisible(false);
 				btnDeletePhotoSell.setVisible(false);
+				btnCreatePhotoSell.setVisible(true);
 			}
 		});
 		rdbtnCreateANew.setSelected(true);
@@ -486,6 +600,7 @@ public class PhotographerFrame extends JFrame {
 				lblImagePath.setVisible(false);
 				btnUpdatePhotoSell.setVisible(true);
 				btnDeletePhotoSell.setVisible(true);
+				btnCreatePhotoSell.setVisible(false);
 			}
 		});
 		rdbtnShowExistingPhoto.setBounds(220, 7, 190, 23);
@@ -500,9 +615,10 @@ public class PhotographerFrame extends JFrame {
 		 */
 
 		JPanel panelMyPhotos = new JPanel();
+		panelMyPhotos.setEnabled(false);
 		panelMyPhotos.setVisible(false);
-		pressAgencyTabbedPane.addTab("My Photos", null, panelMyPhotos, null);
-		pressAgencyTabbedPane.setEnabledAt(2, false);
+		photographerTabbedPane.addTab("My Photos", null, panelMyPhotos, null);
+		photographerTabbedPane.setEnabledAt(2, false);
 		panelMyPhotos.setLayout(null);
 
 		/**
@@ -624,7 +740,7 @@ public class PhotographerFrame extends JFrame {
 		
 		JPanel panelMySubscriptions = new JPanel();
 		panelMySubscriptions.setToolTipText("");
-		pressAgencyTabbedPane.addTab("My Subscriptions", null,
+		photographerTabbedPane.addTab("My Subscriptions", null,
 				panelMySubscriptions, null);
 		panelMySubscriptions.setLayout(null);
 		
@@ -647,16 +763,16 @@ public class PhotographerFrame extends JFrame {
 		scrollPane.setViewportView(listSubscriptions);
 
 		JPanel panelSearch = new JPanel();
-		pressAgencyTabbedPane.addTab("Search Jobs", null, panelSearch, null);
+		photographerTabbedPane.addTab("Search Jobs", null, panelSearch, null);
 		panelSearch.setLayout(null);
 
 		JScrollPane scrollPanePhotographers = new JScrollPane();
 		scrollPanePhotographers.setBounds(10, 36, 90, 335);
 		panelSearch.add(scrollPanePhotographers);
 		
-		JList<String> listPessAgencies = new JList<String>();
-		listPessAgencies.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		listPessAgencies.setModel(new AbstractListModel<String>() {
+		JList<String> listPressAgencies = new JList<String>();
+		listPressAgencies.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		listPressAgencies.setModel(new AbstractListModel<String>() {
 			String[] values = new String[] {};
 			public int getSize() {
 				return values.length;
@@ -665,7 +781,7 @@ public class PhotographerFrame extends JFrame {
 				return values[index];
 			}
 		});
-		scrollPanePhotographers.setViewportView(listPessAgencies);
+		scrollPanePhotographers.setViewportView(listPressAgencies);
 		
 		JPanel panelPressAgency = new JPanel();
 		panelPressAgency.setBorder(new LineBorder(new Color(0, 0, 0)));

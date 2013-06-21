@@ -2,7 +2,7 @@
 // Diese Datei wurde mit der JavaTM Architecture for XML Binding(JAXB) Reference Implementation, v2.2.6 generiert 
 // Siehe <a href="http://java.sun.com/xml/jaxb">http://java.sun.com/xml/jaxb</a> 
 // Änderungen an dieser Datei gehen bei einer Neukompilierung des Quellschemas verloren. 
-// Generiert: 2013.06.15 um 02:15:32 PM CEST 
+// Generiert: 2013.06.21 um 11:12:40 PM CEST 
 //
 
 
@@ -37,6 +37,7 @@ import javax.xml.bind.annotation.XmlType;
  *                 &lt;all>
  *                   &lt;element name="value" type="{http://www.w3.org/2001/XMLSchema}positiveInteger"/>
  *                   &lt;element name="uri" type="{http://www.w3.org/2001/XMLSchema}anyURI"/>
+ *                   &lt;element name="pressAgencyRef" type="{http://www.w3.org/2001/XMLSchema}anyURI"/>
  *                 &lt;/all>
  *               &lt;/restriction>
  *             &lt;/complexContent>
@@ -157,6 +158,7 @@ public class Bids {
      *       &lt;all>
      *         &lt;element name="value" type="{http://www.w3.org/2001/XMLSchema}positiveInteger"/>
      *         &lt;element name="uri" type="{http://www.w3.org/2001/XMLSchema}anyURI"/>
+     *         &lt;element name="pressAgencyRef" type="{http://www.w3.org/2001/XMLSchema}anyURI"/>
      *       &lt;/all>
      *     &lt;/restriction>
      *   &lt;/complexContent>
@@ -177,6 +179,9 @@ public class Bids {
         @XmlElement(required = true)
         @XmlSchemaType(name = "anyURI")
         protected String uri;
+        @XmlElement(required = true)
+        @XmlSchemaType(name = "anyURI")
+        protected String pressAgencyRef;
 
         /**
          * Ruft den Wert der value-Eigenschaft ab.
@@ -224,6 +229,30 @@ public class Bids {
          */
         public void setUri(String value) {
             this.uri = value;
+        }
+
+        /**
+         * Ruft den Wert der pressAgencyRef-Eigenschaft ab.
+         * 
+         * @return
+         *     possible object is
+         *     {@link String }
+         *     
+         */
+        public String getPressAgencyRef() {
+            return pressAgencyRef;
+        }
+
+        /**
+         * Legt den Wert der pressAgencyRef-Eigenschaft fest.
+         * 
+         * @param value
+         *     allowed object is
+         *     {@link String }
+         *     
+         */
+        public void setPressAgencyRef(String value) {
+            this.pressAgencyRef = value;
         }
 
     }

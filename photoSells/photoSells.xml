@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <photoSells xmlns="http://www.example.org/photoBay" ref="./photoSells">
     <photoSellRef>
-        <photoSellName>TestPhotoSell</photoSellName>
+        <photoSellName>Test</photoSellName>
         <uri>./photoSells/1</uri>
     </photoSellRef>
 </photoSells>

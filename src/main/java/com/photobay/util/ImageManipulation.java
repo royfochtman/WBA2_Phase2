@@ -1,11 +1,15 @@
 
 package main.java.com.photobay.util;
 
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+
+import javax.imageio.ImageIO;
 
 import org.apache.commons.codec.binary.Base64;;
 
@@ -96,5 +100,18 @@ public class ImageManipulation {
 	 */
 	public static byte[] decodeImage(String imageDataString) {		
 		return Base64.decodeBase64(imageDataString);
+	}
+	
+	public static File toFile(byte[] bytes)
+	{
+		try
+		{
+			InputStream in = new ByteArrayInputStream(bytes);
+			BufferedImage bImageFromConvert = ImageIO.read(in);
+			File file = new File("./photoSell.jpg");
+			ImageIO.write(bImageFromConvert, "jpg", file);
+			return file;
+		}
+		catch(Exception ex) { return null; } 
 	}
 }
