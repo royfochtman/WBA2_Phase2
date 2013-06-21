@@ -411,13 +411,26 @@ public class PressAgencyFrame extends JFrame {
 					ClientResponse newJobResponse = webResource.path("/jobs")
 							.entity(readedJob).post(ClientResponse.class, readedJob);
 					
-//					response = webResource.path("/jobs").entity(readedJob).post(ClientResponse.class, readedJob);
-					
+					if(newJobResponse != null) {
+						JOptionPane.showMessageDialog(PressAgencyFrame.this,
+								"Job was successfully created",
+								"New job created", JOptionPane.INFORMATION_MESSAGE);
+						
+						textFieldJobName.setText(null);
+						textFieldPaymentJob.setText(null);
+						textFieldUrgencyJob.setText(null);
+						textAreaJobDescription.setText(null);
+						
+						comboBoxStatusJob.setSelectedIndex(0);
+						comboBoxDeadlineDay.setSelectedIndex(0);
+						comboBoxDeadlineMonth.setSelectedIndex(0);
+						comboBoxDeadlineYear.setSelectedIndex(0);
 					
 				} else
 					JOptionPane.showMessageDialog(PressAgencyFrame.this,
 							"Incomplete data. Please fill out all fields.",
 							"Error", JOptionPane.ERROR_MESSAGE);
+				}
 			}
 		});
 		
@@ -550,6 +563,15 @@ public class PressAgencyFrame extends JFrame {
 				btnUpdateJob.setEnabled(false);
 				btnCreateJob.setEnabled(true);
 				
+				textFieldJobName.setText(null);
+				textFieldPaymentJob.setText(null);
+				textFieldUrgencyJob.setText(null);
+				textAreaJobDescription.setText(null);
+				comboBoxStatusJob.setSelectedIndex(0);
+				comboBoxDeadlineDay.setSelectedIndex(0);
+				comboBoxDeadlineMonth.setSelectedIndex(0);
+				comboBoxDeadlineYear.setSelectedIndex(0);
+				
 			}
 		});
 		rdbtnCreateJob.setBounds(120, 22, 109, 23);
@@ -563,6 +585,10 @@ public class PressAgencyFrame extends JFrame {
 				btnDeleteJob.setEnabled(true);
 				btnUpdateJob.setEnabled(true);
 				btnCreateJob.setEnabled(false);
+				comboBoxStatusJob.setSelectedIndex(0);
+				comboBoxDeadlineDay.setSelectedIndex(0);
+				comboBoxDeadlineMonth.setSelectedIndex(0);
+				comboBoxDeadlineYear.setSelectedIndex(0);
 			}
 		});
 		rdbtnManageJobs.setBounds(231, 22, 109, 23);
