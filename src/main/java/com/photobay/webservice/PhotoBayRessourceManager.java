@@ -406,6 +406,7 @@ public class PhotoBayRessourceManager {
 			    photoSell.setRef(pathMain);
 			    photoSell.setBidsRef(pathBids);
 			    photoSell.setPhotographerRef(photographerRef);
+			    putPhotoSellsList(photoSell);
 			    
 			    m.marshal(photoSell, file);
 			    return true;
@@ -649,7 +650,43 @@ public class PhotoBayRessourceManager {
 		    	jobsList.setRef("./jobs");
 		    }
 		    else
-		    	jobsList = getJobsList();
+		    	jobsList = getJobsList(null);
+		    
+		    if(jobsList != null)
+		    {
+		    	JobRef jobRef = new JobRef();
+		    	jobRef.setJobName(job.getJobName());
+		    	jobRef.setUri(job.getRef());
+		    	jobsList.getJobRef().add(jobRef);
+		    }
+			JAXBContext context = JAXBContext.newInstance(Jobs.class);
+			Marshaller m = context.createMarshaller();
+		    m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+		    m.marshal(jobsList, jobsListFile);
+		    
+		    if(putJobsPressAgencyList(job))
+		    	return true;
+		    else
+		    	return false;
+		}
+		catch(Exception ex)
+		{
+			return false;
+		}
+	}
+	
+	public static Boolean putJobsPressAgencyList(Job job){
+		try
+		{
+			File jobsListFile = new File(job.getPressAgencyRef() + "/jobs/jobs.xml");
+		    Jobs jobsList;
+		    if(jobsListFile.createNewFile())
+		    {
+		    	jobsList = new Jobs();
+		    	jobsList.setRef(job.getPressAgencyRef() + "/jobs/jobs.xml");
+		    }
+		    else
+		    	jobsList = getJobsList(job.getPressAgencyRef());
 		    
 		    if(jobsList != null)
 		    {
@@ -669,28 +706,15 @@ public class PhotoBayRessourceManager {
 			return false;
 		}
 	}
-	/**
-	 * 
-	 * @return
-	 */
-	public static Jobs getJobsList(){
-		try
-		{
-			File file = new File("./jobs/jobs.xml");
-			JAXBContext context = JAXBContext.newInstance(Jobs.class);
-			Unmarshaller unmarshaller = context.createUnmarshaller();
-			return (Jobs)unmarshaller.unmarshal(file);
-		}
-		catch(Exception ex)
-		{
-			return null;
-		}
-	}
 	/* hinzugefügt am: 18.06.2013, 16:16 Uhr. */
 	public static Jobs getJobsList(String ownerRef){
+		File file;
 		try
 		{
-			File file = new File(ownerRef +"/jobs/jobs.xml");
+			if(ownerRef == null || ownerRef.isEmpty())
+				file = new File(ownerRef +"/jobs/jobs.xml");
+			else
+				file = new File("/jobs/jobs.xml");
 			JAXBContext context = JAXBContext.newInstance(Jobs.class);
 			Unmarshaller unmarshaller = context.createUnmarshaller();
 			return (Jobs)unmarshaller.unmarshal(file);
@@ -758,7 +782,12 @@ public class PhotoBayRessourceManager {
 		}
 	}
 	
-	public static Boolean putPhotoSellList(PhotoSell photoSell){
+	/**
+	 * Read the List of all PhotoSells from all Photographers and send it back
+	 * @param photoSell
+	 * @return PhotoSellList
+	 */
+	public static Boolean putPhotoSellsList(PhotoSell photoSell){
 		try
 		{
 			File photoSellsListFile = new File("./photoSells/photoSells.xml");
@@ -769,7 +798,50 @@ public class PhotoBayRessourceManager {
 		    	photoSellsList.setRef("./photoSells");
 		    }
 		    else
-		    	photoSellsList = getPhotoSellsList();
+		    	photoSellsList = getPhotoSellsList(null);
+		    
+		    if(photoSellsList != null)
+		    {
+		    	PhotoSellRef photoSellRef = new PhotoSellRef();
+		    	photoSellRef.setPhotoSellName(photoSell.getName());
+		    	photoSellRef.setUri(photoSell.getRef());
+		    	photoSellsList.getPhotoSellRef().add(photoSellRef);
+		    }
+			JAXBContext context = JAXBContext.newInstance(Jobs.class);
+			Marshaller m = context.createMarshaller();
+		    m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+		    m.marshal(photoSellsList, photoSellsListFile);
+		    
+		    if(putPhotoSellsPhotographerList(photoSell))
+		    	return true;
+		    else
+		    	return false;
+		}
+		catch(Exception ex)
+		{
+			return false;
+		}
+	}
+	
+	/**
+	 * Read the List of all PhotoSells from one specific Photographer, which is identified by the
+	 * photographerRef-Attribute from the photoSell-Object, and send it back
+	 * @param photoSell
+	 * @return
+	 */
+	public static Boolean putPhotoSellsPhotographerList(PhotoSell photoSell)
+	{
+		try
+		{
+			File photoSellsListFile = new File(photoSell.getPhotographerRef() + "/photoSells/photoSells.xml");
+		    PhotoSells photoSellsList;
+		    if(photoSellsListFile.createNewFile())
+		    {
+		    	photoSellsList = new PhotoSells();
+		    	photoSellsList.setRef(photoSell.getPhotographerRef() + "/photoSells");
+		    }
+		    else
+		    	photoSellsList = getPhotoSellsList(photoSell.getPhotographerRef());
 		    
 		    if(photoSellsList != null)
 		    {
@@ -789,10 +861,30 @@ public class PhotoBayRessourceManager {
 			return false;
 		}
 	}
-
-	private static PhotoSells getPhotoSellsList() {
-		// TODO Auto-generated method stub
-		return null;
+	
+	/**
+	 * Gets the existing PhotoSellList. If ownerRef is not Null and not empty the method returns the specific 
+	 * List from the Photographer given in the ownerRef. Otherwise the method returns the List of all PhotoSells from
+	 * all registered Photographers.
+	 * @param ownerRef
+	 * @return
+	 */
+	public static PhotoSells getPhotoSellsList(String ownerRef) {
+		File file;
+		try
+		{
+			if(ownerRef == null || ownerRef.isEmpty())
+				file = new File("/photoSells/photoSells.xml");
+			else
+				file = new File(ownerRef + "/photoSells/photoSells.xml");
+			JAXBContext context = JAXBContext.newInstance(PhotoSells.class);
+			Unmarshaller unmarshaller = context.createUnmarshaller();
+			return (PhotoSells)unmarshaller.unmarshal(file);
+		}
+		catch(Exception ex)
+		{
+			return null;
+		}
 	}
 	
 }

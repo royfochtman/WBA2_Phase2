@@ -7,9 +7,13 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import main.java.com.photobay.jaxbfiles.PhotoSell;
+import main.java.com.photobay.jaxbfiles.PhotoSells;
+import main.java.com.photobay.jaxbfiles.Photographers;
 
 @Path("/photoSells")
 public class PhotoSellsService {
@@ -51,4 +55,29 @@ public class PhotoSellsService {
 		else return Response.status(Response.Status.NOT_FOUND).build();
 		
 	}
+	@GET
+	@Produces(MediaType.APPLICATION_XML)
+	public Response getPhotoSellsList()
+	{
+		PhotoSells photoSells = PhotoBayRessourceManager.getPhotoSellsList(null);
+		if(photoSells == null)
+		{
+			return Response.status(Response.Status.NOT_FOUND).build();
+		}
+		return Response.ok(photoSells).build();
+	}
+	
+	@GET
+	//@Path("?name={owner}")
+	@Produces(MediaType.APPLICATION_XML)
+	public Response getPhotoSellsList(@QueryParam("owner") String ownerRef)
+	{
+		PhotoSells photoSells = PhotoBayRessourceManager.getPhotoSellsList(ownerRef);
+		if(photoSells == null)
+		{
+			return Response.status(Response.Status.NOT_FOUND).build();
+		}
+		return Response.ok(photoSells).build();
+	}
+
 }
