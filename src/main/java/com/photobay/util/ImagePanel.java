@@ -19,6 +19,18 @@ public class ImagePanel extends JPanel{
             // handle exception...
        }
     }
+    
+    public ImagePanel(){}
+    
+    public void setImage(File file)
+    {
+    	try {                
+            image = ImageIO.read(file);
+            this.update(this.getGraphics());
+         } catch (IOException ex) {
+              // handle exception...
+         }
+    }
 
     @Override
     protected void paintComponent(Graphics g) {
