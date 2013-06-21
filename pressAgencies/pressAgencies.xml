@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<pressAgencies xmlns="http://www.example.org/photoBay">
+<pressAgencies xmlns="http://www.example.org/photoBay" ref="./pressAgencies">
     <pressAgencyRef>
-        <name>wfdw</name>
+        <name>press</name>
         <uri>./pressAgencies/1</uri>
     </pressAgencyRef>
 </pressAgencies>

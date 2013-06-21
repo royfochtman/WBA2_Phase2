@@ -1,4 +1,6 @@
 *.class
+pressAgencies/
+jobs/
 
 # Package Files #
 *.war

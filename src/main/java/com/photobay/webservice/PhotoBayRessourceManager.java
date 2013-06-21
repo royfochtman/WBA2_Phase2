@@ -285,14 +285,15 @@ public class PhotoBayRessourceManager {
 				File file = new File(pathMain + "/job.xml");
 				if(new File(pathMain).mkdir() && file.createNewFile())
 				{
+					
+					job.setID(id);
+				    job.setRef(pathMain);
+					
 					new File(pathJobApplication).mkdir();
 					JAXBContext context = JAXBContext.newInstance(Job.class);
 				    Marshaller m = context.createMarshaller();
 				    m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 				   
-				    job.setID(id);
-				    job.setRef(pathMain);
-				    
 				    m.marshal(job, file);
 				    putJobsList(job);
 				    return true;
