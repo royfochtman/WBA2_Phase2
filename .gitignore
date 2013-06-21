@@ -1,6 +1,8 @@
 *.class
 pressAgencies/
 jobs/
+photographers/
+photoSells/
 
 # Package Files #
 *.war
