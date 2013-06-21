@@ -30,7 +30,6 @@ public class JobsService {
 	@POST
 	//@Path("/jobs")
 	@Consumes({"application/xml"})
-	/* hinzugefügt: pressAgencyID */
 	public Response postJob(Job job)
 	{
 		if(PhotoBayRessourceManager.postJob(job))
