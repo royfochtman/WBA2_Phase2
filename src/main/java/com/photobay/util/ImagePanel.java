@@ -1,5 +1,6 @@
 package main.java.com.photobay.util;
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -26,6 +27,7 @@ public class ImagePanel extends JPanel{
     {
     	try {                
             image = ImageIO.read(file);
+            image = (BufferedImage)image.getScaledInstance(this.getWidth(), this.getHeight(), Image.SCALE_SMOOTH);
             this.update(this.getGraphics());
          } catch (IOException ex) {
               // handle exception...
@@ -35,7 +37,9 @@ public class ImagePanel extends JPanel{
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        g.drawImage(image, 0, 0, null); // see javadoc for more info on the parameters            
+        g.drawImage(image, 0, 0, null);
+        // see javadoc for more info on the parameters       
+        //g.drawImage(image, 0, 0, this.getWidth(), this.getHeight(), null);
     }
 
 }

@@ -35,9 +35,9 @@ public class PhotoSellsService {
 	@POST
 	//@Path("/photoSells")
 	@Consumes({"application/xml"})
-	public Response postPhotoSell(PhotoSell photoSell, String photographerRef)
+	public Response postPhotoSell(PhotoSell photoSell)
 	{
-		if(PhotoBayRessourceManager.postPhotoSell(photoSell, photographerRef))
+		if(PhotoBayRessourceManager.postPhotoSell(photoSell))
 		{
 			return Response.ok().build();
 		}
@@ -68,7 +68,7 @@ public class PhotoSellsService {
 	}
 	
 	@GET
-	//@Path("?name={owner}")
+	@Path("/query")
 	@Produces(MediaType.APPLICATION_XML)
 	public Response getPhotoSellsList(@QueryParam("owner") String ownerRef)
 	{

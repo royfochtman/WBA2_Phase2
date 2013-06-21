@@ -17,23 +17,30 @@ import javax.swing.JTextField;
 import javax.swing.JTextArea;
 import main.java.com.photobay.jaxbfiles.Job;
 import main.java.com.photobay.jaxbfiles.Jobs;
+import main.java.com.photobay.jaxbfiles.PhotoSell;
+import main.java.com.photobay.jaxbfiles.PhotoSells;
 import main.java.com.photobay.jaxbfiles.Photographer;
+import main.java.com.photobay.util.ImageManipulation;
 import main.java.com.photobay.util.ImagePanel;
 import main.java.com.photobay.webservice.PhotoBayRessourceManager;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.FileFilter;
+import java.math.BigInteger;
+
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.ListSelectionEvent;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
+import com.sun.jersey.api.client.ClientResponse.Status;
 import com.sun.jersey.api.client.WebResource;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.JTextArea;
@@ -64,6 +71,18 @@ public class PhotographerFrame extends JFrame {
 	private JButton btnDeletePhotoSell;
 	private JList<String> listMyPhotoSells;
 	private JLabel lblMyname;
+	private JSpinner spinPrice;
+	private JLabel lblPhotoSellStatus;
+	private JTextArea txtDescription;
+	private File photoSellImgFile = null;
+	private ImagePanel panelPhotoSellImg;
+	
+	private Boolean validatePhotoSell()
+	{
+		if(txtPhotoSellName.getText().isEmpty() || txtDescription.getText().isEmpty() || lblImagePath.getText().isEmpty())
+			return false;
+		return true;
+	}
 	
 	/**
 	 * Launch the application.
@@ -275,7 +294,7 @@ public class PhotographerFrame extends JFrame {
 		panelMyPhotoSells.add(panelMyPhotoSell);
 		panelMyPhotoSell.setLayout(null);
 		
-		ImagePanel panelPhotoSellImg = new ImagePanel();
+		panelPhotoSellImg = new ImagePanel();
 		panelPhotoSellImg.setLocation(312, 108);
 		panelPhotoSellImg.setSize(244, 182);
 		panelPhotoSellImg.setBorder(new LineBorder(new Color(0, 0, 0)));
@@ -285,6 +304,33 @@ public class PhotographerFrame extends JFrame {
 		btnCreatePhotoSell = new JButton("Create");
 		btnCreatePhotoSell.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
+				if(validatePhotoSell())
+				{
+					PhotoSell photoSell = new PhotoSell();
+					photoSell.setName(txtPhotoSellName.getText());
+					photoSell.setStatus(lblPhotoSellStatus.getText());
+					photoSell.setDescription(txtDescription.getText());
+					photoSell.setPhotographerRef(PhotographerFrame.this.photographer.getRef());
+					photoSell.setPrice(BigInteger.valueOf((long)spinPrice.getValue()));
+					
+					if(photoSellImgFile != null)
+					{
+						String encodedFile = ImageManipulation.encodeImage(photoSellImgFile);
+						if(encodedFile != null && !encodedFile.isEmpty())
+							photoSell.setPhoto(ImageManipulation.decodeImage(encodedFile));
+					}
+					
+					ClientResponse response = webResource.path("/photoSells").entity(photoSell).post(ClientResponse.class, photoSell);
+					if(response != null && response.getClientResponseStatus() == Status.OK)
+					{
+						JOptionPane.showMessageDialog(PhotographerFrame.this, "Photo Sell saved!", "Saved!", 
+								JOptionPane.INFORMATION_MESSAGE);
+					}
+					
+				}
+				else
+					JOptionPane.showMessageDialog(PhotographerFrame.this, "Incomplete data!", "Incomplete data!", 
+							JOptionPane.ERROR_MESSAGE);
 			}
 		});
 		btnCreatePhotoSell.setBounds(467, 301, 89, 23);
@@ -337,17 +383,17 @@ public class PhotographerFrame extends JFrame {
 		panelMyPhotoSell.add(txtPhotoSellName);
 		txtPhotoSellName.setColumns(10);
 
-		JTextArea txtDescription = new JTextArea();
+		txtDescription = new JTextArea();
 		txtDescription.setText("description");
 		txtDescription.setBounds(10, 108, 285, 182);
 		panelMyPhotoSell.add(txtDescription);
 		
-		JSpinner spinPrice = new JSpinner();
-		spinPrice.setModel(new SpinnerNumberModel(new Long(0), null, null, new Long(1)));
+		spinPrice = new JSpinner();
+		spinPrice.setModel(new SpinnerNumberModel(new Long(0), new Long(0), null, new Long(1)));
 		spinPrice.setBounds(127, 33, 169, 20);
 		panelMyPhotoSell.add(spinPrice);
 		
-		JLabel lblPhotoSellStatus = new JLabel("New");
+		lblPhotoSellStatus = new JLabel("New");
 		lblPhotoSellStatus.setBounds(127, 58, 46, 14);
 		panelMyPhotoSell.add(lblPhotoSellStatus);
 		
@@ -379,7 +425,7 @@ public class PhotographerFrame extends JFrame {
 		panelMyPhotoSell.add(btnNewButton);
 		
 		lblImagePath = new JLabel("");
-		lblImagePath.setBounds(127, 305, 168, 14);
+		lblImagePath.setBounds(127, 305, 330, 14);
 		panelMyPhotoSell.add(lblImagePath);
 		
 		btnChooseImg = new JButton("Choose Img:");
@@ -404,6 +450,13 @@ public class PhotographerFrame extends JFrame {
 				});
 				fileChooserImg.setVisible(true);
 				int result = fileChooserImg.showOpenDialog(null);
+				
+				if(result == JFileChooser.APPROVE_OPTION)
+				{
+					photoSellImgFile = fileChooserImg.getSelectedFile();
+					lblImagePath.setText(photoSellImgFile.getPath());
+					panelPhotoSellImg.setImage(photoSellImgFile);
+				}
 			}
 		});
 		btnChooseImg.setBounds(10, 301, 107, 23);
@@ -421,7 +474,7 @@ public class PhotographerFrame extends JFrame {
 			}
 		});
 		rdbtnCreateANew.setSelected(true);
-		rdbtnCreateANew.setBounds(10, 7, 141, 23);
+		rdbtnCreateANew.setBounds(10, 7, 190, 23);
 		panelMyPhotoSells.add(rdbtnCreateANew);
 		
 		rdbtnShowExistingPhoto = new JRadioButton("Manage existing Photo Sells");
@@ -435,7 +488,7 @@ public class PhotographerFrame extends JFrame {
 				btnDeletePhotoSell.setVisible(true);
 			}
 		});
-		rdbtnShowExistingPhoto.setBounds(153, 7, 170, 23);
+		rdbtnShowExistingPhoto.setBounds(220, 7, 190, 23);
 		panelMyPhotoSells.add(rdbtnShowExistingPhoto);
 		
 		ButtonGroup group = new ButtonGroup();
