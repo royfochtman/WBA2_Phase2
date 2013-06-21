@@ -283,6 +283,24 @@ public class RegisterFrame extends JFrame {
 						pho.getGeneralPersonalData().setDescription(txtDescription.getText());
 						
 						response = Client.create().resource(WebserviceConfig.WS_ADDRESS).path("/photographers").entity(pho).post(ClientResponse.class, pho);
+						if(response != null && response.getClientResponseStatus() == Status.OK)
+						{
+							pho = response.getEntity(Photographer.class);
+							if(register(cnHandler, pho.getRef()))
+							{
+								JOptionPane.showMessageDialog(RegisterFrame.this, "Registration successful!", "Registration successful!", 
+										JOptionPane.INFORMATION_MESSAGE);
+								if(login(cnHandler))
+								{
+									PhotographerFrame frame =  new PhotographerFrame(pho);
+									frame.setVisible(true);
+								}
+							}
+							
+						}
+						else
+							JOptionPane.showMessageDialog(RegisterFrame.this, response.getClientResponseStatus()
+									, "Fehler", JOptionPane.INFORMATION_MESSAGE);
 					}
 					else if(rdbtnPressAgeny.isSelected())
 					{

@@ -3,7 +3,7 @@
 <xs:element name="photoSells">       
         <xs:complexType>
 			<xs:sequence minOccurs="0" maxOccurs="unbounded" >
-				<xs:element name="jobRef">
+				<xs:element name="photoSellRef">
 					<xs:complexType>
 						<xs:all minOccurs="1">
 							<xs:element name="photoSellName" type="xs:string"/>

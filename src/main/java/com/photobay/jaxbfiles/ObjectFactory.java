@@ -2,7 +2,7 @@
 // Diese Datei wurde mit der JavaTM Architecture for XML Binding(JAXB) Reference Implementation, v2.2.6 generiert 
 // Siehe <a href="http://java.sun.com/xml/jaxb">http://java.sun.com/xml/jaxb</a> 
 // Änderungen an dieser Datei gehen bei einer Neukompilierung des Quellschemas verloren. 
-// Generiert: 2013.06.20 um 04:16:21 PM CEST 
+// Generiert: 2013.06.21 um 05:42:39 PM CEST 
 //
 
 
@@ -37,19 +37,19 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link Job }
+     * Create an instance of {@link PhotoSells }
      * 
      */
-    public Job createJob() {
-        return new Job();
+    public PhotoSells createPhotoSells() {
+        return new PhotoSells();
     }
 
     /**
-     * Create an instance of {@link TopicType }
+     * Create an instance of {@link PhotoSells.PhotoSellRef }
      * 
      */
-    public TopicType createTopicType() {
-        return new TopicType();
+    public PhotoSells.PhotoSellRef createPhotoSellsPhotoSellRef() {
+        return new PhotoSells.PhotoSellRef();
     }
 
 }
