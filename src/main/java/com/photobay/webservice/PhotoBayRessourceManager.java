@@ -272,7 +272,7 @@ public class PhotoBayRessourceManager {
 	 * @param pressAgencyRef
 	 * @return
 	 */
-	public static Boolean postJob(Job job, String pressAgencyRef){
+	public static Boolean postJob(Job job){
 			try
 			{
 				int id = IdGenerator.generateID("jobs");
@@ -288,7 +288,6 @@ public class PhotoBayRessourceManager {
 				   
 				    job.setID(id);
 				    job.setRef(pathMain);
-				    job.setPressAgencyRef(pressAgencyRef);
 				    
 				    m.marshal(job, file);
 				    putJobsList(job);
