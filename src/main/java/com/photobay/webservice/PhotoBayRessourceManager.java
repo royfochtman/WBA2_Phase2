@@ -340,14 +340,16 @@ public class PhotoBayRessourceManager {
 		File jobsFile = new File("./jobs/jobs.xml");
 		File jobApplicationsFile = new File(dir + "/jobApplications");
 		Job ownerJob = getJob(id);
+		String dirString = "./jobs/" + id;
 		String ownerRef = ownerJob.getPressAgencyRef();
+		File ownerJobs = new File(ownerRef + "/jobs/jobs.xml");
 		
 		Jobs jobs = getJobsList(null);
 		if(jobs != null)
 		{
 			//Delete JobRef in jobs/jobs.xml
 			for(JobRef ref : jobs.getJobRef() ){
-				if(("./jobs/" + id).equals(ref.getUri())){
+				if((dirString).equals(ref.getUri())){
 					jobs.getJobRef().remove(ref);
 					break;
 				}
@@ -367,7 +369,28 @@ public class PhotoBayRessourceManager {
 		}
 		
 		//Delete JobRef in pressAgencies/{id}/jobs/jobs.xml
-//		jobs = getJobsList(ownerRef)
+		jobs = getJobsList(ownerRef);
+		if(jobs != null){
+			for(JobRef ref : jobs.getJobRef()){
+				if(dirString.equals(ref.getUri())){
+					jobs.getJobRef().remove(ref);
+					break;
+				}
+			}
+		}
+		
+		try{
+			
+			JAXBContext context = JAXBContext.newInstance(Jobs.class);
+		    Marshaller m = context.createMarshaller();
+		    m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+		    
+		    
+		    m.marshal(jobs, ownerJobs);
+			} catch(Exception ex)
+			{
+				return false;
+			}
 		
 		
 		
