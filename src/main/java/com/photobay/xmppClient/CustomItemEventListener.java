@@ -14,14 +14,15 @@ import org.jivesoftware.smackx.pubsub.listener.ItemEventListener;
 import org.jivesoftware.smackx.pubsub.Item;
 import org.jivesoftware.smackx.pubsub.PayloadItem;
 import org.jivesoftware.smackx.pubsub.SimplePayload;
+import main.java.com.photobay.gui.ClientFrame;
 
 public class CustomItemEventListener implements ItemEventListener<Item>{
 
-	private List<PayloadMessage> messageList;
+	private ClientFrame frame;
 	
-	public CustomItemEventListener(List<PayloadMessage> messageList)
+	public CustomItemEventListener(ClientFrame clFrame)
 	{
-		this.messageList = messageList;
+		this.frame = clFrame;
 	}
 	
 	@Override
@@ -33,7 +34,9 @@ public class CustomItemEventListener implements ItemEventListener<Item>{
 			{
 				JAXBContext context = JAXBContext.newInstance(PayloadMessage.class);
 				Unmarshaller unmarshaller = context.createUnmarshaller();
-				messageList.add((PayloadMessage)unmarshaller.unmarshal(new StreamSource(new StringReader(xml))));
+				PayloadMessage message = (PayloadMessage)unmarshaller.unmarshal(new StreamSource(new StringReader(xml)), 
+						PayloadMessage.class).getValue();
+				frame.receivedMessages(message);
 			}
 			catch(Exception ex)
 			{
