@@ -66,7 +66,7 @@ import org.jivesoftware.smackx.pubsub.PublishModel;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-public class PhotographerFrame extends JFrame {
+public class PhotographerFrame extends JFrame implements ClientFrame {
 
 	private static final long serialVersionUID = 1L;
 
@@ -937,5 +937,11 @@ public class PhotographerFrame extends JFrame {
 		btnLogout.setBounds(622, 428, 89, 23);
 		contentPane.add(btnLogout);
 
+	}
+
+	@Override
+	public void receivedMessages(PayloadMessage message) {
+		// TODO Auto-generated method stub
+		
 	}
 }
