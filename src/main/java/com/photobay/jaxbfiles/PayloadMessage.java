@@ -99,9 +99,10 @@ public class PayloadMessage {
     
     public String toXMLString()
     {
-    	return "<?xml version='1.0' encoding='UTF-8'?><plm:payloadMessage xmlns:plm='http://www.example.org/photoBay'" +
-    			" xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='http://www.example.org/photoBay ../xml_schema_files/payloadMessage.xsd '>" +
-    			"<plm:message>"+ this.message +"</plm:message><plm:uri>" + this.uri + "</plm:uri></plm:payloadMessage>";
+//    	return "<?xml version=\"1.0\" encoding=\"UTF-8\"?><payloadMessage xmlns=\"http://www.example.org/photoBay\">" +
+//    			"<message>"+ this.message +"</message><uri>" + this.uri + "</uri></payloadMessage>";
+    	return "<payloadMessage xmlns=\"http://www.example.org/photoBay\">" +
+		"<message>"+ this.message +"</message><uri>" + this.uri + "</uri></payloadMessage>";
     }
 
 }

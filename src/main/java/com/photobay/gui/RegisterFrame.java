@@ -24,6 +24,7 @@ import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.ClientResponse.Status;
 
+import main.java.com.photobay.jaxbfiles.PayloadMessage;
 import main.java.com.photobay.jaxbfiles.Photographer;
 import main.java.com.photobay.jaxbfiles.PressAgency;
 import main.java.com.photobay.jaxbfiles.SexEnum;
@@ -337,8 +338,8 @@ public class RegisterFrame extends JFrame {
 							JOptionPane.showMessageDialog(RegisterFrame.this, response.getClientResponseStatus()
 									, "Fehler", JOptionPane.INFORMATION_MESSAGE);
 					}
-					Boolean result = cnHandler.sendNodeWithoutPayload(username, cnHandler.createNodeConf(FormType.submit, false, false,
-							PublishModel.publishers, AccessModel.open));
+					Boolean result = cnHandler.assignPayloadToNode(username+"MainNode", cnHandler.createNodeConf(PublishModel.publishers, 
+							AccessModel.open), "payloadMessage", new PayloadMessage());
 					if(result == true)
 						JOptionPane.showMessageDialog(RegisterFrame.this, "Node erstellt", "Node erstellt", 
 								JOptionPane.INFORMATION_MESSAGE);
