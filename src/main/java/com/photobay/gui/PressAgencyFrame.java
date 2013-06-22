@@ -136,6 +136,7 @@ public class PressAgencyFrame extends JFrame implements ClientFrame {
 	private List<String> subscriptions;
 	private JButton btnSubscribeToPhotographer;
 	private JButton btnUnsubscribe;
+	DefaultListModel<PayloadMessage> payloadMessagemodel = new DefaultListModel<PayloadMessage>();
 	/**
 	 * Launch the application.
 	 */
@@ -885,7 +886,7 @@ public class PressAgencyFrame extends JFrame implements ClientFrame {
 				{
 					for(String sub : subscriptions)
 					{
-						if(sub.equals(selectedValue))
+						if(sub.equals(selectedValue+"MainNode"))
 						{
 							check = true;
 							break;
@@ -945,11 +946,16 @@ public class PressAgencyFrame extends JFrame implements ClientFrame {
 					{
 						for(String node : nodes)
 						{
-							if(node.equals(selectedPhotographer))
+							if(node.equals(selectedPhotographer+"MainNode"))
 							{
 								if(cnHandler.subscribeToNode(node))
+								{
+									updateMySubscriptionsList();
+									btnSubscribeToPhotographer.setEnabled(false);
+									btnUnsubscribe.setEnabled(true);
 									JOptionPane.showMessageDialog(PressAgencyFrame.this, "Subscribe success!", "Subscribe success!", 
 											JOptionPane.INFORMATION_MESSAGE);
+								}
 								else
 									JOptionPane.showMessageDialog(PressAgencyFrame.this, "Cannot subscribe!", "Subscription error!", 
 											JOptionPane.ERROR_MESSAGE);
@@ -1068,6 +1074,7 @@ public class PressAgencyFrame extends JFrame implements ClientFrame {
 		panelBids.add(lblStatusPhotoSellValue);
 
 		btnUnsubscribe = new JButton("Unsubscribe");
+		btnUnsubscribe.setEnabled(false);
 		btnUnsubscribe.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
@@ -1080,7 +1087,7 @@ public class PressAgencyFrame extends JFrame implements ClientFrame {
 					{
 						for(String node : nodes)
 						{
-							if(node.equals(selectedPhotographer))
+							if(node.equals(selectedPhotographer+"MainNode"))
 							{
 								if(cnHandler.unSubscribeNode(node))
 									JOptionPane.showMessageDialog(PressAgencyFrame.this, "Unsubscribe success!", "Unsubscribe success!", 
@@ -1246,7 +1253,10 @@ public class PressAgencyFrame extends JFrame implements ClientFrame {
 
 	@Override
 	public void receivedMessages(PayloadMessage message) {
-		// TODO Auto-generated method stub
-		
+		if(!message.getMessage().isEmpty() && !message.getUri().isEmpty())
+		{
+			payloadMessagemodel.addElement(message);
+			subscriptionsList.setModel(payloadMessagemodel);
+		}
 	}
 }

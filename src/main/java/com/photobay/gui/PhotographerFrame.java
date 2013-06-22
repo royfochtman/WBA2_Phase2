@@ -573,8 +573,8 @@ public class PhotographerFrame extends JFrame implements ClientFrame {
 								message.setMessage(photographer.getGeneralPersonalData().getUsername() + "has post a new photo Sell." + 
 								"See link below.");
 								message.setUri(photoSell.getRef());
-								cnHandler.assignPayloadToNode(photographer.getGeneralPersonalData().getUsername(), 
-										cnHandler.createNodeConf(FormType.submit, true, true, PublishModel.publishers, AccessModel.open)
+								cnHandler.assignPayloadToNode(photographer.getGeneralPersonalData().getUsername()+"MainNode", 
+										cnHandler.createNodeConf(PublishModel.publishers, AccessModel.open)
 										, "payloadMessage", message);
 								JOptionPane.showMessageDialog(PhotographerFrame.this, "Photo Sell saved!", "Saved!", 
 										JOptionPane.INFORMATION_MESSAGE);

@@ -15,6 +15,7 @@ import org.jivesoftware.smackx.pubsub.ConfigureForm;
 import org.jivesoftware.smackx.pubsub.FormType;
 import org.jivesoftware.smackx.pubsub.Item;
 import org.jivesoftware.smackx.pubsub.LeafNode;
+import org.jivesoftware.smackx.pubsub.NodeType;
 import org.jivesoftware.smackx.pubsub.PayloadItem;
 import org.jivesoftware.smackx.pubsub.PubSubManager;
 import org.jivesoftware.smackx.pubsub.PublishModel;
@@ -61,7 +62,7 @@ public class XmppConnectionHandler {
 			return true;
 		
 		ConnectionConfiguration connConf = new ConnectionConfiguration(host, port);
-		
+		SmackConfiguration.setPacketReplyTimeout(30000);
 		xmppConn = new XMPPConnection(connConf);
 		accMan = new AccountManager(xmppConn);
 		
@@ -205,23 +206,23 @@ public class XmppConnectionHandler {
 		{
 			if(payloadMessage!=null)
 			{
-				payload = new SimplePayload(rootElement, "", payloadMessage.toXMLString());
-				item = new PayloadItem<SimplePayload>(null, payload);
+				payload = new SimplePayload(rootElement, NAMESPACE, payloadMessage.toXMLString());
+				item = new PayloadItem<SimplePayload>(nodeID + System.currentTimeMillis(), payload);
 			}
 			else
-				item = new PayloadItem<SimplePayload>(null, null);
+				item = new PayloadItem<SimplePayload>(nodeID + System.currentTimeMillis(), new SimplePayload("", "", ""));
 			
-			node.publish(item);
-//			try
-//			{
-//				node.send(item);
-//				
-//			}
-//			catch(XMPPException ex)
-//			{
-//				System.err.println("Item could not be sent!\n" + ex.getMessage());
-//                return false;
-//			}
+			//node.publish(item);
+			try
+			{
+				node.send(item);
+				
+			}
+			catch(XMPPException ex)
+			{
+				System.err.println("Item could not be sent!\n" + ex.getMessage());
+                return false;
+			}
 		}
 		return true;
 	}
@@ -257,12 +258,16 @@ public class XmppConnectionHandler {
 	 * <br><em>whitelist</em> = Only those on a whitelist may subscribe and retrieve items</BLOCKQUOTE>
 	 * @return ConfigureForm-Object
 	 */
-	public ConfigureForm createNodeConf(FormType type, boolean pers, boolean payload, PublishModel pm, AccessModel am) {
-        ConfigureForm form = new ConfigureForm(type);
-        form.setPersistentItems(pers);
-        form.setDeliverPayloads(payload);
+	public ConfigureForm createNodeConf(PublishModel pm, AccessModel am) {
+        ConfigureForm form = new ConfigureForm(FormType.submit);
+        form.setPersistentItems(true);
+        form.setDeliverPayloads(true);
         form.setPublishModel(pm);
         form.setAccessModel(am);
+        form.setNotifyRetract(true);
+        form.setNotifyConfig(true);
+        form.setSubscribe(true);
+        form.setNodeType(NodeType.leaf);
 
         return form;
     }
