@@ -61,6 +61,7 @@ public class XmppConnectionHandler {
 			return true;
 		
 		ConnectionConfiguration connConf = new ConnectionConfiguration(host, port);
+		
 		xmppConn = new XMPPConnection(connConf);
 		accMan = new AccountManager(xmppConn);
 		
@@ -163,7 +164,7 @@ public class XmppConnectionHandler {
 		LeafNode node = null;
 		try
 		{
-			node = pubSubManager.getNode(nodeID);
+			node = (LeafNode)pubSubManager.getNode(nodeID);
 		}
 		catch(XMPPException ex)
 		{
@@ -173,9 +174,9 @@ public class XmppConnectionHandler {
             	try
             	{
             		System.err.println("Try to create new node!");
-            		node = pubSubManager.createNode(nodeID);
-            		if(conf != null)
-            			node.sendConfigurationForm(conf);
+            		node = (LeafNode)pubSubManager.createNode(nodeID, conf);
+//            		if(conf != null)
+//            			node.sendConfigurationForm(conf);
             	}
             	catch(XMPPException ex2)
             	{
@@ -209,17 +210,35 @@ public class XmppConnectionHandler {
 			}
 			else
 				item = new PayloadItem<SimplePayload>(null, null);
-			try
-			{
-				node.send(item);
-			}
-			catch(XMPPException ex)
-			{
-				System.err.println("Item could not be sent!\n" + ex.getMessage());
-                return false;
-			}
+			
+			node.publish(item);
+//			try
+//			{
+//				node.send(item);
+//				
+//			}
+//			catch(XMPPException ex)
+//			{
+//				System.err.println("Item could not be sent!\n" + ex.getMessage());
+//                return false;
+//			}
 		}
 		return true;
+	}
+	
+	public boolean sendNodeWithoutPayload(String nodeID, ConfigureForm conf)
+	{
+		try
+		{
+			LeafNode node = getLeafNode(nodeID, conf);
+			node.send();
+			return true;
+		}
+		catch(XMPPException ex)
+		{
+			System.err.println("Item could not be sent!\n" + ex.getMessage());
+            return false;
+		}
 	}
 	
 	/**
@@ -258,7 +277,7 @@ public class XmppConnectionHandler {
 		LeafNode node = null;
 		try
 		{
-			node = pubSubManager.getNode(nodeID);
+			node = (LeafNode)pubSubManager.getNode(nodeID);
 			node.subscribe(xmppConn.getUser() + "@" + host);
 			node.addItemEventListener(listener);
 		}
@@ -274,7 +293,7 @@ public class XmppConnectionHandler {
 		LeafNode node = null;
 		try
 		{
-			node = pubSubManager.getNode(nodeID);
+			node = (LeafNode)pubSubManager.getNode(nodeID);
 			node.unsubscribe(xmppConn.getUser() + "@" + host);
 			node.removeItemEventListener(listener);
 			return true;
