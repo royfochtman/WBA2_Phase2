@@ -4,4 +4,20 @@
         <photoSellName>Test</photoSellName>
         <uri>./photoSells/1</uri>
     </photoSellRef>
+    <photoSellRef>
+        <photoSellName>Test2</photoSellName>
+        <uri>./photoSells/2</uri>
+    </photoSellRef>
+    <photoSellRef>
+        <photoSellName>Test3</photoSellName>
+        <uri>./photoSells/3</uri>
+    </photoSellRef>
+    <photoSellRef>
+        <photoSellName>test4</photoSellName>
+        <uri>./photoSells/4</uri>
+    </photoSellRef>
+    <photoSellRef>
+        <photoSellName>Test5</photoSellName>
+        <uri>./photoSells/5</uri>
+    </photoSellRef>
 </photoSells>

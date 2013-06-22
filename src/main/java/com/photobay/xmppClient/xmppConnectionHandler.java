@@ -67,7 +67,7 @@ public class XmppConnectionHandler {
 		try
 		{
 			xmppConn.connect();
-			pubSubManager = new PubSubManager(xmppConn);
+			pubSubManager = new PubSubManager(xmppConn, "pubsub." + xmppConn.getHost());
 		}
 		catch(XMPPException ex)
 		{
@@ -172,6 +172,7 @@ public class XmppConnectionHandler {
             if (ex.getXMPPError().getCode() == 404) {
             	try
             	{
+            		System.err.println("Try to create new node!");
             		node = pubSubManager.createNode(nodeID);
             		if(conf != null)
             			node.sendConfigurationForm(conf);
@@ -197,23 +198,46 @@ public class XmppConnectionHandler {
 	public boolean assignPayloadToNode(String nodeID, ConfigureForm conf, String rootElement, PayloadMessage payloadMessage)
 	{
 		LeafNode node = getLeafNode(nodeID, conf);
+		SimplePayload payload;
+		PayloadItem<SimplePayload> item;
 		if(node != null) 
 		{
-			SimplePayload payload = new SimplePayload(rootElement, NAMESPACE, payloadMessage.toXMLString());
-			PayloadItem<SimplePayload> item = new PayloadItem<SimplePayload>(null, payload);
+			if(payloadMessage!=null)
+			{
+				payload = new SimplePayload(rootElement, "", payloadMessage.toXMLString());
+				item = new PayloadItem<SimplePayload>(null, payload);
+			}
+			else
+				item = new PayloadItem<SimplePayload>(null, null);
 			try
 			{
 				node.send(item);
 			}
 			catch(XMPPException ex)
 			{
-				System.err.println("Item could not be sent!");
+				System.err.println("Item could not be sent!\n" + ex.getMessage());
                 return false;
 			}
 		}
 		return true;
 	}
 	
+	/**
+	 * 
+	 * @param type FormType (cancel, form, result, submit)
+	 * @param pers Sets whether items should be persisted in the node.
+	 * @param payload Does the node deliver payloads with event notifications.
+	 * @param pm Sets the publishing model for the node, which determines who may publish to it.
+	 * <BLOCKQUOTE><em>open</em> = Anyone may publish, <br><em>publishers</em> = Only publishers may publish, 
+	 * <br><em>subscribers</em> = Only subscribers may publish</BLOCKQUOTE>
+	 * @param am  Sets the value of access model.<BLOCKQUOTE>
+	 * <em>authorize</em> = Subscription request must be approved and only subscribers may retrieve items
+	 * <br><em>open</em> = Anyone may subscribe and retrieve items
+	 * <br><em>presence</em> = Anyone with a presence subscription of both or from may subscribe and retrieve items
+	 * <br><em>roster</em> = Anyone in the specified roster group(s) may subscribe and retrieve items
+	 * <br><em>whitelist</em> = Only those on a whitelist may subscribe and retrieve items</BLOCKQUOTE>
+	 * @return ConfigureForm-Object
+	 */
 	public ConfigureForm createNodeConf(FormType type, boolean pers, boolean payload, PublishModel pm, AccessModel am) {
         ConfigureForm form = new ConfigureForm(type);
         form.setPersistentItems(pers);

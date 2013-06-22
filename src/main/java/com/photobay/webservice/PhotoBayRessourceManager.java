@@ -878,7 +878,7 @@ public class PhotoBayRessourceManager {
 		try
 		{
 			if(ownerRef == null || ownerRef.isEmpty())
-				file = new File("/photoSells/photoSells.xml");
+				file = new File("./photoSells/photoSells.xml");
 			else
 				file = new File(ownerRef + "/photoSells/photoSells.xml");
 			JAXBContext context = JAXBContext.newInstance(PhotoSells.class);

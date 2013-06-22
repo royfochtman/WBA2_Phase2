@@ -39,7 +39,7 @@ public class PhotoSellsService {
 	{
 		if(PhotoBayRessourceManager.postPhotoSell(photoSell))
 		{
-			return Response.ok().build();
+			return Response.ok(photoSell).build();
 		}
 		else return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
 	}

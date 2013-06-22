@@ -21,6 +21,7 @@ import main.java.com.photobay.jaxbfiles.Bids;
 import main.java.com.photobay.jaxbfiles.Bids.BidRef;
 import main.java.com.photobay.jaxbfiles.Job;
 import main.java.com.photobay.jaxbfiles.Jobs;
+import main.java.com.photobay.jaxbfiles.PayloadMessage;
 import main.java.com.photobay.jaxbfiles.PhotoSell;
 import main.java.com.photobay.jaxbfiles.PhotoSells;
 import main.java.com.photobay.jaxbfiles.PhotoSells.PhotoSellRef;
@@ -29,6 +30,8 @@ import main.java.com.photobay.jaxbfiles.PressAgency;
 import main.java.com.photobay.util.ImageManipulation;
 import main.java.com.photobay.util.ImagePanel;
 import main.java.com.photobay.webservice.PhotoBayRessourceManager;
+import main.java.com.photobay.xmppClient.XmppConnectionHandler;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.io.File;
@@ -54,6 +57,11 @@ import javax.swing.JTextArea;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 import javax.swing.JRadioButton;
+
+import org.jivesoftware.smackx.pubsub.AccessModel;
+import org.jivesoftware.smackx.pubsub.FormType;
+import org.jivesoftware.smackx.pubsub.PublishModel;
+
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
@@ -87,6 +95,8 @@ public class PhotographerFrame extends JFrame {
 	private JLabel lblHighestBidValue;
 	private JLabel lblBidFromUsername;
 	private JLabel lblBidFromPressAgencyName;
+	private XmppConnectionHandler cnHandler = null;
+	private int selectedTab = 0;
 	
 	private Boolean validatePhotoSell()
 	{
@@ -124,7 +134,7 @@ public class PhotographerFrame extends JFrame {
 	 * 
 	 * @param userObject
 	 */
-	public PhotographerFrame(Photographer photographer) {
+	public PhotographerFrame(Photographer photographerObject, XmppConnectionHandler cn) {
 
 		/**
 		 * webResource variable.
@@ -138,11 +148,10 @@ public class PhotographerFrame extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 
-		if(photographer != null)
-		{
-			this.photographer = photographer;
-		}
-
+		if(photographerObject != null)
+			this.photographer = photographerObject;
+		if(cn != null)
+			this.cnHandler = cn;
 		setTitle("Logged in as: "
 				+ photographer.getGeneralPersonalData().getUsername() + ", ID: "
 				+ photographer.getID());
@@ -152,8 +161,12 @@ public class PhotographerFrame extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent p) {
 				JTabbedPane pane = (JTabbedPane)p.getComponent();
-				if(pane.getSelectedIndex() == 1)
+				int selectedIndex = pane.getSelectedIndex();
+				if(selectedIndex == 1 && selectedIndex != selectedTab)
+				{
+					selectedTab = selectedIndex;
 					updatePhotoSellsList();
+				}
 			}
 		});
 		photographerTabbedPane.setBounds(10, 11, 701, 410);
@@ -455,7 +468,6 @@ public class PhotographerFrame extends JFrame {
 		txtPhotoSellName.setColumns(10);
 
 		txtDescription = new JTextArea();
-		txtDescription.setText("description");
 		txtDescription.setBounds(10, 108, 285, 182);
 		panelMyPhotoSell.add(txtDescription);
 		
@@ -490,10 +502,10 @@ public class PhotographerFrame extends JFrame {
 		lblBidFromPressAgencyName.setBounds(396, 58, 160, 14);
 		panelMyPhotoSell.add(lblBidFromPressAgencyName);
 		
-		JButton btnNewButton = new JButton("Accept Bid");
-		btnNewButton.setEnabled(false);
-		btnNewButton.setBounds(396, 79, 89, 23);
-		panelMyPhotoSell.add(btnNewButton);
+		JButton btnAcceptBid = new JButton("Accept Bid");
+		btnAcceptBid.setEnabled(false);
+		btnAcceptBid.setBounds(396, 79, 89, 23);
+		panelMyPhotoSell.add(btnAcceptBid);
 		
 		lblImagePath = new JLabel("");
 		lblImagePath.setBounds(127, 305, 330, 14);
@@ -554,8 +566,16 @@ public class PhotographerFrame extends JFrame {
 							}
 							
 							ClientResponse response = webResource.path("/photoSells").entity(photoSell).post(ClientResponse.class, photoSell);
-							if(response != null && response.getClientResponseStatus() == Status.OK)
+							if(response != null && response.hasEntity() && response.getClientResponseStatus() == Status.OK)
 							{
+								photoSell = response.getEntity(PhotoSell.class);
+								PayloadMessage message = new PayloadMessage();
+								message.setMessage(photographer.getGeneralPersonalData().getUsername() + "has post a new photo Sell." + 
+								"See link below.");
+								message.setUri(photoSell.getRef());
+								cnHandler.assignPayloadToNode(photographer.getGeneralPersonalData().getUsername(), 
+										cnHandler.createNodeConf(FormType.submit, true, true, PublishModel.publishers, AccessModel.open)
+										, "payloadMessage", message);
 								JOptionPane.showMessageDialog(PhotographerFrame.this, "Photo Sell saved!", "Saved!", 
 										JOptionPane.INFORMATION_MESSAGE);
 								txtDescription.setText("");

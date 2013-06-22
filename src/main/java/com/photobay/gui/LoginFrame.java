@@ -122,7 +122,7 @@ public class LoginFrame extends JFrame {
 						if(ref.contains("photographers"))
 						{
 							pho = res.getEntity(Photographer.class);
-							PhotographerFrame frame = new PhotographerFrame(pho);
+							PhotographerFrame frame = new PhotographerFrame(pho, cn);
 							frame.setVisible(true);
 						}
 						else if(ref.contains("pressAgencies"))

@@ -292,7 +292,7 @@ public class RegisterFrame extends JFrame {
 										JOptionPane.INFORMATION_MESSAGE);
 								if(login(cnHandler))
 								{
-									PhotographerFrame frame =  new PhotographerFrame(pho);
+									PhotographerFrame frame =  new PhotographerFrame(pho, cnHandler);
 									frame.setVisible(true);
 								}
 							}
