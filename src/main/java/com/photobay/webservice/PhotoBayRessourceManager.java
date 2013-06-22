@@ -1,5 +1,6 @@
 package main.java.com.photobay.webservice;
 import java.io.File;
+import java.io.IOException;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
@@ -24,6 +25,7 @@ import main.java.com.photobay.jaxbfiles.PressAgencies.PressAgencyRef;
 import main.java.com.photobay.jaxbfiles.Photos;
 import main.java.com.photobay.jaxbfiles.PressAgencies;
 import main.java.com.photobay.jaxbfiles.PressAgency;
+import main.java.com.photobay.util.DeleteFolder;
 import main.java.com.photobay.util.IdGenerator;
 
 
@@ -325,6 +327,57 @@ public class PhotoBayRessourceManager {
 			{
 				return null;
 			}
+	}
+	
+	/**
+	 * 
+	 * @param id
+	 * @return
+	 */
+	public static Boolean deleteJob(int id){
+		File dir = new File("./jobs/" + id);
+		File file = new File("./jobs/" + id + "/job.xml");
+		File jobsFile = new File("./jobs.jobs.xml");
+		File jobApplicationsFile = new File(dir + "/jobApplications");
+		
+		
+//		JAXBContext context = JAXBContext.newInstance(Jobs.class);
+//		Unmarshaller unmarshaller = context.createUnmarshaller();
+//		//
+//		Jobs jobs = (Jobs) unmarshaller.unmarshal(jobsFile);
+		Jobs jobs = getJobsList(null);
+		if(jobs != null)
+		{
+			for(JobRef ref : jobs.getJobRef() ){
+				if(ref.getUri() == ("./jobs/" + id)){
+					jobs.getJobRef().remove(ref);
+					
+				}
+			}
+		}
+		
+//		jobs.getJobRef().remove(index)
+		//
+		
+		
+		try{if(DeleteFolder.delete(dir))
+			return true;
+		else return false;
+		}catch (IOException ex){}
+			return false;
+		
+//		if(jobApplicationsFile.delete())
+//		{
+//			if(file.delete()){
+//				if(dir.delete())
+//					return true;
+//				else
+//					return false;
+//			}
+//			else return false;
+//		}
+//		
+//		else return false;
 	}
 	
 	/**
@@ -724,6 +777,7 @@ public class PhotoBayRessourceManager {
 				file = new File(ownerRef + "/jobs/jobs.xml");
 			JAXBContext context = JAXBContext.newInstance(Jobs.class);
 			Unmarshaller unmarshaller = context.createUnmarshaller();
+			
 			return (Jobs)unmarshaller.unmarshal(file);
 		}
 		catch(Exception ex)

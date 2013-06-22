@@ -1,6 +1,7 @@
 package main.java.com.photobay.webservice;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -54,6 +55,18 @@ public class JobsService {
 			return Response.status(Response.Status.NOT_FOUND).build();
 		}
 		return Response.ok(jobs).build();
+	}
+	
+	@DELETE
+	@Path("/{id}")
+	public Response deleteJob(@PathParam("id") int id)
+	{
+		if(PhotoBayRessourceManager.deleteJob(id))
+		{
+			return Response.ok().build();
+		}
+		else return Response.status(Response.Status.NOT_FOUND).build();
+		
 	}
 	
 }

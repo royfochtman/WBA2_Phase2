@@ -400,7 +400,6 @@ public class PressAgencyFrame extends JFrame {
 		panelMyJobs.add(panelJob);
 		panelJob.setLayout(null);
 
-		// TODO Post new job's resource.
 		btnCreateJob = new JButton("Create");
 		btnCreateJob.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
@@ -464,15 +463,56 @@ public class PressAgencyFrame extends JFrame {
 				//Welcher Element ist selektiert?
 				//Index holen, URI holen, delete schicken.
 				
-				if(listJobs.getSelectedIndex() != -1){
-					String jobURI = jobs.getJobRef().get(jobIndex).getUri();
-					Job deleteJobResponse = webResource.path(jobURI).entity(job).delete(Job.class);
-				}
-					else {
-					JOptionPane.showMessageDialog(PressAgencyFrame.this,
-							"No job selected. Please select a job!",
-							"Error", JOptionPane.ERROR_MESSAGE);
+//				if(listJobs.getSelectedIndex() != -1){
+//					String jobURI = jobs.getJobRef().get(jobIndex).getUri();
+//					Job deleteJobResponse = webResource.path(jobURI).entity(job).delete(Job.class);
+//				}
+//					else {
+//					JOptionPane.showMessageDialog(PressAgencyFrame.this,
+//							"No job selected. Please select a job!",
+//							"Error", JOptionPane.ERROR_MESSAGE);
+//					}
+				
+				Object[] options = {"Yes","No","Cancel"};
+				int n = JOptionPane.showOptionDialog(PressAgencyFrame.this,
+					    "Would you realy like to delete this job?",
+					    "Delete?",
+					    JOptionPane.YES_NO_CANCEL_OPTION,
+					    JOptionPane.QUESTION_MESSAGE,
+					    null, options, options[2]);
+				if(n == 0)
+				{
+					String val = listJobs.getSelectedValue();
+					JobRef ref = new JobRef();
+					for(JobRef jobRef : jobs.getJobRef())
+					{
+						if(jobRef.getJobName()== val)
+						{
+							ref = jobRef;
+							break;
+						}
 					}
+					ClientResponse response = webResource.path(ref.getUri().replaceFirst(".", "")).delete(ClientResponse.class);
+					if(response != null && response.hasEntity() && response.getClientResponseStatus() == Status.OK)
+					{
+						JOptionPane.showMessageDialog(PressAgencyFrame.this, "Job deleted!", "Deleted!", 
+								JOptionPane.INFORMATION_MESSAGE);
+
+						
+						textFieldJobName.setText(null);
+						textFieldPaymentJob.setText(null);
+						textFieldUrgencyJob.setText(null);
+						textAreaJobDescription.setText(null);
+						
+						comboBoxStatusJob.setSelectedIndex(0);
+						comboBoxDeadlineDay.setSelectedIndex(0);
+						comboBoxDeadlineMonth.setSelectedIndex(0);
+						comboBoxDeadlineYear.setSelectedIndex(0);
+						updateJobsList();
+					} else
+						JOptionPane.showMessageDialog(PressAgencyFrame.this, "Job could not be deleted","Error" ,
+								JOptionPane.INFORMATION_MESSAGE);
+				}
 			}
 		});
 		btnDeleteJob.setBounds(467, 284, 89, 23);
