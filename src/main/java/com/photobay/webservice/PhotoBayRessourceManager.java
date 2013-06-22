@@ -337,16 +337,19 @@ public class PhotoBayRessourceManager {
 	public static Boolean deleteJob(int id){
 		File dir = new File("./jobs/" + id);
 		File file = new File("./jobs/" + id + "/job.xml");
-		File jobsFile = new File("./jobs.jobs.xml");
+		File jobsFile = new File("./jobs/jobs.xml");
 		File jobApplicationsFile = new File(dir + "/jobApplications");
-		
+		Job ownerJob = getJob(id);
+		String ownerRef = ownerJob.getPressAgencyRef();
 		
 		Jobs jobs = getJobsList(null);
 		if(jobs != null)
 		{
+			//Delete JobRef in jobs/jobs.xml
 			for(JobRef ref : jobs.getJobRef() ){
-				if(ref.getUri() == ("./jobs/" + id)){
+				if(("./jobs/" + id).equals(ref.getUri())){
 					jobs.getJobRef().remove(ref);
+					break;
 				}
 			}
 		}
@@ -357,32 +360,24 @@ public class PhotoBayRessourceManager {
 	    Marshaller m = context.createMarshaller();
 	    m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 	    
-	    
 	    m.marshal(jobs, jobsFile);
 		} catch(Exception ex)
 		{
 			return false;
 		}
 		
+		//Delete JobRef in pressAgencies/{id}/jobs/jobs.xml
+//		jobs = getJobsList(ownerRef)
+		
+		
 		
 		try{if(DeleteFolder.delete(dir))
 			return true;
-		else return false;
-		}catch (IOException ex){}
+		else
 			return false;
-		
-//		if(jobApplicationsFile.delete())
-//		{
-//			if(file.delete()){
-//				if(dir.delete())
-//					return true;
-//				else
-//					return false;
-//			}
-//			else return false;
-//		}
-//		
-//		else return false;
+		}catch (IOException ex){
+			return false;
+		}
 	}
 	
 	/**

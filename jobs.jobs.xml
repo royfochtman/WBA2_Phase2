@@ -52,4 +52,8 @@
         <jobName>seep</jobName>
         <uri>./jobs/22</uri>
     </jobRef>
+    <jobRef>
+        <jobName>gfgfg</jobName>
+        <uri>./jobs/22</uri>
+    </jobRef>
 </jobs>
