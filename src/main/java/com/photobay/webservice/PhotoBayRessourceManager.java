@@ -718,7 +718,7 @@ public class PhotoBayRessourceManager {
 			if(ownerRef == null || ownerRef.isEmpty())
 				file = new File(ownerRef +"/jobs/jobs.xml");
 			else
-				file = new File("/jobs/jobs.xml");
+				file = new File("./jobs/jobs.xml");
 			JAXBContext context = JAXBContext.newInstance(Jobs.class);
 			Unmarshaller unmarshaller = context.createUnmarshaller();
 			return (Jobs)unmarshaller.unmarshal(file);
