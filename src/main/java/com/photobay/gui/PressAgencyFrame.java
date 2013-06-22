@@ -58,6 +58,7 @@ import main.java.com.photobay.xmppClient.XmppConnectionHandler;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.io.File;
+import java.io.StringReader;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.net.URL;
@@ -76,11 +77,14 @@ import java.awt.FlowLayout;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.ws.rs.core.MediaType;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Unmarshaller;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.Duration;
 import javax.xml.datatype.XMLGregorianCalendar;
 import javax.xml.namespace.QName;
+import javax.xml.transform.stream.StreamSource;
 
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientRequest;
@@ -91,6 +95,12 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.JTextArea;
 import javax.swing.JRadioButton;
+
+import org.jivesoftware.smackx.pubsub.Item;
+import org.jivesoftware.smackx.pubsub.ItemPublishEvent;
+import org.jivesoftware.smackx.pubsub.PayloadItem;
+import org.jivesoftware.smackx.pubsub.SimplePayload;
+import org.jivesoftware.smackx.pubsub.listener.ItemEventListener;
 
 //import com.sun.jersey.api.client.ClientRequest;
 
@@ -132,13 +142,12 @@ public class PressAgencyFrame extends JFrame implements ClientFrame {
 	private int selectedTab;
 	private Photographers photographers;
 	private XmppConnectionHandler cnHandler;
-	private CustomItemEventListener listener;
-	private List<PayloadMessage> subscriptionMessages;
 	private List<String> subscriptions;
 	private JButton btnSubscribeToPhotographer;
 	private JButton btnUnsubscribe;
 	private Job selectedJob;
 	DefaultListModel<PayloadMessage> payloadMessagemodel = new DefaultListModel<PayloadMessage>();
+	DefaultListModel<Item> payloadMessagemodel2 = new DefaultListModel<Item>();
 	/**
 	 * Launch the application.
 	 */
@@ -154,8 +163,6 @@ public class PressAgencyFrame extends JFrame implements ClientFrame {
 		 * webResource variable.
 		 */
 		webResource = Client.create().resource(WebserviceConfig.WS_ADDRESS);
-		subscriptionMessages = new ArrayList<PayloadMessage>();
-		listener = new CustomItemEventListener(this);
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 737, 500);
@@ -176,13 +183,10 @@ public class PressAgencyFrame extends JFrame implements ClientFrame {
 		if(cn != null)
 			this.cnHandler = cn;
 		
-		cnHandler.setItemEventListener(listener);
+		//cnHandler.setItemEventListener(setItemEvent());
+		//cnHandler.setItemEventListener(new CustomItemEventListener(this));
+		cnHandler.refreshSubs(setItemEvent());
 		updateMySubscriptionsList();
-		
-		if(subscriptionMessages.size() > 0)
-			JOptionPane.showMessageDialog(PressAgencyFrame.this,
-					"There is new Data!",
-					"New Data", JOptionPane.INFORMATION_MESSAGE);
 		
 		setTitle("Logged in as: "
 				+ pressAgency.getGeneralPersonalData().getUsername() + ", ID: "
@@ -202,7 +206,7 @@ public class PressAgencyFrame extends JFrame implements ClientFrame {
 				}
 				if(selectedIndex == 3 && selectedIndex != selectedTab)
 				{
-					updateMySubscriptionsList();
+					//updateMySubscriptionsList();
 				}
 				if(selectedIndex == 4 && selectedIndex != selectedTab)
 				{
@@ -1283,5 +1287,41 @@ public class PressAgencyFrame extends JFrame implements ClientFrame {
 			payloadMessagemodel.addElement(message);
 			subscriptionsList.setModel(payloadMessagemodel);
 		}
+	}
+	
+	private ItemEventListener<Item> setItemEvent()
+	{
+		ItemEventListener<Item> listener = new ItemEventListener<Item>() {
+
+			@Override
+			public void handlePublishedItems(ItemPublishEvent<Item> items) {
+				
+				JOptionPane.showMessageDialog(PressAgencyFrame.this, "SubItem" + items.getItems().size(), "Items", 
+						JOptionPane.ERROR_MESSAGE);
+				
+				if(items.getItems().size() > 0)
+				{
+					for(Item item : items.getItems())
+					{
+						String xml = ((PayloadItem<SimplePayload>)item).getPayload().toXML();
+						try
+						{
+							xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + xml;
+							JAXBContext context = JAXBContext.newInstance(PayloadMessage.class);
+							Unmarshaller unmarshaller = context.createUnmarshaller();
+							PayloadMessage message = (PayloadMessage)unmarshaller.unmarshal(new StreamSource(new StringReader(xml)), 
+									PayloadMessage.class).getValue();
+							System.out.println(message.getMessage());
+							receivedMessages(message);
+						}
+						catch(Exception ex)
+						{
+							System.out.println("Error: CustomItemEventListener: " + ex.getMessage());
+						}
+					}
+				}
+			}
+		};
+		return listener;
 	}
 }

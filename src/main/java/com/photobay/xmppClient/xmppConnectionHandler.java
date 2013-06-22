@@ -9,6 +9,7 @@ import java.util.Map;
 import main.java.com.photobay.jaxbfiles.PayloadMessage;
 
 import org.jivesoftware.smack.*;
+import org.jivesoftware.smackx.packet.DataForm;
 import org.jivesoftware.smackx.packet.DiscoverItems;
 import org.jivesoftware.smackx.pubsub.AccessModel;
 import org.jivesoftware.smackx.pubsub.ConfigureForm;
@@ -20,6 +21,7 @@ import org.jivesoftware.smackx.pubsub.PayloadItem;
 import org.jivesoftware.smackx.pubsub.PubSubManager;
 import org.jivesoftware.smackx.pubsub.PublishModel;
 import org.jivesoftware.smackx.pubsub.SimplePayload;
+import org.jivesoftware.smackx.pubsub.SubscribeForm;
 import org.jivesoftware.smackx.pubsub.Subscription;
 import org.jivesoftware.smackx.pubsub.listener.ItemEventListener;
 
@@ -268,6 +270,8 @@ public class XmppConnectionHandler {
         form.setNotifyConfig(true);
         form.setSubscribe(true);
         form.setNodeType(NodeType.leaf);
+        form.setMaxItems(1000);
+        
 
         return form;
     }
@@ -283,8 +287,8 @@ public class XmppConnectionHandler {
 		try
 		{
 			node = (LeafNode)pubSubManager.getNode(nodeID);
-			node.subscribe(xmppConn.getUser() + "@" + host);
 			node.addItemEventListener(listener);
+			node.subscribe(xmppConn.getUser() + "@" + host);
 		}
 		catch(XMPPException ex)
 		{
@@ -299,8 +303,8 @@ public class XmppConnectionHandler {
 		try
 		{
 			node = (LeafNode)pubSubManager.getNode(nodeID);
-			node.unsubscribe(xmppConn.getUser() + "@" + host);
 			node.removeItemEventListener(listener);
+			node.unsubscribe(xmppConn.getUser() + "@" + host);
 			return true;
 			
 		}
@@ -319,7 +323,7 @@ public class XmppConnectionHandler {
 	public void setItemEventListener(ItemEventListener<Item> listener)
 	{
 		this.listener = listener;
-		assignListenerToSubscribedNodes();
+		//assignListenerToSubscribedNodes();
 	}
 	
 	/**
@@ -387,4 +391,20 @@ public class XmppConnectionHandler {
         return entries;
 
     }
+	
+	public ItemEventListener<Item> getListener()
+	{
+		return this.listener;
+	}
+	
+	public void refreshSubs(ItemEventListener<Item> listener)
+	{
+		List<String> subs = getSubscribedNodes();
+		this.listener = listener;
+		for(String sub : subs)
+		{
+			unSubscribeNode(sub);
+			subscribeToNode(sub);
+		}
+	}
 }

@@ -32,6 +32,7 @@ public class CustomItemEventListener implements ItemEventListener<Item>{
 			String xml = ((PayloadItem<SimplePayload>)item).getPayload().toXML();
 			try
 			{
+				//xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + xml;
 				JAXBContext context = JAXBContext.newInstance(PayloadMessage.class);
 				Unmarshaller unmarshaller = context.createUnmarshaller();
 				PayloadMessage message = (PayloadMessage)unmarshaller.unmarshal(new StreamSource(new StringReader(xml)), 
@@ -40,7 +41,17 @@ public class CustomItemEventListener implements ItemEventListener<Item>{
 			}
 			catch(Exception ex)
 			{
-				System.out.println("Error: CustomItemEventListener: " + ex.getMessage());
+				System.out.println("Error: CustomItemEventListener: " + ex.getMessage() + " " + ((PayloadItem<SimplePayload>)item).getPayload().toXML());
+				try
+				{
+				JAXBContext context = JAXBContext.newInstance(PayloadMessage.class);
+				Unmarshaller unmarshaller = context.createUnmarshaller();
+				PayloadMessage message = (PayloadMessage)unmarshaller.unmarshal(new StreamSource(new StringReader(xml)), 
+						PayloadMessage.class).getValue();
+				System.out.println(message.getMessage() + " " + message.getUri());
+				frame.receivedMessages(message);
+				}
+				catch(Exception ex2) { System.out.println("kefnejn"); }
 			}
 		}
 		
