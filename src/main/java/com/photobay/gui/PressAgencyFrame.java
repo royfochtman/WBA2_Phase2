@@ -93,7 +93,7 @@ import javax.swing.JRadioButton;
 
 //import com.sun.jersey.api.client.ClientRequest;
 
-public class PressAgencyFrame extends JFrame {
+public class PressAgencyFrame extends JFrame implements ClientFrame {
 
 	private static final long serialVersionUID = 1L;
 
@@ -118,7 +118,7 @@ public class PressAgencyFrame extends JFrame {
 	private JTextField textFieldPhotoPath;
 	private int jobIndex;
 	private JList<String> listPhotos;
-	private JList<String> subscriptionsList;
+	private JList<PayloadMessage> subscriptionsList;
 	private JList<String> listPhotographers;
 	private JList<String> listPhotoSells;
 	private JScrollPane scrollPaneJobs;
@@ -152,7 +152,7 @@ public class PressAgencyFrame extends JFrame {
 		 */
 		webResource = Client.create().resource(WebserviceConfig.WS_ADDRESS);
 		subscriptionMessages = new ArrayList<PayloadMessage>();
-		listener = new CustomItemEventListener(subscriptionMessages);
+		listener = new CustomItemEventListener(this);
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 737, 500);
@@ -821,18 +821,18 @@ public class PressAgencyFrame extends JFrame {
 		scrollPane.setBounds(10, 11, 109, 360);
 		panelMySubscriptions.add(scrollPane);
 
-		subscriptionsList = new JList<String>();
+		subscriptionsList = new JList<PayloadMessage>();
 		subscriptionsList.addListSelectionListener(new ListSelectionListener() {
 			public void valueChanged(ListSelectionEvent arg0) {
 				
 			}
 		});
-		subscriptionsList.setModel(new AbstractListModel() {
-			String[] values = new String[] {};
+		subscriptionsList.setModel(new AbstractListModel<PayloadMessage>() {
+			PayloadMessage[] values = new PayloadMessage[] {};
 			public int getSize() {
 				return values.length;
 			}
-			public Object getElementAt(int index) {
+			public PayloadMessage getElementAt(int index) {
 				return values[index];
 			}
 		});
@@ -1095,14 +1095,14 @@ public class PressAgencyFrame extends JFrame {
 		try
 		{
 			subscriptions = cnHandler.getSubscribedNodes();
-			DefaultListModel<String> model = new DefaultListModel<String>();
-			if(subscriptions != null && subscriptions.size() > 0)
-			{
-				for(String sub : subscriptions)
-					model.addElement(sub);
-				subscriptionsList.setModel(model);
-			}
-			return true;
+//			DefaultListModel<String> model = new DefaultListModel<String>();
+//			if(subscriptions != null && subscriptions.size() > 0)
+//			{
+//				for(String sub : subscriptions)
+//					model.addElement(sub);
+//				subscriptionsList.setModel(model);
+//			}
+ 			return true;
 		}
 		catch(Exception ex){return false;}
 	}
@@ -1212,5 +1212,11 @@ public class PressAgencyFrame extends JFrame {
 		readJob.setStatus(comboBoxStatusJob.getSelectedItem().toString());
 		readJob.setUrgency(textFieldUrgencyJob.getText());
 		return readJob;
+	}
+
+	@Override
+	public void receivedMessages(PayloadMessage message) {
+		// TODO Auto-generated method stub
+		
 	}
 }
