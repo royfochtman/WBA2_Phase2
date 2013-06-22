@@ -36,6 +36,7 @@ import javax.swing.JEditorPane;
 import main.java.com.photobay.jaxbfiles.Bids;
 import main.java.com.photobay.jaxbfiles.Job;
 import main.java.com.photobay.jaxbfiles.Jobs;
+import main.java.com.photobay.jaxbfiles.PayloadMessage;
 import main.java.com.photobay.jaxbfiles.PhotoSell;
 import main.java.com.photobay.jaxbfiles.PhotoSells;
 import main.java.com.photobay.jaxbfiles.Photographer;
@@ -51,6 +52,8 @@ import main.java.com.photobay.util.ImageManipulation;
 import main.java.com.photobay.util.ImagePanel;
 import main.java.com.photobay.webservice.JobsService;
 import main.java.com.photobay.webservice.PhotoBayRessourceManager;
+import main.java.com.photobay.xmppClient.CustomItemEventListener;
+import main.java.com.photobay.xmppClient.XmppConnectionHandler;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -58,7 +61,11 @@ import java.io.File;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.net.URL;
+import java.util.AbstractList;
+import java.util.ArrayList;
 import java.util.GregorianCalendar;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Locale;
 import java.util.Observable;
 import java.util.Observer;
@@ -123,6 +130,12 @@ public class PressAgencyFrame extends JFrame {
 	private Photos myPhotos;
 	private int selectedTab;
 	private Photographers photographers;
+	private XmppConnectionHandler cnHandler;
+	private CustomItemEventListener listener;
+	private List<PayloadMessage> subscriptionMessages;
+	private List<String> subscriptions;
+	private JButton btnSubscribeToPhotographer;
+	private JButton btnUnsubscribe;
 	/**
 	 * Launch the application.
 	 */
@@ -132,12 +145,14 @@ public class PressAgencyFrame extends JFrame {
 	 * 
 	 * @param userObject
 	 */
-	public PressAgencyFrame(PressAgency pressAgency) {
+	public PressAgencyFrame(PressAgency pressAgency, XmppConnectionHandler cn) {
 
 		/**
 		 * webResource variable.
 		 */
 		webResource = Client.create().resource(WebserviceConfig.WS_ADDRESS);
+		subscriptionMessages = new ArrayList<PayloadMessage>();
+		listener = new CustomItemEventListener(subscriptionMessages);
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 737, 500);
@@ -155,6 +170,16 @@ public class PressAgencyFrame extends JFrame {
 		{
 			this.pressAgency = pressAgency;
 		}
+		if(cn != null)
+			this.cnHandler = cn;
+		
+		cnHandler.setItemEventListener(listener);
+		updateMySubscriptionsList();
+		
+		if(subscriptionMessages.size() > 0)
+			JOptionPane.showMessageDialog(PressAgencyFrame.this,
+					"There is new Data!",
+					"New Data", JOptionPane.INFORMATION_MESSAGE);
 		
 		setTitle("Logged in as: "
 				+ pressAgency.getGeneralPersonalData().getUsername() + ", ID: "
@@ -171,6 +196,10 @@ public class PressAgencyFrame extends JFrame {
 				if(selectedIndex == 1 && selectedIndex != selectedTab)
 				{
 					updateJobsList();
+				}
+				if(selectedIndex == 3 && selectedIndex != selectedTab)
+				{
+					updateMySubscriptionsList();
 				}
 				if(selectedIndex == 4 && selectedIndex != selectedTab)
 				{
@@ -793,18 +822,17 @@ public class PressAgencyFrame extends JFrame {
 		panelMySubscriptions.add(scrollPane);
 
 		subscriptionsList = new JList<String>();
-		subscriptionsList.setModel(new AbstractListModel<String>() {
-			/**
-			 * 
-			 */
-			private static final long serialVersionUID = 1L;
-			String[] values = new String[] { "sub1", "sub2", "sub3" };
-
+		subscriptionsList.addListSelectionListener(new ListSelectionListener() {
+			public void valueChanged(ListSelectionEvent arg0) {
+				
+			}
+		});
+		subscriptionsList.setModel(new AbstractListModel() {
+			String[] values = new String[] {};
 			public int getSize() {
 				return values.length;
 			}
-
-			public String getElementAt(int index) {
+			public Object getElementAt(int index) {
 				return values[index];
 			}
 		});
@@ -819,12 +847,39 @@ public class PressAgencyFrame extends JFrame {
 		panelSearch.add(scrollPanePhotographers);
 
 		listPhotographers = new JList<String>();
+		listPhotographers.addListSelectionListener(new ListSelectionListener() {
+			public void valueChanged(ListSelectionEvent e) {
+				String selectedValue = listPhotographers.getSelectedValue();
+				boolean check = false;
+				if(subscriptions != null && subscriptions.size() > 0)
+				{
+					for(String sub : subscriptions)
+					{
+						if(sub.equals(selectedValue))
+						{
+							check = true;
+							break;
+						}
+					}
+					if(check)
+					{
+						btnSubscribeToPhotographer.setEnabled(false);
+						btnUnsubscribe.setEnabled(true);
+					}
+					else
+					{
+						btnSubscribeToPhotographer.setEnabled(true);
+						btnUnsubscribe.setEnabled(false);
+					}
+				}
+			}
+		});
 		listPhotographers.setModel(new AbstractListModel<String>() {
 			/**
 			 * 
 			 */
 			private static final long serialVersionUID = 1L;
-			String[] values = new String[] { "photographerA", "photographerB" };
+			String[] values = new String[] {};
 
 			public int getSize() {
 				return values.length;
@@ -847,7 +902,33 @@ public class PressAgencyFrame extends JFrame {
 		lblFirstnameLastname.setBounds(10, 11, 201, 14);
 		panelPhotographer.add(lblFirstnameLastname);
 
-		JButton btnSubscribeToPhotographer = new JButton("Subscribe");
+		btnSubscribeToPhotographer = new JButton("Subscribe");
+		btnSubscribeToPhotographer.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent click) {
+				String selectedPhotographer = listPhotographers.getSelectedValue();
+				if(selectedPhotographer != null && !selectedPhotographer.isEmpty())
+				{
+					List<String> nodes = cnHandler.getAllNodes();
+					//boolean result = false;
+					if(nodes != null && nodes.size() > 0)
+					{
+						for(String node : nodes)
+						{
+							if(node.equals(selectedPhotographer))
+							{
+								if(cnHandler.subscribeToNode(node))
+									JOptionPane.showMessageDialog(PressAgencyFrame.this, "Subscribe success!", "Subscribe success!", 
+											JOptionPane.INFORMATION_MESSAGE);
+								else
+									JOptionPane.showMessageDialog(PressAgencyFrame.this, "Cannot subscribe!", "Subscription error!", 
+											JOptionPane.ERROR_MESSAGE);
+							}
+						}
+					}
+				}
+			}
+		});
 		btnSubscribeToPhotographer.setBounds(210, 7, 100, 23);
 		panelPhotographer.add(btnSubscribeToPhotographer);
 
@@ -956,7 +1037,37 @@ public class PressAgencyFrame extends JFrame {
 		lblStatusPhotoSellValue.setBounds(408, 38, 46, 14);
 		panelBids.add(lblStatusPhotoSellValue);
 
-		JButton btnUnsubscribe = new JButton("Unsubscribe");
+		btnUnsubscribe = new JButton("Unsubscribe");
+		btnUnsubscribe.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				String selectedPhotographer = listPhotographers.getSelectedValue();
+				if(selectedPhotographer != null && !selectedPhotographer.isEmpty())
+				{
+					List<String> nodes = cnHandler.getSubscribedNodes();
+					//boolean result = false;
+					if(nodes != null && nodes.size() > 0)
+					{
+						for(String node : nodes)
+						{
+							if(node.equals(selectedPhotographer))
+							{
+								if(cnHandler.unSubscribeNode(node))
+									JOptionPane.showMessageDialog(PressAgencyFrame.this, "Unsubscribe success!", "Unsubscribe success!", 
+											JOptionPane.INFORMATION_MESSAGE);
+								else
+									JOptionPane.showMessageDialog(PressAgencyFrame.this, "Cannot unsubscribe!", "Unsubscription error!", 
+											JOptionPane.ERROR_MESSAGE);
+							}
+						}
+					}
+				}
+			}
+		});
+		btnUnsubscribe.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+			}
+		});
 		btnUnsubscribe.setBounds(320, 7, 100, 23);
 		panelPhotographer.add(btnUnsubscribe);
 
@@ -979,7 +1090,23 @@ public class PressAgencyFrame extends JFrame {
 		contentPane.add(btnLogout);
 	}
 	
-	// TODO implment
+	private boolean updateMySubscriptionsList()
+	{
+		try
+		{
+			subscriptions = cnHandler.getSubscribedNodes();
+			DefaultListModel<String> model = new DefaultListModel<String>();
+			if(subscriptions != null && subscriptions.size() > 0)
+			{
+				for(String sub : subscriptions)
+					model.addElement(sub);
+				subscriptionsList.setModel(model);
+			}
+			return true;
+		}
+		catch(Exception ex){return false;}
+	}
+	
 	private Boolean updatePhotographersList()
 	{
 		
@@ -992,7 +1119,7 @@ public class PressAgencyFrame extends JFrame {
 				this.photographers = response.getEntity(Photographers.class);
 				for(PhotographerRef ref : photographers.getPhotographerRef())
 				{
-					model.addElement(ref.getFirstName() + "" + ref.getUsername());
+					model.addElement(ref.getUsername());
 				}
 				
 				listPhotographers.setModel(model);

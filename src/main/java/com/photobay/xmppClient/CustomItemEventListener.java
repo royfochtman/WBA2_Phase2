@@ -37,6 +37,7 @@ public class CustomItemEventListener implements ItemEventListener<Item>{
 			}
 			catch(Exception ex)
 			{
+				System.out.println("Error: CustomItemEventListener: " + ex.getMessage());
 			}
 		}
 		

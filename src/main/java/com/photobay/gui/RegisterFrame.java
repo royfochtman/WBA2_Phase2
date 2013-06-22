@@ -327,7 +327,7 @@ public class RegisterFrame extends JFrame {
 										JOptionPane.INFORMATION_MESSAGE);
 								if(login(cnHandler))
 								{
-									PressAgencyFrame frame = new PressAgencyFrame(press);
+									PressAgencyFrame frame = new PressAgencyFrame(press, cnHandler);
 									frame.setVisible(true);
 								}
 							}
