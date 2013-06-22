@@ -128,7 +128,7 @@ public class LoginFrame extends JFrame {
 						else if(ref.contains("pressAgencies"))
 						{
 							press = res.getEntity(PressAgency.class);
-							PressAgencyFrame frame = new PressAgencyFrame(press);
+							PressAgencyFrame frame = new PressAgencyFrame(press, cn);
 							frame.setVisible(true);
 						}
 						LoginFrame.this.setVisible(false);

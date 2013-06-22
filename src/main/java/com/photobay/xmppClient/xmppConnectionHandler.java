@@ -363,4 +363,23 @@ public class XmppConnectionHandler {
 	{
 		return accMan.getAccountAttributes();
 	}
+	
+	public List<String> getSubscribedNodes() {
+
+        List<String> entries = new ArrayList<String>();
+
+        try {
+            List<Subscription> subscriptions = pubSubManager.getSubscriptions();
+
+            for (Subscription sub : subscriptions) {
+                entries.add(sub.getNode());
+            }
+
+        } catch (XMPPException e) {
+            e.printStackTrace();
+        }
+
+        return entries;
+
+    }
 }
