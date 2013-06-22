@@ -2,7 +2,7 @@
 // Diese Datei wurde mit der JavaTM Architecture for XML Binding(JAXB) Reference Implementation, v2.2.6 generiert 
 // Siehe <a href="http://java.sun.com/xml/jaxb">http://java.sun.com/xml/jaxb</a> 
 // Änderungen an dieser Datei gehen bei einer Neukompilierung des Quellschemas verloren. 
-// Generiert: 2013.06.15 um 02:15:48 PM CEST 
+// Generiert: 2013.06.22 um 03:27:24 PM CEST 
 //
 
 
@@ -36,6 +36,7 @@ import javax.xml.bind.annotation.XmlType;
  *                 &lt;all>
  *                   &lt;element name="firstName" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *                   &lt;element name="lastName" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *                   &lt;element name="username" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *                   &lt;element name="uri" type="{http://www.w3.org/2001/XMLSchema}anyURI"/>
  *                 &lt;/all>
  *               &lt;/restriction>
@@ -129,6 +130,7 @@ public class Photographers {
      *       &lt;all>
      *         &lt;element name="firstName" type="{http://www.w3.org/2001/XMLSchema}string"/>
      *         &lt;element name="lastName" type="{http://www.w3.org/2001/XMLSchema}string"/>
+     *         &lt;element name="username" type="{http://www.w3.org/2001/XMLSchema}string"/>
      *         &lt;element name="uri" type="{http://www.w3.org/2001/XMLSchema}anyURI"/>
      *       &lt;/all>
      *     &lt;/restriction>
@@ -148,6 +150,8 @@ public class Photographers {
         protected String firstName;
         @XmlElement(required = true)
         protected String lastName;
+        @XmlElement(required = true)
+        protected String username;
         @XmlElement(required = true)
         @XmlSchemaType(name = "anyURI")
         protected String uri;
@@ -198,6 +202,30 @@ public class Photographers {
          */
         public void setLastName(String value) {
             this.lastName = value;
+        }
+
+        /**
+         * Ruft den Wert der username-Eigenschaft ab.
+         * 
+         * @return
+         *     possible object is
+         *     {@link String }
+         *     
+         */
+        public String getUsername() {
+            return username;
+        }
+
+        /**
+         * Legt den Wert der username-Eigenschaft fest.
+         * 
+         * @param value
+         *     allowed object is
+         *     {@link String }
+         *     
+         */
+        public void setUsername(String value) {
+            this.username = value;
         }
 
         /**

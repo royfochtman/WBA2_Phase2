@@ -39,6 +39,8 @@ import main.java.com.photobay.jaxbfiles.Jobs;
 import main.java.com.photobay.jaxbfiles.PhotoSell;
 import main.java.com.photobay.jaxbfiles.PhotoSells;
 import main.java.com.photobay.jaxbfiles.Photographer;
+import main.java.com.photobay.jaxbfiles.Photographers;
+import main.java.com.photobay.jaxbfiles.Photographers.PhotographerRef;
 import main.java.com.photobay.jaxbfiles.Photos;
 import main.java.com.photobay.jaxbfiles.PressAgency;
 import main.java.com.photobay.jaxbfiles.Bids.BidRef;
@@ -120,6 +122,7 @@ public class PressAgencyFrame extends JFrame {
 	private JButton btnDeleteJob;
 	private Photos myPhotos;
 	private int selectedTab;
+	private Photographers photographers;
 	/**
 	 * Launch the application.
 	 */
@@ -168,6 +171,10 @@ public class PressAgencyFrame extends JFrame {
 				if(selectedIndex == 1 && selectedIndex != selectedTab)
 				{
 					updateJobsList();
+				}
+				if(selectedIndex == 4 && selectedIndex != selectedTab)
+				{
+					updatePhotographersList();
 				}
 				selectedTab = selectedIndex;
 			}
@@ -860,7 +867,7 @@ public class PressAgencyFrame extends JFrame {
 			 * 
 			 */
 			private static final long serialVersionUID = 1L;
-			String[] values = new String[] { "PhotoSell1", "PhotoSell2" };
+			String[] values = new String[] { };
 
 			public int getSize() {
 				return values.length;
@@ -970,6 +977,29 @@ public class PressAgencyFrame extends JFrame {
 		});
 		btnLogout.setBounds(622, 428, 89, 23);
 		contentPane.add(btnLogout);
+	}
+	
+	// TODO implment
+	private Boolean updatePhotographersList()
+	{
+		
+		try
+		{
+			ClientResponse response = webResource.path("/photographers").get(ClientResponse.class);
+			if(response != null &&  response.hasEntity() && response.getClientResponseStatus() == Status.OK)
+			{
+				DefaultListModel<String> model = new DefaultListModel<String>();
+				this.photographers = response.getEntity(Photographers.class);
+				for(PhotographerRef ref : photographers.getPhotographerRef())
+				{
+					model.addElement(ref.getFirstName() + "" + ref.getUsername());
+				}
+				
+				listPhotographers.setModel(model);
+			}
+			return true;
+		}
+		catch(Exception ex) { return false; }
 	}
 	
 	private Boolean updateJobsList(){

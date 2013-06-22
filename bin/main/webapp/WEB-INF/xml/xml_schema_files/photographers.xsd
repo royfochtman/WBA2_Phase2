@@ -9,6 +9,7 @@
 						<xs:all minOccurs="1">
 							<xs:element name="firstName" type="xs:string"/>
 							<xs:element name="lastName" type="xs:string"/>
+							<xs:element name="username" type="xs:string"/>
 							<xs:element name="uri" type="xs:anyURI"/>
 						</xs:all>
 					</xs:complexType>
