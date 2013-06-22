@@ -4,6 +4,7 @@ jobs/
 photographers/
 photoSells/
 
+
 # Package Files #
 *.war
 *.ear

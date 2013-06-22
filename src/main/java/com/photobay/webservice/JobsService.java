@@ -6,9 +6,13 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import main.java.com.photobay.jaxbfiles.Job;
+import main.java.com.photobay.jaxbfiles.Jobs;
+import main.java.com.photobay.jaxbfiles.PhotoSells;
 
 @Path("/jobs")
 public class JobsService {
@@ -37,6 +41,19 @@ public class JobsService {
 			return Response.ok().build();
 		}
 		else return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+	}
+	
+	@GET
+	@Path("/query")
+	@Produces(MediaType.APPLICATION_XML)
+	public Response getJobsList(@QueryParam("owner") String ownerRef)
+	{
+		Jobs jobs= PhotoBayRessourceManager.getJobsList(ownerRef);
+		if(jobs == null)
+		{
+			return Response.status(Response.Status.NOT_FOUND).build();
+		}
+		return Response.ok(jobs).build();
 	}
 	
 }

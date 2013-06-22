@@ -175,6 +175,7 @@ public class LoginFrame extends JFrame {
 		contentPane.add(lblPassword_1);
 		
 		txtHost = new JTextField();
+		txtHost.setText("localhost");
 		txtHost.setHorizontalAlignment(SwingConstants.LEFT);
 		txtHost.setBounds(86, 28, 86, 20);
 		contentPane.add(txtHost);
@@ -197,6 +198,7 @@ public class LoginFrame extends JFrame {
 		contentPane.add(txtPassword);
 		
 		txtPort = new JTextField();
+		txtPort.setText("5222");
 		txtPort.setHorizontalAlignment(SwingConstants.LEFT);
 		txtPort.setBounds(314, 28, 86, 20);
 		contentPane.add(txtPort);
