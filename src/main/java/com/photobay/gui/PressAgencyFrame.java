@@ -529,7 +529,7 @@ public class PressAgencyFrame extends JFrame {
 						}
 					}
 					ClientResponse response = webResource.path(ref.getUri().replaceFirst(".", "")).delete(ClientResponse.class);
-					if(response != null && response.hasEntity() && response.getClientResponseStatus() == Status.OK)
+					if(response != null && response.getClientResponseStatus() == Status.OK)
 					{
 						JOptionPane.showMessageDialog(PressAgencyFrame.this, "Job deleted!", "Deleted!", 
 								JOptionPane.INFORMATION_MESSAGE);
