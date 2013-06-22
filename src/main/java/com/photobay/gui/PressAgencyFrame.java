@@ -413,6 +413,7 @@ public class PressAgencyFrame extends JFrame implements ClientFrame {
 				if(response != null && response.hasEntity() && response.getClientResponseStatus() == Status.OK)
 				{
 					Job job = response.getEntity(Job.class);
+					selectedJob = job;
 					updateJob(job);
 				}
 			}
@@ -504,7 +505,7 @@ public class PressAgencyFrame extends JFrame implements ClientFrame {
 						}
 					}
 
-					/*try {
+					try {
 
 						updatedJob.setDeadline(DatatypeFactory
 								.newInstance()
@@ -521,7 +522,7 @@ public class PressAgencyFrame extends JFrame implements ClientFrame {
 										0, 0, 0, 0, 0));
 
 					} catch (DatatypeConfigurationException ex) {
-					}*/
+					}
 
 					updatedJob.setDescription(textAreaJobDescription.getText());
 					try {
