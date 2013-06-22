@@ -341,23 +341,28 @@ public class PhotoBayRessourceManager {
 		File jobApplicationsFile = new File(dir + "/jobApplications");
 		
 		
-//		JAXBContext context = JAXBContext.newInstance(Jobs.class);
-//		Unmarshaller unmarshaller = context.createUnmarshaller();
-//		//
-//		Jobs jobs = (Jobs) unmarshaller.unmarshal(jobsFile);
 		Jobs jobs = getJobsList(null);
 		if(jobs != null)
 		{
 			for(JobRef ref : jobs.getJobRef() ){
 				if(ref.getUri() == ("./jobs/" + id)){
 					jobs.getJobRef().remove(ref);
-					
 				}
 			}
 		}
 		
-//		jobs.getJobRef().remove(index)
-		//
+		try{
+		
+		JAXBContext context = JAXBContext.newInstance(Jobs.class);
+	    Marshaller m = context.createMarshaller();
+	    m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+	    
+	    
+	    m.marshal(jobs, jobsFile);
+		} catch(Exception ex)
+		{
+			return false;
+		}
 		
 		
 		try{if(DeleteFolder.delete(dir))
@@ -548,6 +553,7 @@ public class PhotoBayRessourceManager {
 		    	PhotographerRef photographerRef = new PhotographerRef();
 		    	photographerRef.setFirstName(photographer.getFirstname());
 		    	photographerRef.setLastName(photographer.getLastname());
+		    	photographerRef.setUsername(photographer.getGeneralPersonalData().getUsername());
 		    	//Muss nicht "./photographers/" sein ???
 //		    	photographerRef.setUri("/photographers/" + photographer.getID());
 		    	photographerRef.setUri(photographer.getRef());
