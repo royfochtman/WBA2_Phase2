@@ -16,6 +16,9 @@ import javax.swing.JButton;
 import javax.swing.border.LineBorder;
 
 import org.jivesoftware.smack.XMPPException;
+import org.jivesoftware.smackx.pubsub.AccessModel;
+import org.jivesoftware.smackx.pubsub.FormType;
+import org.jivesoftware.smackx.pubsub.PublishModel;
 
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
@@ -334,6 +337,11 @@ public class RegisterFrame extends JFrame {
 							JOptionPane.showMessageDialog(RegisterFrame.this, response.getClientResponseStatus()
 									, "Fehler", JOptionPane.INFORMATION_MESSAGE);
 					}
+					Boolean result = cnHandler.sendNodeWithoutPayload(username, cnHandler.createNodeConf(FormType.submit, false, false,
+							PublishModel.publishers, AccessModel.open));
+					if(result == true)
+						JOptionPane.showMessageDialog(RegisterFrame.this, "Node erstellt", "Node erstellt", 
+								JOptionPane.INFORMATION_MESSAGE);
 					RegisterFrame.this.setVisible(false);
 					RegisterFrame.this.dispose();
 				}

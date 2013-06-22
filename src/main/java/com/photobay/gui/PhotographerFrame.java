@@ -37,6 +37,7 @@ import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.FileFilter;
 import java.math.BigInteger;
+import java.util.List;
 
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.ListSelectionEvent;
@@ -109,6 +110,7 @@ public class PhotographerFrame extends JFrame {
 	{ //Client.create().resource(WebserviceConfig.WS_ADDRESS).path(ref).get(ClientResponse.class);
 		try
 		{
+			//cnHandler.deleteNode(this.photographer.getGeneralPersonalData().getUsername());
 			ClientResponse response = webResource.queryParam("owner", this.photographer.getRef()).path("/photoSells/query").get(ClientResponse.class);
 			if(response != null &&  response.hasEntity() && response.getClientResponseStatus() == Status.OK)
 			{
@@ -164,9 +166,9 @@ public class PhotographerFrame extends JFrame {
 				int selectedIndex = pane.getSelectedIndex();
 				if(selectedIndex == 1 && selectedIndex != selectedTab)
 				{
-					selectedTab = selectedIndex;
 					updatePhotoSellsList();
 				}
+				selectedTab = selectedIndex;
 			}
 		});
 		photographerTabbedPane.setBounds(10, 11, 701, 410);
@@ -544,8 +546,6 @@ public class PhotographerFrame extends JFrame {
 		});
 		btnChooseImg.setBounds(10, 301, 107, 23);
 		panelMyPhotoSell.add(btnChooseImg);
-		
-				// TODO Post new job's resource.
 				btnCreatePhotoSell = new JButton("Create");
 				btnCreatePhotoSell.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent event) {
@@ -578,6 +578,7 @@ public class PhotographerFrame extends JFrame {
 										, "payloadMessage", message);
 								JOptionPane.showMessageDialog(PhotographerFrame.this, "Photo Sell saved!", "Saved!", 
 										JOptionPane.INFORMATION_MESSAGE);
+
 								txtDescription.setText("");
 								txtPhotoSellName.setText("");
 								lblImagePath.setText("");
