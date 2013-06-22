@@ -403,6 +403,22 @@ public class PhotoBayRessourceManager {
 		}
 	}
 	
+	public static Boolean putJob(Job job){
+		try {
+			File jobFile = new File(job.getRef());
+			
+			JAXBContext context = JAXBContext.newInstance(JobApplication.class);
+		    Marshaller m = context.createMarshaller();
+		    m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+		    
+		    m.marshal(job, jobFile);
+		    return true;
+		} catch (Exception ex) {
+			return false;
+		}
+	}
+	
+	
 	/**
 	 *  Posts a new JobApplication.
 	 *  
