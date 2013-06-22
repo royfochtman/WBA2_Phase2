@@ -405,9 +405,9 @@ public class PhotoBayRessourceManager {
 	
 	public static Boolean putJob(Job job){
 		try {
-			File jobFile = new File(job.getRef());
+			File jobFile = new File(job.getRef() + "/job.xml");
 			
-			JAXBContext context = JAXBContext.newInstance(JobApplication.class);
+			JAXBContext context = JAXBContext.newInstance(Job.class);
 		    Marshaller m = context.createMarshaller();
 		    m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 		    

@@ -47,8 +47,9 @@ public class JobsService {
 	
 	/*Testing Post Job*/
 	@PUT
+	@Path("/{id}")
 	@Consumes({"application/xml"})
-	public Response putJob(Job job)
+	public Response putJob(@PathParam("id") int id, Job job)
 	{
 		
 		if(PhotoBayRessourceManager.putJob(job))
