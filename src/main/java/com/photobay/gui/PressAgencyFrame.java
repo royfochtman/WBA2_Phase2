@@ -9,6 +9,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.ButtonGroup;
+import javax.swing.DefaultListModel;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
@@ -32,13 +33,19 @@ import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JEditorPane;
 
+import main.java.com.photobay.jaxbfiles.Bids;
 import main.java.com.photobay.jaxbfiles.Job;
 import main.java.com.photobay.jaxbfiles.Jobs;
+import main.java.com.photobay.jaxbfiles.PhotoSell;
+import main.java.com.photobay.jaxbfiles.PhotoSells;
 import main.java.com.photobay.jaxbfiles.Photographer;
 import main.java.com.photobay.jaxbfiles.Photos;
 import main.java.com.photobay.jaxbfiles.PressAgency;
+import main.java.com.photobay.jaxbfiles.Bids.BidRef;
 import main.java.com.photobay.jaxbfiles.Jobs.JobRef;
+import main.java.com.photobay.jaxbfiles.PhotoSells.PhotoSellRef;
 import main.java.com.photobay.jaxbfiles.TopicType;
+import main.java.com.photobay.util.ImageManipulation;
 import main.java.com.photobay.util.ImagePanel;
 import main.java.com.photobay.webservice.JobsService;
 import main.java.com.photobay.webservice.PhotoBayRessourceManager;
@@ -112,6 +119,7 @@ public class PressAgencyFrame extends JFrame {
 	private JButton btnCreateJob;
 	private JButton btnDeleteJob;
 	private Photos myPhotos;
+	private int selectedTab;
 	/**
 	 * Launch the application.
 	 */
@@ -151,6 +159,20 @@ public class PressAgencyFrame extends JFrame {
 
 		JTabbedPane pressAgencyTabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		pressAgencyTabbedPane.setBounds(10, 11, 701, 410);
+		
+		pressAgencyTabbedPane.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent p) {
+				JTabbedPane pane = (JTabbedPane)p.getComponent();
+				int selectedIndex = pane.getSelectedIndex();
+				if(selectedIndex == 1 && selectedIndex != selectedTab)
+				{
+					updateJobsList();
+				}
+				selectedTab = selectedIndex;
+			}
+		});
+		
 		contentPane.add(pressAgencyTabbedPane);
 
 		JPanel panelMyData = new JPanel();
@@ -326,69 +348,49 @@ public class PressAgencyFrame extends JFrame {
 		panelMyData.add(btnUpdateData);
 
 		JPanel panelMyJobs = new JPanel();
-		/*OnMouseClicked --> get List*/
-		panelMyJobs.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent event) {
-//				
-//				/**
-//				 * Get jobs list from the press agency.
-//				 */
-//
-//				ClientResponse jobsResponse = webResource.path("/jobs").get(
-//						ClientResponse.class);
-//				jobs = jobsResponse.getEntity(Jobs.class);
-//
-//				String[] jobsListValues = new String[] {};
-//
-//				for (int i = 0; i > jobs.getJobRef().size(); i++) {
-//					jobsListValues[i] = jobs.getJobRef().get(i).getJobName();
-//				}
-//
-//				// Als Private globale variable.
-//				listJobs = new JList<String>(jobsListValues);
-//				
-//				
-//				//////////////
-//				listJobs.addListSelectionListener(new ListSelectionListener() {
-//					public void valueChanged(ListSelectionEvent event) {
-//						if (!event.getValueIsAdjusting()) {
-//
-//							/**
-//							 * Index from the Element, which has been selected by the
-//							 * user.
-//							 */
-//							JList source = (JList) event.getSource();
-//							jobIndex = source.getSelectedIndex();
-//
-//							/**
-//							 * String with the URI of the job, which is going to be
-//							 * requested.
-//							 */
-//							String jobRef = jobs.getJobRef().get(jobIndex).getUri();
-//
-//							ClientResponse jobResponse = webResource.path(jobRef).get(
-//									ClientResponse.class);
-//							job = jobResponse.getEntity(Job.class);
-//
-//							/**
-//							 * Update data from the selected job.
-//							 */
-//
-//							updateJob(job);
-//						}
-//					}
-//				});
-//				
-			}
-		});
 		
 		pressAgencyTabbedPane.addTab("My Jobs", null, panelMyJobs, null);
 		panelMyJobs.setLayout(null);
 
 		scrollPaneJobs = new JScrollPane();
+		scrollPaneJobs.setEnabled(false);
 		scrollPaneJobs.setBounds(10, 11, 100, 360);
 		panelMyJobs.add(scrollPaneJobs);
+		
+		listJobs = new JList<String>();
+		listJobs.setEnabled(false);
+		
+		listJobs.addListSelectionListener(new ListSelectionListener() {
+			public void valueChanged(ListSelectionEvent sel) {
+
+				String val = listJobs.getSelectedValue();
+				JobRef ref = new JobRef();
+				for(JobRef refItem : jobs.getJobRef())
+				{
+					if(refItem.getJobName() == val)
+						ref = refItem;
+				}
+				ClientResponse response = webResource.path(ref.getUri().replaceFirst(".", "")).get(ClientResponse.class);
+				if(response != null && response.hasEntity() && response.getClientResponseStatus() == Status.OK)
+				{
+					Job job = response.getEntity(Job.class);
+					updateJob(job);
+				}
+			}
+		});
+		
+		listJobs.setModel(new AbstractListModel<String>() {
+			private static final long serialVersionUID = 1L;
+			String[] values = new String[] {  };
+
+			public int getSize() {
+				return values.length;
+			}
+
+			public String getElementAt(int index) {
+				return values[index];
+			}
+		});
 
 		scrollPaneJobs.setViewportView(listJobs);
 
@@ -425,7 +427,8 @@ public class PressAgencyFrame extends JFrame {
 						comboBoxDeadlineDay.setSelectedIndex(0);
 						comboBoxDeadlineMonth.setSelectedIndex(0);
 						comboBoxDeadlineYear.setSelectedIndex(0);
-					
+						
+						updateJobsList();
 				} else
 					JOptionPane.showMessageDialog(PressAgencyFrame.this,
 							"Incomplete data. Please fill out all fields.",
@@ -443,8 +446,6 @@ public class PressAgencyFrame extends JFrame {
 		btnUpdateJob.setEnabled(false);
 		btnUpdateJob.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
-				
-				
 				
 				/**/
 			}
@@ -467,13 +468,11 @@ public class PressAgencyFrame extends JFrame {
 					String jobURI = jobs.getJobRef().get(jobIndex).getUri();
 					Job deleteJobResponse = webResource.path(jobURI).entity(job).delete(Job.class);
 				}
-				
 					else {
 					JOptionPane.showMessageDialog(PressAgencyFrame.this,
 							"No job selected. Please select a job!",
 							"Error", JOptionPane.ERROR_MESSAGE);
 					}
-				
 			}
 		});
 		btnDeleteJob.setBounds(467, 284, 89, 23);
@@ -547,7 +546,7 @@ public class PressAgencyFrame extends JFrame {
 
 		comboBoxDeadlineYear = new JComboBox<Integer>();
 		comboBoxDeadlineYear.setModel(new DefaultComboBoxModel<Integer>(new Integer[] {
-				2013, 2014, 2015, 2016, 2017, 3020 }));
+				2013, 2014, 2015, 2016, 2017}));
 		comboBoxDeadlineYear.setBounds(235, 58, 60, 20);
 		panelJob.add(comboBoxDeadlineYear);
 		
@@ -572,6 +571,9 @@ public class PressAgencyFrame extends JFrame {
 				comboBoxDeadlineMonth.setSelectedIndex(0);
 				comboBoxDeadlineYear.setSelectedIndex(0);
 				
+				scrollPaneJobs.setEnabled(false);
+				listJobs.setEnabled(false);
+				
 			}
 		});
 		rdbtnCreateJob.setBounds(120, 22, 109, 23);
@@ -589,6 +591,9 @@ public class PressAgencyFrame extends JFrame {
 				comboBoxDeadlineDay.setSelectedIndex(0);
 				comboBoxDeadlineMonth.setSelectedIndex(0);
 				comboBoxDeadlineYear.setSelectedIndex(0);
+				
+				scrollPaneJobs.setEnabled(true);
+				listJobs.setEnabled(true);
 			}
 		});
 		rdbtnManageJobs.setBounds(231, 22, 109, 23);
@@ -923,12 +928,33 @@ public class PressAgencyFrame extends JFrame {
 				PressAgencyFrame.this.dispose();
 			}
 		});
-
 		btnLogout.setBounds(622, 428, 89, 23);
 		contentPane.add(btnLogout);
-
 	}
-
+	
+	private Boolean updateJobsList(){
+		
+		try
+		{
+			ClientResponse response = webResource.queryParam("owner", this.pressAgency.getRef()).path("/jobs/query").get(ClientResponse.class);
+			if(response != null &&  response.hasEntity() && response.getClientResponseStatus() == Status.OK)
+			{
+				DefaultListModel<String> model = new DefaultListModel<String>();
+				this.jobs = response.getEntity(Jobs.class);
+				for(JobRef ref : jobs.getJobRef())
+				{
+					model.addElement(ref.getJobName());
+				}
+				
+				listJobs.setModel(model);
+			}
+			return true;
+		}
+		catch(Exception ex) { return false; }
+		
+	}
+	
+	
 	/**
 	 * Updates the JobPanel.
 	 * 
@@ -936,9 +962,6 @@ public class PressAgencyFrame extends JFrame {
 	 *            Job object.
 	 */
 	private void updateJob(Job job) {
-
-		// noch nicht fertig!
-
 		textFieldJobName.setText(job.getJobName());
 
 		textFieldUrgencyJob.setText(job.getUrgency());
@@ -947,7 +970,7 @@ public class PressAgencyFrame extends JFrame {
 		
 		comboBoxDeadlineDay.setSelectedIndex(job.getDeadline().getDay()-1);
 		comboBoxDeadlineMonth.setSelectedIndex(job.getDeadline().getMonth()-1);
-		comboBoxDeadlineYear.setSelectedIndex(job.getDeadline().getYear()-1);
+		comboBoxDeadlineYear.setSelectedIndex(job.getDeadline().getYear()-2013);
 		
 		if (job.getStatus().equals("new"))
 			comboBoxStatusJob.setSelectedIndex(0);
