@@ -553,6 +553,7 @@ public class PhotoBayRessourceManager {
 		    	PhotographerRef photographerRef = new PhotographerRef();
 		    	photographerRef.setFirstName(photographer.getFirstname());
 		    	photographerRef.setLastName(photographer.getLastname());
+		    	photographerRef.setUsername(photographer.getGeneralPersonalData().getUsername());
 		    	//Muss nicht "./photographers/" sein ???
 //		    	photographerRef.setUri("/photographers/" + photographer.getID());
 		    	photographerRef.setUri(photographer.getRef());
