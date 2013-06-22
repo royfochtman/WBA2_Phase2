@@ -294,8 +294,9 @@ public class PhotoBayRessourceManager {
 				    Marshaller m = context.createMarshaller();
 				    m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 				   
-				    m.marshal(job, file);
 				    putJobsList(job);
+				    m.marshal(job, file);
+				    
 				    return true;
 				}
 				return false;
@@ -716,9 +717,11 @@ public class PhotoBayRessourceManager {
 		try
 		{
 			if(ownerRef == null || ownerRef.isEmpty())
-				file = new File(ownerRef +"/jobs/jobs.xml");
-			else
+//				file = new File(ownerRef +"/jobs/jobs.xml");
 				file = new File("./jobs/jobs.xml");
+			else
+//				file = new File("./jobs/jobs.xml");
+				file = new File(ownerRef + "/jobs/jobs.xml");
 			JAXBContext context = JAXBContext.newInstance(Jobs.class);
 			Unmarshaller unmarshaller = context.createUnmarshaller();
 			return (Jobs)unmarshaller.unmarshal(file);

@@ -427,6 +427,8 @@ public class PressAgencyFrame extends JFrame {
 						comboBoxDeadlineDay.setSelectedIndex(0);
 						comboBoxDeadlineMonth.setSelectedIndex(0);
 						comboBoxDeadlineYear.setSelectedIndex(0);
+						
+						updateJobsList();
 				} else
 					JOptionPane.showMessageDialog(PressAgencyFrame.this,
 							"Incomplete data. Please fill out all fields.",
@@ -544,7 +546,7 @@ public class PressAgencyFrame extends JFrame {
 
 		comboBoxDeadlineYear = new JComboBox<Integer>();
 		comboBoxDeadlineYear.setModel(new DefaultComboBoxModel<Integer>(new Integer[] {
-				2013, 2014, 2015, 2016, 2017, 3020 }));
+				2013, 2014, 2015, 2016, 2017}));
 		comboBoxDeadlineYear.setBounds(235, 58, 60, 20);
 		panelJob.add(comboBoxDeadlineYear);
 		
@@ -968,7 +970,7 @@ public class PressAgencyFrame extends JFrame {
 		
 		comboBoxDeadlineDay.setSelectedIndex(job.getDeadline().getDay()-1);
 		comboBoxDeadlineMonth.setSelectedIndex(job.getDeadline().getMonth()-1);
-		comboBoxDeadlineYear.setSelectedIndex(job.getDeadline().getYear()-1);
+		comboBoxDeadlineYear.setSelectedIndex(job.getDeadline().getYear()-2013);
 		
 		if (job.getStatus().equals("new"))
 			comboBoxStatusJob.setSelectedIndex(0);
