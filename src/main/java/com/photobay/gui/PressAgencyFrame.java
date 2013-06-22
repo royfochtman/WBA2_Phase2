@@ -75,6 +75,7 @@ import java.awt.Canvas;
 import java.awt.FlowLayout;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.ListSelectionEvent;
+import javax.ws.rs.core.MediaType;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.Duration;
@@ -136,6 +137,7 @@ public class PressAgencyFrame extends JFrame implements ClientFrame {
 	private List<String> subscriptions;
 	private JButton btnSubscribeToPhotographer;
 	private JButton btnUnsubscribe;
+	private Job selectedJob;
 	DefaultListModel<PayloadMessage> payloadMessagemodel = new DefaultListModel<PayloadMessage>();
 	/**
 	 * Launch the application.
@@ -477,7 +479,6 @@ public class PressAgencyFrame extends JFrame implements ClientFrame {
 		btnCreateJob.setBounds(269, 284, 89, 23);
 		panelJob.add(btnCreateJob);
 
-		// TODO Put Data to the job's resource.
 		btnUpdateJob = new JButton("Update");
 		btnUpdateJob.setEnabled(false);
 		btnUpdateJob.addActionListener(new ActionListener() {
@@ -487,14 +488,15 @@ public class PressAgencyFrame extends JFrame implements ClientFrame {
 				Object[] options = { "Yes", "No", "Cancel" };
 				int n = JOptionPane
 						.showOptionDialog(PressAgencyFrame.this,
-								"Would you realy like to update this job?",
+								"Do you really want to update this job?",
 								"Update?", JOptionPane.YES_NO_CANCEL_OPTION,
 								JOptionPane.QUESTION_MESSAGE, null, options,
 								options[2]);
-				Job updatedJob = new Job();
+				Job updatedJob = selectedJob;
+				JobRef ref = new JobRef();
 				if (n == 0) {
 					String val = listJobs.getSelectedValue();
-					JobRef ref = new JobRef();
+					
 					for (JobRef jobRef : jobs.getJobRef()) {
 						if (jobRef.getJobName() == val) {
 							ref = jobRef;
@@ -502,32 +504,54 @@ public class PressAgencyFrame extends JFrame implements ClientFrame {
 						}
 					}
 
-					updateJob(updatedJob);
-					updatedJob.setID(job.getID());
-					updatedJob.setPressAgencyRef(job.getPressAgencyRef());
-					updatedJob.setRef(job.getRef());
+					/*try {
 
-					ClientResponse response = webResource
-							.path(job.getPressAgencyRef() + "/jobs")
-							.entity(updatedJob)
-							.post(ClientResponse.class, updatedJob);
-					// ClientResponse responseA =
-					// webResource.path(job.getPressAgencyRef() + "/jobs")
-					// .entity(updatedJob).put(ClientResponse.class,
-					// requestEntity)
-					// ClientResponse response = webResource.path().
-					// ClientResponse response =
-					// webResource.path(ref.getUri().replaceFirst(".",
-					// "")).put()
-					// delete(ClientResponse.class);
-					if (response != null
-							&& response.getClientResponseStatus() == Status.OK) {
-						JOptionPane.showMessageDialog(PressAgencyFrame.this,
-								"Job updated!", "Updated!",
-								JOptionPane.INFORMATION_MESSAGE);
+						updatedJob.setDeadline(DatatypeFactory
+								.newInstance()
+								.newXMLGregorianCalendar(
+										comboBoxDeadlineYear
+												.getItemAt(comboBoxDeadlineYear
+														.getSelectedIndex()),
+										comboBoxDeadlineMonth
+												.getItemAt(comboBoxDeadlineMonth
+														.getSelectedIndex()),
+										comboBoxDeadlineDay
+												.getItemAt(comboBoxDeadlineDay
+														.getSelectedIndex()),
+										0, 0, 0, 0, 0));
+
+					} catch (DatatypeConfigurationException ex) {
+					}*/
+
+					updatedJob.setDescription(textAreaJobDescription.getText());
+					try {
+						updatedJob.setPayment(BigInteger.valueOf(Long
+								.parseLong(textFieldPaymentJob.getText())));
+					} catch (NumberFormatException ex) {
 					}
+					updatedJob.setStatus(comboBoxStatusJob.getSelectedItem()
+							.toString());
+					updatedJob.setUrgency(textFieldUrgencyJob.getText());
+				}
+				System.out.println("/jobs/" + String.valueOf(updatedJob.getID()));
+				
+				ClientResponse response = webResource
+						.path("/jobs/" + String.valueOf(updatedJob.getID())).type(MediaType.APPLICATION_XML)
+						.entity(updatedJob)
+						.put(ClientResponse.class, updatedJob);
+				
+				if (response != null
+						&& response.getClientResponseStatus() == Status.OK) {
+					JOptionPane.showMessageDialog(PressAgencyFrame.this,
+							"Job updated!", "Updated!",
+							JOptionPane.INFORMATION_MESSAGE);
+				} else {
+					int status = response.getClientResponseStatus().getStatusCode();
+					JOptionPane.showMessageDialog(PressAgencyFrame.this, "Job could not be Updated, Status Code " + status,"Error" ,
+							JOptionPane.INFORMATION_MESSAGE);
 				}
 			}
+
 		});
 		
 		btnUpdateJob.setBounds(368, 284, 89, 23);
