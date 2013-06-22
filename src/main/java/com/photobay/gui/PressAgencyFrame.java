@@ -481,33 +481,61 @@ public class PressAgencyFrame extends JFrame {
 		btnUpdateJob.setEnabled(false);
 		btnUpdateJob.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
-				
 				/**/
+				
+				Object[] options = { "Yes", "No", "Cancel" };
+				int n = JOptionPane
+						.showOptionDialog(PressAgencyFrame.this,
+								"Would you realy like to update this job?",
+								"Update?", JOptionPane.YES_NO_CANCEL_OPTION,
+								JOptionPane.QUESTION_MESSAGE, null, options,
+								options[2]);
+				Job updatedJob = new Job();
+				if (n == 0) {
+					String val = listJobs.getSelectedValue();
+					JobRef ref = new JobRef();
+					for (JobRef jobRef : jobs.getJobRef()) {
+						if (jobRef.getJobName() == val) {
+							ref = jobRef;
+							break;
+						}
+					}
+
+					updateJob(updatedJob);
+					updatedJob.setID(job.getID());
+					updatedJob.setPressAgencyRef(job.getPressAgencyRef());
+					updatedJob.setRef(job.getRef());
+
+					ClientResponse response = webResource
+							.path(job.getPressAgencyRef() + "/jobs")
+							.entity(updatedJob)
+							.post(ClientResponse.class, updatedJob);
+					// ClientResponse responseA =
+					// webResource.path(job.getPressAgencyRef() + "/jobs")
+					// .entity(updatedJob).put(ClientResponse.class,
+					// requestEntity)
+					// ClientResponse response = webResource.path().
+					// ClientResponse response =
+					// webResource.path(ref.getUri().replaceFirst(".",
+					// "")).put()
+					// delete(ClientResponse.class);
+					if (response != null
+							&& response.getClientResponseStatus() == Status.OK) {
+						JOptionPane.showMessageDialog(PressAgencyFrame.this,
+								"Job updated!", "Updated!",
+								JOptionPane.INFORMATION_MESSAGE);
+					}
+				}
 			}
 		});
-		
-		
 		
 		btnUpdateJob.setBounds(368, 284, 89, 23);
 		panelJob.add(btnUpdateJob);
 
-		// TODO Delete job's resource.
 		btnDeleteJob = new JButton("Delete");
 		btnDeleteJob.setEnabled(false);
 		btnDeleteJob.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
-				//Welcher Element ist selektiert?
-				//Index holen, URI holen, delete schicken.
-				
-//				if(listJobs.getSelectedIndex() != -1){
-//					String jobURI = jobs.getJobRef().get(jobIndex).getUri();
-//					Job deleteJobResponse = webResource.path(jobURI).entity(job).delete(Job.class);
-//				}
-//					else {
-//					JOptionPane.showMessageDialog(PressAgencyFrame.this,
-//							"No job selected. Please select a job!",
-//							"Error", JOptionPane.ERROR_MESSAGE);
-//					}
 				
 				Object[] options = {"Yes","No","Cancel"};
 				int n = JOptionPane.showOptionDialog(PressAgencyFrame.this,
@@ -646,6 +674,7 @@ public class PressAgencyFrame extends JFrame {
 				comboBoxDeadlineDay.setSelectedIndex(0);
 				comboBoxDeadlineMonth.setSelectedIndex(0);
 				comboBoxDeadlineYear.setSelectedIndex(0);
+				textFieldJobName.setEnabled(true);
 				
 				scrollPaneJobs.setEnabled(false);
 				listJobs.setEnabled(false);
@@ -667,6 +696,7 @@ public class PressAgencyFrame extends JFrame {
 				comboBoxDeadlineDay.setSelectedIndex(0);
 				comboBoxDeadlineMonth.setSelectedIndex(0);
 				comboBoxDeadlineYear.setSelectedIndex(0);
+				textFieldJobName.setEnabled(false);
 				
 				scrollPaneJobs.setEnabled(true);
 				listJobs.setEnabled(true);
