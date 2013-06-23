@@ -17,7 +17,6 @@ import javax.swing.border.LineBorder;
 
 import org.jivesoftware.smack.XMPPException;
 import org.jivesoftware.smackx.pubsub.AccessModel;
-import org.jivesoftware.smackx.pubsub.FormType;
 import org.jivesoftware.smackx.pubsub.PublishModel;
 
 import com.sun.jersey.api.client.Client;

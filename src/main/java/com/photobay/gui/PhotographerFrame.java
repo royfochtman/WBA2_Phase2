@@ -1,26 +1,41 @@
 package main.java.com.photobay.gui;
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import javax.swing.JTabbedPane;
-import javax.swing.JLabel;
-import javax.swing.JSeparator;
-import javax.swing.JButton;
-import java.awt.Font;
-import javax.swing.JScrollPane;
-import javax.swing.JList;
-import javax.swing.AbstractListModel;
-import javax.swing.border.LineBorder;
 import java.awt.Color;
-import javax.swing.JTextField;
-import javax.swing.JTextArea;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.io.File;
+import java.math.BigInteger;
 
-import main.java.com.photobay.jaxbfiles.Bid;
+import javax.swing.AbstractListModel;
+import javax.swing.ButtonGroup;
+import javax.swing.DefaultListModel;
+import javax.swing.JButton;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.JScrollPane;
+import javax.swing.JSeparator;
+import javax.swing.JSpinner;
+import javax.swing.JTabbedPane;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
+import javax.swing.SpinnerNumberModel;
+import javax.swing.SwingConstants;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+
 import main.java.com.photobay.jaxbfiles.Bids;
 import main.java.com.photobay.jaxbfiles.Bids.BidRef;
-import main.java.com.photobay.jaxbfiles.Job;
-import main.java.com.photobay.jaxbfiles.Jobs;
 import main.java.com.photobay.jaxbfiles.PayloadMessage;
 import main.java.com.photobay.jaxbfiles.PhotoSell;
 import main.java.com.photobay.jaxbfiles.PhotoSells;
@@ -29,42 +44,15 @@ import main.java.com.photobay.jaxbfiles.Photographer;
 import main.java.com.photobay.jaxbfiles.PressAgency;
 import main.java.com.photobay.util.ImageManipulation;
 import main.java.com.photobay.util.ImagePanel;
-import main.java.com.photobay.webservice.PhotoBayRessourceManager;
 import main.java.com.photobay.xmppClient.XmppConnectionHandler;
 
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import java.io.File;
-import java.io.FileFilter;
-import java.math.BigInteger;
-import java.util.List;
+import org.jivesoftware.smackx.pubsub.AccessModel;
+import org.jivesoftware.smackx.pubsub.PublishModel;
 
-import javax.swing.event.ListSelectionListener;
-import javax.swing.event.ListSelectionEvent;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.ClientResponse.Status;
 import com.sun.jersey.api.client.WebResource;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-
-import javax.swing.ButtonGroup;
-import javax.swing.DefaultListModel;
-import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
-import javax.swing.JSpinner;
-import javax.swing.SpinnerNumberModel;
-import javax.swing.JTextArea;
-import javax.swing.ListSelectionModel;
-import javax.swing.SwingConstants;
-import javax.swing.JRadioButton;
-
-import org.jivesoftware.smackx.pubsub.AccessModel;
-import org.jivesoftware.smackx.pubsub.FormType;
-import org.jivesoftware.smackx.pubsub.PublishModel;
-
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 
 public class PhotographerFrame extends JFrame {
 
@@ -366,6 +354,7 @@ public class PhotographerFrame extends JFrame {
 		});
 		listMyPhotoSells.setEnabled(false);
 		listMyPhotoSells.setModel(new AbstractListModel<String>() {
+			private static final long serialVersionUID = 1L;
 			String[] values = new String[] {  };
 
 			public int getSize() {
@@ -655,6 +644,10 @@ public class PhotographerFrame extends JFrame {
 		/* Hier Liste hinzufügen! */
 		JList<String> listPhotos = new JList<String>();
 		listPhotos.setModel(new AbstractListModel<String>() {
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
 			String[] values = new String[] { };
 
 			public int getSize() {
@@ -771,6 +764,7 @@ public class PhotographerFrame extends JFrame {
 
 		JList<String> listSubscriptions = new JList<String>();
 		listSubscriptions.setModel(new AbstractListModel<String>() {
+			private static final long serialVersionUID = 1L;
 			String[] values = new String[] {};
 
 			public int getSize() {
@@ -794,6 +788,7 @@ public class PhotographerFrame extends JFrame {
 		JList<String> listPressAgencies = new JList<String>();
 		listPressAgencies.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		listPressAgencies.setModel(new AbstractListModel<String>() {
+			private static final long serialVersionUID = 1L;
 			String[] values = new String[] {};
 			public int getSize() {
 				return values.length;
@@ -832,6 +827,10 @@ public class PhotographerFrame extends JFrame {
 		JList<String> listJobs = new JList<String>();
 		listJobs.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		listJobs.setModel(new AbstractListModel<String>() {
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
 			String[] values = new String[] {};
 			public int getSize() {
 				return values.length;

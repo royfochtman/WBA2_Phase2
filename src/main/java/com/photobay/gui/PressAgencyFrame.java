@@ -1,105 +1,69 @@
 package main.java.com.photobay.gui;
 
-import java.awt.BorderLayout;
-import java.awt.Component;
-import java.awt.EventQueue;
-import java.awt.Image;
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import javax.swing.ButtonGroup;
-import javax.swing.DefaultListModel;
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
-import javax.swing.JOptionPane;
-import javax.swing.JToggleButton;
-import javax.swing.JTabbedPane;
-import javax.swing.JLabel;
-import javax.swing.JSeparator;
-import javax.swing.JTextPane;
-import javax.swing.JTable;
-import javax.swing.JButton;
-import java.awt.Font;
-import javax.swing.JScrollPane;
-import javax.swing.JList;
-import javax.swing.AbstractListModel;
-import javax.swing.Box;
-import javax.swing.border.BevelBorder;
-import javax.swing.border.LineBorder;
 import java.awt.Color;
-import javax.swing.JTextField;
-import javax.swing.JComboBox;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JEditorPane;
-
-import main.java.com.photobay.jaxbfiles.Bids;
-import main.java.com.photobay.jaxbfiles.Job;
-import main.java.com.photobay.jaxbfiles.Jobs;
-import main.java.com.photobay.jaxbfiles.PayloadMessage;
-import main.java.com.photobay.jaxbfiles.PhotoSell;
-import main.java.com.photobay.jaxbfiles.PhotoSells;
-import main.java.com.photobay.jaxbfiles.Photographer;
-import main.java.com.photobay.jaxbfiles.Photographers;
-import main.java.com.photobay.jaxbfiles.Photographers.PhotographerRef;
-import main.java.com.photobay.jaxbfiles.Photos;
-import main.java.com.photobay.jaxbfiles.PressAgency;
-import main.java.com.photobay.jaxbfiles.Bids.BidRef;
-import main.java.com.photobay.jaxbfiles.Jobs.JobRef;
-import main.java.com.photobay.jaxbfiles.PhotoSells.PhotoSellRef;
-import main.java.com.photobay.jaxbfiles.TopicType;
-import main.java.com.photobay.util.ImageManipulation;
-import main.java.com.photobay.util.ImagePanel;
-import main.java.com.photobay.webservice.JobsService;
-import main.java.com.photobay.webservice.PhotoBayRessourceManager;
-import main.java.com.photobay.xmppClient.XmppConnectionHandler;
-
-import java.awt.event.ActionListener;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.StringReader;
-import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.net.URL;
-import java.util.AbstractList;
-import java.util.ArrayList;
-import java.util.GregorianCalendar;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Locale;
-import java.util.Observable;
-import java.util.Observer;
-import java.util.TimeZone;
-import java.awt.Dimension;
-import java.awt.Canvas;
-import java.awt.FlowLayout;
-import javax.swing.event.ListSelectionListener;
+
+import javax.swing.AbstractListModel;
+import javax.swing.ButtonGroup;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.DefaultListModel;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JEditorPane;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.JScrollPane;
+import javax.swing.JSeparator;
+import javax.swing.JTabbedPane;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.ws.rs.core.MediaType;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
-import javax.xml.datatype.Duration;
-import javax.xml.datatype.XMLGregorianCalendar;
-import javax.xml.namespace.QName;
 import javax.xml.transform.stream.StreamSource;
 
-import com.sun.jersey.api.client.Client;
-import com.sun.jersey.api.client.ClientRequest;
-import com.sun.jersey.api.client.ClientResponse;
-import com.sun.jersey.api.client.ClientResponse.Status;
-import com.sun.jersey.api.client.WebResource;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import javax.swing.JTextArea;
-import javax.swing.JRadioButton;
+import main.java.com.photobay.jaxbfiles.Job;
+import main.java.com.photobay.jaxbfiles.Jobs;
+import main.java.com.photobay.jaxbfiles.Jobs.JobRef;
+import main.java.com.photobay.jaxbfiles.PayloadMessage;
+import main.java.com.photobay.jaxbfiles.Photographer;
+import main.java.com.photobay.jaxbfiles.Photographers;
+import main.java.com.photobay.jaxbfiles.Photographers.PhotographerRef;
+import main.java.com.photobay.jaxbfiles.Photos;
+import main.java.com.photobay.jaxbfiles.PressAgency;
+import main.java.com.photobay.util.ImagePanel;
+import main.java.com.photobay.webservice.PhotoBayRessourceManager;
+import main.java.com.photobay.xmppClient.XmppConnectionHandler;
 
 import org.jivesoftware.smackx.pubsub.Item;
 import org.jivesoftware.smackx.pubsub.ItemPublishEvent;
 import org.jivesoftware.smackx.pubsub.PayloadItem;
 import org.jivesoftware.smackx.pubsub.SimplePayload;
 import org.jivesoftware.smackx.pubsub.listener.ItemEventListener;
+
+import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.ClientResponse;
+import com.sun.jersey.api.client.ClientResponse.Status;
+import com.sun.jersey.api.client.WebResource;
 
 //import com.sun.jersey.api.client.ClientRequest;
 
@@ -121,7 +85,6 @@ public class PressAgencyFrame extends JFrame {
 	private Photographer photographer;
 	private WebResource webResource;
 	private JComboBox<String> comboBoxStatusJob;
-	//private JEditorPane dtrpnDescriptionJob;
 	private JComboBox<Integer> comboBoxDeadlineDay;
 	private JComboBox<Integer> comboBoxDeadlineMonth;
 	private JComboBox<Integer> comboBoxDeadlineYear;
@@ -183,8 +146,6 @@ public class PressAgencyFrame extends JFrame {
 		if(cn != null)
 			this.cnHandler = cn;
 		
-		//cnHandler.setItemEventListener(setItemEvent());
-		//cnHandler.setItemEventListener(new CustomItemEventListener(this));
 		cnHandler.refreshSubs(setItemEvent());
 		updateMySubscriptionsList();
 		
@@ -839,7 +800,7 @@ public class PressAgencyFrame extends JFrame {
 
 				// Read data from the text fields
 
-				// valide data
+				// validate data
 
 				// send
 
@@ -854,7 +815,7 @@ public class PressAgencyFrame extends JFrame {
 			public void actionPerformed(ActionEvent event) {
 				// Read data from the text fields
 
-				// valide data
+				// validate data
 
 				// send
 			}
@@ -889,6 +850,10 @@ public class PressAgencyFrame extends JFrame {
 									}
 								});
 								subscriptionsList.setModel(new AbstractListModel<PayloadMessage>() {
+									/**
+									 * 
+									 */
+									private static final long serialVersionUID = 1L;
 									PayloadMessage[] values = new PayloadMessage[] {};
 									public int getSize() {
 										return values.length;
@@ -1116,7 +1081,6 @@ public class PressAgencyFrame extends JFrame {
 				if(selectedPhotographer != null && !selectedPhotographer.isEmpty())
 				{
 					List<String> nodes = cnHandler.getSubscribedNodes();
-					//boolean result = false;
 					if(nodes != null && nodes.size() > 0)
 					{
 						for(String node : nodes)
