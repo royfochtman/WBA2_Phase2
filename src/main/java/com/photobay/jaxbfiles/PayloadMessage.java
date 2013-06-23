@@ -104,5 +104,11 @@ public class PayloadMessage {
     	return "<payloadMessage xmlns=\"http://www.example.org/photoBay\">" +
 		"<message>"+ this.message +"</message><uri>" + this.uri + "</uri></payloadMessage>";
     }
+    
+    @Override
+    public String toString()
+    {
+		return "Message"; 
+    }
 
 }
