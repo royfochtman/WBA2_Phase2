@@ -168,6 +168,7 @@ public class PhotographerFrame extends JFrame {
 				JPanel panelMyData = new JPanel();
 				panelMyData.setToolTipText("");
 				photographerTabbedPane.addTab("My Data", null, panelMyData, null);
+				photographerTabbedPane.setEnabledAt(0, true);
 				panelMyData.setLayout(null);
 				
 				JLabel lblName = new JLabel("Name:");
@@ -380,6 +381,7 @@ public class PhotographerFrame extends JFrame {
 		panelMyPhotoSell.add(panelPhotoSellImg);
 
 		btnUpdatePhotoSell = new JButton("Update");
+		btnUpdatePhotoSell.setEnabled(false);
 		btnUpdatePhotoSell.setVisible(false);
 		btnUpdatePhotoSell.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
@@ -393,6 +395,8 @@ public class PhotographerFrame extends JFrame {
 		panelMyPhotoSell.add(btnUpdatePhotoSell);
 		
 		btnDeletePhotoSell = new JButton("Delete");
+		btnDeletePhotoSell.setEnabled(false);
+		btnDeletePhotoSell.setFocusable(false);
 		btnDeletePhotoSell.setVisible(false);
 		btnDeletePhotoSell.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
@@ -494,6 +498,7 @@ public class PhotographerFrame extends JFrame {
 		panelMyPhotoSell.add(lblBidFromPressAgencyName);
 		
 		JButton btnAcceptBid = new JButton("Accept Bid");
+		btnAcceptBid.setFocusable(false);
 		btnAcceptBid.setEnabled(false);
 		btnAcceptBid.setBounds(396, 79, 89, 23);
 		panelMyPhotoSell.add(btnAcceptBid);
@@ -753,9 +758,13 @@ public class PhotographerFrame extends JFrame {
 		//textFieldPhotoPath.setColumns(Color(0, 0, 0)));
 		
 		JPanel panelMySubscriptions = new JPanel();
+		panelMySubscriptions.setFocusable(false);
+		panelMySubscriptions.setEnabled(false);
+		panelMySubscriptions.setVisible(false);
 		panelMySubscriptions.setToolTipText("");
 		photographerTabbedPane.addTab("My Subscriptions", null,
 				panelMySubscriptions, null);
+		photographerTabbedPane.setEnabledAt(3, false);
 		panelMySubscriptions.setLayout(null);
 		
 		JScrollPane scrollPane = new JScrollPane();
@@ -778,7 +787,12 @@ public class PhotographerFrame extends JFrame {
 		scrollPane.setViewportView(listSubscriptions);
 
 		JPanel panelSearch = new JPanel();
+		panelSearch.setEnabled(false);
+		panelSearch.setFocusable(false);
+		panelSearch.setRequestFocusEnabled(false);
+		panelSearch.setVisible(false);
 		photographerTabbedPane.addTab("Search Jobs", null, panelSearch, null);
+		photographerTabbedPane.setEnabledAt(4, false);
 		panelSearch.setLayout(null);
 
 		JScrollPane scrollPanePhotographers = new JScrollPane();

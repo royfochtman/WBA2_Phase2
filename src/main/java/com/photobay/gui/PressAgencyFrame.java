@@ -968,6 +968,8 @@ public class PressAgencyFrame extends JFrame {
 		panelPhotographer.add(btnSubscribeToPhotographer);
 
 		JPanel panelBids = new JPanel();
+		panelBids.setFocusable(false);
+		panelBids.setEnabled(false);
 		panelBids.setBorder(new LineBorder(new Color(0, 0, 0)));
 		panelBids.setBounds(10, 36, 556, 313);
 		panelPhotographer.add(panelBids);
@@ -978,6 +980,7 @@ public class PressAgencyFrame extends JFrame {
 		panelBids.add(scrollPanePhotoSells);
 
 		listPhotoSells = new JList<String>();
+		listPhotoSells.setEnabled(false);
 		listPhotoSells.setModel(new AbstractListModel<String>() {
 			/**
 			 * 
@@ -1039,11 +1042,14 @@ public class PressAgencyFrame extends JFrame {
 		panelBids.add(lblEnterValueBid);
 
 		textFieldEnterValueBid = new JTextField();
+		textFieldEnterValueBid.setEditable(false);
+		textFieldEnterValueBid.setEnabled(false);
 		textFieldEnterValueBid.setBounds(342, 201, 86, 20);
 		panelBids.add(textFieldEnterValueBid);
 		textFieldEnterValueBid.setColumns(10);
 
 		JButton btnOkBid = new JButton("Ok");
+		btnOkBid.setEnabled(false);
 		btnOkBid.setBounds(342, 232, 89, 23);
 		panelBids.add(btnOkBid);
 
@@ -1071,6 +1077,10 @@ public class PressAgencyFrame extends JFrame {
 		JLabel lblStatusPhotoSellValue = new JLabel("Status");
 		lblStatusPhotoSellValue.setBounds(408, 38, 46, 14);
 		panelBids.add(lblStatusPhotoSellValue);
+		
+		JList list = new JList();
+		list.setBounds(442, 76, 1, 1);
+		panelBids.add(list);
 
 		btnUnsubscribe = new JButton("Unsubscribe");
 		btnUnsubscribe.setEnabled(false);
