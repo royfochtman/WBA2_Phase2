@@ -30,8 +30,6 @@
       				<xs:field xpath="."/>
    				</xs:unique>
 			</xs:element>  -->
-			<!-- <xs:element name="password" type="xs:string" minOccurs="1"></xs:element> -->
-			<!--  <xs:element name="rating" type="xs:int"></xs:element> -->
 		</xs:sequence>
 </xs:complexType>
 </xs:schema>
