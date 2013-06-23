@@ -33,7 +33,6 @@ public class JobsService {
 
 
 	@POST
-	//@Path("/jobs")
 	@Consumes({"application/xml"})
 	public Response postJob(Job job)
 	{
@@ -44,7 +43,6 @@ public class JobsService {
 		else return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
 	}
 	
-	/*Testing Post Job*/
 	@PUT
 	@Path("/{id}")
 	@Consumes({"application/xml"})
@@ -57,7 +55,6 @@ public class JobsService {
 		}
 		else return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
 	}
-	/**/
 	
 	
 	@GET

@@ -28,7 +28,6 @@ public class PressAgenciesService {
 	}
 	
 	@POST
-	//@Path("/pressAgencies")
 	@Consumes({"application/xml"})
 	public Response postPressAgency(PressAgency pressAgency)
 	{

@@ -32,7 +32,6 @@ public class PhotoSellsService {
 
 
 	@POST
-	//@Path("/photoSells")
 	@Consumes({"application/xml"})
 	public Response postPhotoSell(PhotoSell photoSell)
 	{

@@ -14,7 +14,6 @@ import main.java.com.photobay.jaxbfiles.JobApplication;
 public class JobApplicationsService {
 	
 	@POST
-	//@Path("/jobs/{id}/jobApplications")
 	@Consumes({"application/xml"})
 	public Response postJobApplication(JobApplication jobApplication, @PathParam("id") int jobId, String photographerRef)
 	{

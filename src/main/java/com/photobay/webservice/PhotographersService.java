@@ -16,8 +16,6 @@ import main.java.com.photobay.jaxbfiles.Photographers;
 @Path("/photographers")
 public class PhotographersService {
 
-	//private PhotographersService(){}
-	
 	@GET
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_XML)
@@ -35,7 +33,6 @@ public class PhotographersService {
 
 
 	@POST
-	//@Path("/photographers")
 	@Consumes(MediaType.APPLICATION_XML)
 	public Response postPhotographer(Photographer photographer)
 	{

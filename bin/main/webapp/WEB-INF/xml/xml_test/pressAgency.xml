@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<pre:pressAgency ID="0" ref="http://tempuri.org" registrationDate="2001-01-01" xmlns:pre="http://www.example.org/photoBay" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.example.org/photoBay ../xml_schema_files/pressAgency.xsd ">
-  <pre:name>pre:name</pre:name>
-  <pre:mainLocation>pre:mainLocation</pre:mainLocation>
-  <pre:dateOfCreation>2001-01-01</pre:dateOfCreation>
-  <pre:generalPersonalData/>
-</pre:pressAgency>

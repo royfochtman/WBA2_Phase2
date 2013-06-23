@@ -14,9 +14,7 @@ import main.java.com.photobay.jaxbfiles.Bid;
 public class BidsService {
 	
 	@POST
-	//@Path("/photoSells/{id}/bids")
 	@Consumes({"application/xml"})
-	/* hinzugefügt "pressAgencyID als übergabeparameter. */
 	public Response postBid(Bid bid, @PathParam("id") int id, String pressAgencyRef )
 	{
 		if(PhotoBayRessourceManager.postBid(bid, id, pressAgencyRef))

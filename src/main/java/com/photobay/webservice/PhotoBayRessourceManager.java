@@ -38,7 +38,7 @@ import main.java.com.photobay.util.IdGenerator;
 public class PhotoBayRessourceManager {
 	
 	/**
-	 * Gets existing Photographer.
+	 * Get existing Photographer.
 	 * 
 	 * @param id ID from the Photographer
 	 * @return Photographer with ID "id".
@@ -76,14 +76,6 @@ public class PhotoBayRessourceManager {
 		
 			if(new File("./photographers/" + id).mkdir() && file.createNewFile())
 			{
-//				/*creates the folder for the photos*/
-//				if(new File(pathPhotos).mkdir())
-//				/* creates a new XML File for the photos, but empty */
-//					new File(pathPhotos + "/photos.xml").createNewFile();
-//				
-//				/* creates a new XML File for the PhotoSells*/
-//				if(new File(pathPhotoSells).mkdir())
-//					new File(pathPhotoSells + "/photoSells.xml").createNewFile();	
 				new File(pathPhotoSells).mkdir();	
 				new File(pathPhotos).mkdir();
 				JAXBContext context = JAXBContext.newInstance(Photographer.class);
@@ -164,13 +156,6 @@ public class PhotoBayRessourceManager {
 			
 			if(new File(pathMain).mkdir() && file.createNewFile())
 			{
-//				/* creates a new XML File for the photos */
-//				if(new File(pathPhotos).mkdir())
-//					new File(pathPhotos + "/photos.xml").createNewFile();
-//				
-//				/* creates a new XML File for Jobs */
-//				if(new File(pathJobs).mkdir())
-//					new File(pathJobs + "/jobs.xml").createNewFile();
 				new File(pathJobs).mkdir();
 				new File(pathPhotos).mkdir();
 				JAXBContext context = JAXBContext.newInstance(PressAgency.class);
@@ -557,7 +542,6 @@ public class PhotoBayRessourceManager {
 	 * Hier werden alle Listen verwaltet
 	 * (PUT, GET)
 	 * 
-	 * 
 	 *
 	 *********************************************/
 	
@@ -586,8 +570,6 @@ public class PhotoBayRessourceManager {
 		    	photographerRef.setFirstName(photographer.getFirstname());
 		    	photographerRef.setLastName(photographer.getLastname());
 		    	photographerRef.setUsername(photographer.getGeneralPersonalData().getUsername());
-		    	//Muss nicht "./photographers/" sein ???
-//		    	photographerRef.setUri("/photographers/" + photographer.getID());
 		    	photographerRef.setUri(photographer.getRef());
 		    	photographersList.getPhotographerRef().add(photographerRef);
 		    }
@@ -808,10 +790,8 @@ public class PhotoBayRessourceManager {
 		try
 		{
 			if(ownerRef == null || ownerRef.isEmpty())
-//				file = new File(ownerRef +"/jobs/jobs.xml");
 				file = new File("./jobs/jobs.xml");
 			else
-//				file = new File("./jobs/jobs.xml");
 				file = new File(ownerRef + "/jobs/jobs.xml");
 			JAXBContext context = JAXBContext.newInstance(Jobs.class);
 			Unmarshaller unmarshaller = context.createUnmarshaller();
@@ -826,7 +806,6 @@ public class PhotoBayRessourceManager {
 	
 	
 	
-	/*Nachschauen!*/
 	/**
 	 * 
 	 * @param photo

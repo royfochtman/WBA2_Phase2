@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<bid:bid ID="0" photoSellRef="http://tempuri.org" pressAgencyRef="http://tempuri.org" xmlns:bid="http://www.example.org/photoBay" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.example.org/photoBay ../xml_schema_files/bid.xsd ">
-  <bid:bidValue>1</bid:bidValue>
-</bid:bid>
