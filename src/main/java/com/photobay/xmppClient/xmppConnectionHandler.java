@@ -214,17 +214,17 @@ public class XmppConnectionHandler {
 			else
 				item = new PayloadItem<SimplePayload>(nodeID + System.currentTimeMillis(), new SimplePayload("", "", ""));
 			
-			//node.publish(item);
-			try
-			{
-				node.send(item);
-				
-			}
-			catch(XMPPException ex)
-			{
-				System.err.println("Item could not be sent!\n" + ex.getMessage());
-                return false;
-			}
+			node.publish(item);
+//			try
+//			{
+//				node.send(item);
+//				
+//			}
+//			catch(XMPPException ex)
+//			{
+//				System.err.println("Item could not be sent!\n" + ex.getMessage());
+//                return false;
+//			}
 		}
 		return true;
 	}

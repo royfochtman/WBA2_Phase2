@@ -52,7 +52,6 @@ import main.java.com.photobay.util.ImageManipulation;
 import main.java.com.photobay.util.ImagePanel;
 import main.java.com.photobay.webservice.JobsService;
 import main.java.com.photobay.webservice.PhotoBayRessourceManager;
-import main.java.com.photobay.xmppClient.CustomItemEventListener;
 import main.java.com.photobay.xmppClient.XmppConnectionHandler;
 
 import java.awt.event.ActionListener;
@@ -104,7 +103,7 @@ import org.jivesoftware.smackx.pubsub.listener.ItemEventListener;
 
 //import com.sun.jersey.api.client.ClientRequest;
 
-public class PressAgencyFrame extends JFrame implements ClientFrame {
+public class PressAgencyFrame extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 
@@ -148,6 +147,7 @@ public class PressAgencyFrame extends JFrame implements ClientFrame {
 	private Job selectedJob;
 	DefaultListModel<PayloadMessage> payloadMessagemodel = new DefaultListModel<PayloadMessage>();
 	DefaultListModel<Item> payloadMessagemodel2 = new DefaultListModel<Item>();
+	private JTextArea txtMessage;
 	/**
 	 * Launch the application.
 	 */
@@ -870,33 +870,38 @@ public class PressAgencyFrame extends JFrame implements ClientFrame {
 		textFieldPhotoPath.setBounds(152, 290, 89, 20);
 		panelPhotoContainer.add(textFieldPhotoPath);
 		textFieldPhotoPath.setColumns(10);
-
-		JPanel panelMySubscriptions = new JPanel();
-		panelMySubscriptions.setToolTipText("");
-		pressAgencyTabbedPane.addTab("My Subscriptions", null,
-				panelMySubscriptions, null);
-		panelMySubscriptions.setLayout(null);
-
-		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(10, 11, 109, 360);
-		panelMySubscriptions.add(scrollPane);
-
-		subscriptionsList = new JList<PayloadMessage>();
-		subscriptionsList.addListSelectionListener(new ListSelectionListener() {
-			public void valueChanged(ListSelectionEvent arg0) {
+		
+				JPanel panelMySubscriptions = new JPanel();
+				panelMySubscriptions.setToolTipText("");
+				pressAgencyTabbedPane.addTab("My Subscriptions", null,
+						panelMySubscriptions, null);
+				panelMySubscriptions.setLayout(null);
 				
-			}
-		});
-		subscriptionsList.setModel(new AbstractListModel<PayloadMessage>() {
-			PayloadMessage[] values = new PayloadMessage[] {};
-			public int getSize() {
-				return values.length;
-			}
-			public PayloadMessage getElementAt(int index) {
-				return values[index];
-			}
-		});
-		scrollPane.setViewportView(subscriptionsList);
+						JScrollPane scrollPane = new JScrollPane();
+						scrollPane.setBounds(10, 11, 109, 360);
+						panelMySubscriptions.add(scrollPane);
+						
+								subscriptionsList = new JList<PayloadMessage>();
+								subscriptionsList.addListSelectionListener(new ListSelectionListener() {
+									public void valueChanged(ListSelectionEvent arg0) {
+										PayloadMessage mess = subscriptionsList.getSelectedValue();
+										txtMessage.setText(mess.getMessage() + "\n" + mess.getUri());
+									}
+								});
+								subscriptionsList.setModel(new AbstractListModel<PayloadMessage>() {
+									PayloadMessage[] values = new PayloadMessage[] {};
+									public int getSize() {
+										return values.length;
+									}
+									public PayloadMessage getElementAt(int index) {
+										return values[index];
+									}
+								});
+								scrollPane.setViewportView(subscriptionsList);
+								
+								txtMessage = new JTextArea();
+								txtMessage.setBounds(159, 21, 527, 135);
+								panelMySubscriptions.add(txtMessage);
 
 		JPanel panelSearch = new JPanel();
 		pressAgencyTabbedPane.addTab("Search", null, panelSearch, null);
@@ -1280,7 +1285,6 @@ public class PressAgencyFrame extends JFrame implements ClientFrame {
 		return readJob;
 	}
 
-	@Override
 	public void receivedMessages(PayloadMessage message) {
 		if(!message.getMessage().isEmpty() && !message.getUri().isEmpty())
 		{
@@ -1296,8 +1300,8 @@ public class PressAgencyFrame extends JFrame implements ClientFrame {
 			@Override
 			public void handlePublishedItems(ItemPublishEvent<Item> items) {
 				
-				JOptionPane.showMessageDialog(PressAgencyFrame.this, "SubItem" + items.getItems().size(), "Items", 
-						JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(PressAgencyFrame.this, "Es gibt neue Nachrichten", "Neue Nachrichten", 
+						JOptionPane.INFORMATION_MESSAGE);
 				
 				if(items.getItems().size() > 0)
 				{
