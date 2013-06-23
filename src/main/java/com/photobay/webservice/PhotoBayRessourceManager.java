@@ -336,9 +336,7 @@ public class PhotoBayRessourceManager {
 	 */
 	public static Boolean deleteJob(int id){
 		File dir = new File("./jobs/" + id);
-		File file = new File("./jobs/" + id + "/job.xml");
 		File jobsFile = new File("./jobs/jobs.xml");
-		File jobApplicationsFile = new File(dir + "/jobApplications");
 		Job ownerJob = getJob(id);
 		String dirString = "./jobs/" + id;
 		String ownerRef = ownerJob.getPressAgencyRef();

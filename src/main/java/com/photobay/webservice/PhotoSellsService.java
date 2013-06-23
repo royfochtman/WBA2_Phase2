@@ -13,7 +13,6 @@ import javax.ws.rs.core.Response;
 
 import main.java.com.photobay.jaxbfiles.PhotoSell;
 import main.java.com.photobay.jaxbfiles.PhotoSells;
-import main.java.com.photobay.jaxbfiles.Photographers;
 
 @Path("/photoSells")
 public class PhotoSellsService {

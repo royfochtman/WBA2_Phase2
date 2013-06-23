@@ -14,7 +14,6 @@ import javax.ws.rs.core.Response;
 
 import main.java.com.photobay.jaxbfiles.Job;
 import main.java.com.photobay.jaxbfiles.Jobs;
-import main.java.com.photobay.jaxbfiles.PhotoSells;
 
 @Path("/jobs")
 public class JobsService {
